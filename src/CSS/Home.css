@@ -1,0 +1,6 @@
+.main-banner {
+  width: 100%;
+  height: 35vh;        /* 35% of viewport height */
+  object-fit: cover;   /* prevents distortion */
+  display: block;
+}

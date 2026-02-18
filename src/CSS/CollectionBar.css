@@ -1,0 +1,48 @@
+.collectionbar{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 20px;
+    justify-content: space-evenly;
+}
+
+.bg1{
+    background-color: #CDC9C2;
+}
+
+.bg2{
+    background-color: #e1ddd5;
+}
+
+.collectionitem{
+    color: white;
+    font-weight: 500;
+    width: 100%;
+    text-align: center;
+    height: 5vh;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+
+.bg1:hover{
+    background-color: white;
+    color: #CDC9C2;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+.bg2:hover{
+    background-color: white;
+    color: #e1ddd5;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+@media (max-width: 768px) {
+  .collectionbar{
+    font-size: 12px;
+  }
+  .collectionitem{
+    height: 3vh;
+  }
+}
