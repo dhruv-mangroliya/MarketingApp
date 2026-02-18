@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import "../CSS/Navbar.css";
-import hamburgerIcon from "../assets/hamburger.png";
-import about from "../assets/person.png";
-import cart from "../assets/cart.png";
-import contact from "../assets/support.png";
-import logo from "../assets/logo.png";
+import hamburgerIcon from "../../public/assets/hamburger.png";
+import about from "../../public/assets/person.png";
+import cart from "../../public/assets/cart.png";
+import contact from "../../public/assets/support.png";
+import logo from "../../public/assets/logo.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
