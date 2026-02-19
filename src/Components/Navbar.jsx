@@ -5,27 +5,27 @@ import about from "../../public/assets/person.png";
 import cart from "../../public/assets/cart.png";
 import contact from "../../public/assets/support.png";
 import logo from "../../public/assets/logo.png";
+import { useNavigate } from "react-router-dom";
+import home from "../../public/assets/home.png"
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
-    document.body.style.overflow = isOpen ? "hidden" : "auto";
-  }, [isOpen]);
+  const navigate = useNavigate();
 
   return (
     <>
       <nav className="navbar">
         <div className="logo"><img src={logo} alt="Logo" className="logo-img"/></div>
-        <div className="nav-links brand">
+        <div className="nav-links brand" onClick={() => navigate('/')}>
             <div className="brand-name">KurtiBazaar</div>
             <div className="brand-tagline">Shop with confidence</div>
         </div>
         {/* Desktop Icons */}
         <div className="nav-links-icons">
-            <img src={about} alt="About" />
-            <img src={cart} alt="Cart" />
-            <img src={contact} alt="Contact" />
+            <img src={home} alt="Home" onClick={() => navigate('/')}/>
+            <img src={about} alt="About" onClick={() => navigate('/about')}/>
+            <img src={cart} alt="Cart" onClick={() => navigate('/cart')} />
+            <img src={contact} alt="Contact"  onClick={() => navigate('/contact')}/>
         </div>
 
         
@@ -46,9 +46,14 @@ const Navbar = () => {
         </div>
 
         <ul className="menu-links">
-          <li onClick={() => setIsOpen(false)}>About Us</li>
-          <li onClick={() => setIsOpen(false)}>Your Cart</li>
-          <li onClick={() => setIsOpen(false)}>Contact</li>
+          <li onClick={() => { setIsOpen(false); navigate("/"); }}>Home</li>
+          <li onClick={() => { setIsOpen(false); navigate("/cart"); }}>Your Cart</li>
+          <li onClick={() => { setIsOpen(false); navigate("/about"); }}>About Us</li>
+          <li onClick={() => { setIsOpen(false); navigate("/shipping-policy")}}>Shipping Policy</li>
+          <li onClick={() => { setIsOpen(false); navigate("/return-exchange")}}>Return & Exchange</li>
+          <li onClick={() => { setIsOpen(false); navigate("/terms")}}>Terms & Conditions</li>
+          <li onClick={() => { setIsOpen(false); navigate("/privacy-policy")}}>Privacy Policy</li>
+          <li onClick={() => { setIsOpen(false); navigate("/contact"); }}>Contact</li>
         </ul>
       </div>
     </>

@@ -1,4 +1,4 @@
-/* GRID */
+
 
 .catalog-container {
   display: grid;
@@ -8,7 +8,6 @@
   background-color: #f6f6f6;
 }
 
-/* CARD */
 
 .product-card {
   background: white;
@@ -22,7 +21,6 @@
 .product-card:hover {
   box-shadow: #a7997f 0px 4px 8px;
 }
-/* IMAGE */
 
 .product-card img {
   width: 100%;
@@ -31,7 +29,6 @@
   margin-bottom: 10px;
 }
 
-/* TITLE */
 
 .product-card h3 {
   font-size: 16px;
@@ -39,7 +36,6 @@
   margin-bottom: 5px;
 }
 
-/* RESPONSIVE */
 
 @media (max-width: 1024px) {
   .catalog-container {

@@ -1,7 +1,6 @@
 .review-slider {
   position: relative;
   width: 100%;
-  /* padding: 60px 0; */
   background: #f6f6f6;
   display: flex;
   align-items: center;
@@ -49,8 +48,6 @@
   color: #777;
 }
 
-/* Navigation Buttons */
-
 .nav-btn {
   background: #CDC9C2;
   color: white;
@@ -79,8 +76,6 @@
 .nav-btn:hover {
   background: #b2aca0;
 }
-
-/* Responsive */
 
 @media (max-width: 768px) {
   .slider-window {

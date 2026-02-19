@@ -25,9 +25,9 @@
 
 .logo img {
   display: block;
-  height: 45px;      /* control logo size */
-  width: 100%;
-  object-fit: contain;
+  height: 45px;     
+  width: 50%;
+  object-fit: cover;
 }
 
 /* ================= DESKTOP NAV ICONS ================= */
@@ -114,6 +114,10 @@
     padding-right: 5%;
     display: flex;
     justify-content: center;
+  }
+  .logo img {
+    height: 35px;
+    width: 100%;
   }
 }
 

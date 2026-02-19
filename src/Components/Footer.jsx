@@ -1,7 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import "../CSS/Footer.css";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Footer = () => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+
+  const handleRegister = () => {
+    if (!email) {
+      toast.error("Please enter your email.");
+      return;
+    }
+
+    if (!email.includes("@")) {
+      toast.warning("Please enter a valid email address.");
+      return;
+    }
+
+    toast.success("Successfully registered for offers 🎉");
+    setEmail("");
+  };
+
+
   return (
     <footer className="footer">
 
@@ -28,26 +49,14 @@ const Footer = () => {
         <div className="footer-column">
           <h3>Quick Links</h3>
           <ul>
-            <li>About Us</li>
-            <li>Contact Us</li>
-            <li>Shipping Policy</li>
-            <li>Return & Exchange</li>
-            <li>Terms & Conditions</li>
-            <li>Privacy Policy</li>
+            <li onClick={() => navigate("/about")}>About Us</li>
+            <li onClick={() => navigate("/contact")}>Contact Us</li>
+            <li onClick={() => navigate("/shipping-policy")}>Shipping Policy</li>
+            <li onClick={() => navigate("/return-exchange")}>Return & Exchange</li>
+            <li onClick={() => navigate("/terms")}>Terms & Conditions</li>
+            <li onClick={() => navigate("/privacy-policy")}>Privacy Policy</li>
           </ul>
-        </div>
 
-        {/* Information */}
-        <div className="footer-column">
-          <h3>Information</h3>
-          <ul>
-            <li>Home</li>
-            <li>New Arrivals</li>
-            <li>Ready To Wear</li>
-            <li>Wedding Edits</li>
-            <li>Best Sellers</li>
-            <li>Pre Fall</li>
-          </ul>
         </div>
 
         {/* Newsletter */}
@@ -56,8 +65,16 @@ const Footer = () => {
           <p>Sign up for latest updates</p>
 
           <div className="newsletter">
-            <input type="email" placeholder="Enter your email..." />
-            <button>Sign Up</button>
+            <input
+              type="email"
+              placeholder="Enter your email..."
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+
+            <button onClick={handleRegister}>
+              Register For Offers
+            </button>
           </div>
 
           <p>For latest offers and new features</p>

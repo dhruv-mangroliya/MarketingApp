@@ -1,0 +1,17 @@
+.static-page {
+  max-width: 1000px;
+  margin: 60px auto;
+  padding: 20px;
+  line-height: 1.7;
+}
+
+.static-page h1 {
+  margin-bottom: 25px;
+  color: #242f66;
+}
+
+.static-page p {
+  margin-bottom: 15px;
+  font-size: 16px;
+  color: #444;
+}
