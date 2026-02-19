@@ -13,11 +13,15 @@
 .product-card {
   background: white;
   padding: 15px;
-  border-radius: 8px;
+  border-radius: 15px;
   border: 1px solid #e5e5e5;
   text-align: center;
+  box-shadow: #CDC9C2 0px 2px 4px;
 }
 
+.product-card:hover {
+  box-shadow: #a7997f 0px 4px 8px;
+}
 /* IMAGE */
 
 .product-card img {
@@ -33,13 +37,6 @@
   font-size: 16px;
   font-weight: 500;
   margin-bottom: 5px;
-}
-
-/* PRICE */
-
-.price {
-  font-weight: 600;
-  color: #e53935;
 }
 
 /* RESPONSIVE */

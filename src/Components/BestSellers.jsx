@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
 import "../CSS/ProductCatalog.css";
 
-const ProductCatalog = (props) => {
+const BestSellers = (props) => {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    setData(props.data);
-  }, []);
+    if (props.data) {
+      const filteredData = props.data.filter(
+        (item) => item.rating >= 4
+      );
+      setData(filteredData);
+    }
+  }, [props.data]);
 
   return (
     <div className="catalog-container">
@@ -33,4 +39,4 @@ const ProductCatalog = (props) => {
   );
 };
 
-export default ProductCatalog;
+export default BestSellers;

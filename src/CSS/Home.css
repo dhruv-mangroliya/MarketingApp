@@ -1,6 +1,30 @@
 .main-banner {
-  width: 100%;
+  width: 100%;      /* 60% of viewport height */
   height: 35vh;        /* 35% of viewport height */
   object-fit: cover;   /* prevents distortion */
   display: block;
+}
+
+.best-seller-title {
+  text-align: center;
+  margin: 20px 0 30px;
+  font-size: 28px;
+  font-weight: 600;
+  color: #242f66;
+}
+
+.best-seller-title span {
+  position: relative;
+}
+
+.best-seller-title span::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 3px;
+  background-color: #242f66;
+  border-radius: 5px;
 }

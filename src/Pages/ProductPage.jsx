@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import catalog from "../data/CatalogData.json";
+import catalog from "../data/CatalogData1.json";
 import "../CSS/ProductPage.css";
 
 const ProductPage = () => {
