@@ -15,7 +15,7 @@ const Navbar = () => {
   return (
     <>
       <nav className="navbar">
-        <div className="logo"><img src={logo} alt="Logo" className="logo-img"/></div>
+        <div className="logo"><img src={logo} alt="Logo" className="logo-img" onClick={() => navigate('/')}/></div>
         <div className="nav-links brand" onClick={() => navigate('/')}>
             <div className="brand-name">KurtiBazaar</div>
             <div className="brand-tagline">Shop with confidence</div>
@@ -23,8 +23,8 @@ const Navbar = () => {
         {/* Desktop Icons */}
         <div className="nav-links-icons">
             <img src={home} alt="Home" onClick={() => navigate('/')}/>
-            <img src={about} alt="About" onClick={() => navigate('/about')}/>
             <img src={cart} alt="Cart" onClick={() => navigate('/cart')} />
+            <img src={about} alt="About" onClick={() => navigate('/about')}/>
             <img src={contact} alt="Contact"  onClick={() => navigate('/contact')}/>
         </div>
 

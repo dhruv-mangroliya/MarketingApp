@@ -1,0 +1,271 @@
+.cart-empty {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.cart-empty h2 {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.cart-empty p {
+  font-size: 18px;
+  color: #666;
+}
+
+.cart-page {
+  padding: 50px;
+  min-height: 80vh;
+}
+
+.cart-page h1 {
+  font-size: 32px;
+  margin-bottom: 30px;
+}
+
+.cart-content {
+  display: flex;
+  gap: 30px;
+}
+
+.cart-items {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cart-item {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  align-items: center;
+}
+
+.cart-item img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  border-radius: 5px;
+  flex-shrink: 0;
+}
+
+.item-details {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.item-name {
+  flex: 2;
+}
+
+.item-name h3 {
+  font-size: 20px;
+  margin: 0;
+}
+
+.item-size {
+  font-size: 14px;
+  color: #666;
+  margin: 5px 0 0 0;
+}
+
+.item-price {
+  flex: 1;
+  text-align: center;
+}
+
+.item-price p {
+  font-size: 18px;
+  font-weight: bold;
+  color: #242f66;
+  margin: 0;
+}
+
+.item-quantity {
+  flex: 1;
+  text-align: center;
+}
+
+.item-quantity p {
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+}
+
+.item-total {
+  flex: 1;
+  text-align: right;
+}
+
+.item-total p {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.remove-btn {
+  background: #e53935;
+  color: white;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.remove-btn:hover {
+  background: #c62828;
+}
+
+.cart-summary {
+  flex: 1;
+  background: #f9f9f9;
+  padding: 25px;
+  border-radius: 8px;
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+}
+
+.cart-summary h2 {
+  font-size: 24px;
+  margin: 0 0 20px 0;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  font-size: 16px;
+}
+
+.summary-row.discount {
+  color: #9f8d6e;
+  font-weight: 500;
+}
+
+.summary-row.total {
+  border-top: 2px solid #ddd;
+  margin-top: 10px;
+  padding-top: 15px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.payment-btn {
+  width: 100%;
+  background: #4caf50;
+  color: white;
+  border: none;
+  padding: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 5px;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.payment-btn:hover {
+  background: #45a049;
+}
+
+@media (max-width: 768px) {
+  .cart-page {
+    padding: 20px;
+  }
+
+  .cart-page h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .cart-content {
+    flex-direction: column;
+  }
+
+  .cart-item {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 15px;
+    gap: 12px;
+  }
+
+  .cart-item img {
+    width: 100%;
+    max-width: 200px;
+    height: 200px;
+  }
+
+  .item-details {
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .item-name,
+  .item-price,
+  .item-quantity,
+  .item-total {
+    text-align: center;
+  }
+
+  .item-name h3 {
+    font-size: 18px;
+  }
+
+  .item-price p {
+    font-size: 20px;
+  }
+
+  .item-total p {
+    font-size: 22px;
+  }
+
+  .remove-btn {
+    width: 100%;
+    max-width: 200px;
+    height: 40px;
+    border-radius: 10px;
+    font-size: 16px;
+    background: linear-gradient(135deg, #e53935 0%, #c62828 100%);
+    box-shadow: 0 4px 10px rgba(229, 57, 53, 0.3);
+  }
+
+  .remove-btn:active {
+    transform: scale(0.95);
+  }
+
+  .cart-summary {
+    position: static;
+    margin-top: 20px;
+  }
+
+  .payment-btn {
+    font-size: 16px;
+    padding: 14px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+    box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+  }
+
+  .payment-btn:active {
+    transform: scale(0.98);
+  }
+}

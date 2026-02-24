@@ -9,10 +9,18 @@
     "rating": 3.5,
     "reviews": 124,
     "stock": 25,
+    "sizeStock": {"S": 5, "M": 10, "L": 7, "XL": 3},
     "isNew": true,
     "isBestSeller": false,
     "image": "/assets/catalogphoto.jpeg",
-    "description": "Elegant pink cotton kurti set perfect for summer wear."
+    "images": ["/assets/catalogphoto.jpeg", "/assets/1.jpeg", "/assets/2.jpeg", "/assets/3.jpeg"],
+    "sizes": ["S", "M", "L", "XL"],
+    "description": "Elegant pink cotton kurti set perfect for summer wear.",
+    "returnPeriod": 7,
+    "userReviews": [
+      {"user": "Priya S.", "rating": 4, "comment": "Good quality fabric, fits well!"},
+      {"user": "Anjali M.", "rating": 3, "comment": "Nice design but color slightly different."}
+    ]
   },
   {
     "id": 2,
@@ -24,10 +32,18 @@
     "rating": 4.2,
     "reviews": 89,
     "stock": 18,
+    "sizeStock": {"S": 4, "M": 6, "L": 5, "XL": 3},
     "isNew": false,
     "isBestSeller": true,
     "image": "/assets/3.jpeg",
-    "description": "Bright yellow cotton kurti with traditional block prints."
+    "images": ["/assets/3.jpeg", "/assets/4.jpeg", "/assets/1.jpeg"],
+    "sizes": ["S", "M", "L", "XL"],
+    "description": "Bright yellow cotton kurti with traditional block prints.",
+    "returnPeriod": 7,
+    "userReviews": [
+      {"user": "Sneha K.", "rating": 5, "comment": "Excellent quality and vibrant color!"},
+      {"user": "Riya P.", "rating": 4, "comment": "Beautiful print, comfortable to wear."}
+    ]
   },
   {
     "id": 3,
@@ -39,10 +55,18 @@
     "rating": 4.5,
     "reviews": 124,
     "stock": 25,
+    "sizeStock": {"S": 6, "M": 8, "L": 7, "XL": 4},
     "isNew": true,
     "isBestSeller": false,
     "image": "/assets/1.jpeg",
-    "description": "Elegant pink cotton kurti set perfect for summer wear."
+    "images": ["/assets/1.jpeg", "/assets/2.jpeg", "/assets/catalogphoto.jpeg"],
+    "sizes": ["S", "M", "L", "XL"],
+    "description": "Elegant pink cotton kurti set perfect for summer wear.",
+    "returnPeriod": 7,
+    "userReviews": [
+      {"user": "Meera D.", "rating": 5, "comment": "Perfect fit and lovely fabric!"},
+      {"user": "Kavya R.", "rating": 4, "comment": "Great purchase, highly recommend."}
+    ]
   },
   {
     "id": 4,
@@ -54,10 +78,18 @@
     "rating": 4.2,
     "reviews": 89,
     "stock": 18,
+    "sizeStock": {"S": 3, "M": 7, "L": 5, "XL": 3},
     "isNew": false,
     "isBestSeller": true,
     "image": "/assets/2.jpeg",
-    "description": "Bright yellow cotton kurti with traditional block prints."
+    "images": ["/assets/2.jpeg", "/assets/3.jpeg", "/assets/4.jpeg"],
+    "sizes": ["S", "M", "L", "XL"],
+    "description": "Bright yellow cotton kurti with traditional block prints.",
+    "returnPeriod": 7,
+    "userReviews": [
+      {"user": "Divya S.", "rating": 4, "comment": "Nice quality, worth the price."},
+      {"user": "Pooja M.", "rating": 4, "comment": "Good material and stitching."}
+    ]
   },
   {
     "id": 5,
@@ -69,10 +101,18 @@
     "rating": 4.5,
     "reviews": 124,
     "stock": 25,
+    "sizeStock": {"S": 7, "M": 9, "L": 6, "XL": 3},
     "isNew": true,
     "isBestSeller": false,
     "image": "/assets/3.jpeg",
-    "description": "Elegant pink cotton kurti set perfect for summer wear."
+    "images": ["/assets/3.jpeg", "/assets/catalogphoto.jpeg", "/assets/1.jpeg"],
+    "sizes": ["S", "M", "L", "XL"],
+    "description": "Elegant pink cotton kurti set perfect for summer wear.",
+    "returnPeriod": 7,
+    "userReviews": [
+      {"user": "Nisha T.", "rating": 5, "comment": "Absolutely love it!"},
+      {"user": "Aarti K.", "rating": 4, "comment": "Very comfortable and stylish."}
+    ]
   },
   {
     "id": 6,
@@ -84,10 +124,18 @@
     "rating": 3.9,
     "reviews": 89,
     "stock": 18,
+    "sizeStock": {"S": 5, "M": 5, "L": 4, "XL": 4},
     "isNew": false,
     "isBestSeller": true,
     "image": "/assets/4.jpeg",
-    "description": "Bright yellow cotton kurti with traditional block prints."
+    "images": ["/assets/4.jpeg", "/assets/1.jpeg", "/assets/2.jpeg"],
+    "sizes": ["S", "M", "L", "XL"],
+    "description": "Bright yellow cotton kurti with traditional block prints.",
+    "returnPeriod": 7,
+    "userReviews": [
+      {"user": "Simran B.", "rating": 4, "comment": "Good product for the price."},
+      {"user": "Tanvi J.", "rating": 4, "comment": "Nice design and comfortable."}
+    ]
   },
   {
     "id": 7,
@@ -99,10 +147,18 @@
     "rating": 4.5,
     "reviews": 124,
     "stock": 25,
+    "sizeStock": {"S": 4, "M": 10, "L": 8, "XL": 3},
     "isNew": true,
     "isBestSeller": false,
     "image": "/assets/catalogphoto.jpeg",
-    "description": "Elegant pink cotton kurti set perfect for summer wear."
+    "images": ["/assets/catalogphoto.jpeg", "/assets/3.jpeg", "/assets/4.jpeg"],
+    "sizes": ["S", "M", "L", "XL"],
+    "description": "Elegant pink cotton kurti set perfect for summer wear.",
+    "returnPeriod": 7,
+    "userReviews": [
+      {"user": "Ishita V.", "rating": 5, "comment": "Beautiful kurti, exceeded expectations!"},
+      {"user": "Neha G.", "rating": 4, "comment": "Great quality and fast delivery."}
+    ]
   },
   {
     "id": 8,
@@ -114,9 +170,17 @@
     "rating": 4.2,
     "reviews": 89,
     "stock": 18,
+    "sizeStock": {"S": 6, "M": 4, "L": 5, "XL": 3},
     "isNew": false,
     "isBestSeller": true,
     "image": "/assets/1.jpeg",
-    "description": "Bright yellow cotton kurti with traditional block prints."
+    "images": ["/assets/1.jpeg", "/assets/catalogphoto.jpeg", "/assets/3.jpeg"],
+    "sizes": ["S", "M", "L", "XL"],
+    "description": "Bright yellow cotton kurti with traditional block prints.",
+    "returnPeriod": 7,
+    "userReviews": [
+      {"user": "Ritika L.", "rating": 4, "comment": "Lovely print and good fabric."},
+      {"user": "Sakshi N.", "rating": 4, "comment": "Happy with the purchase!"}
+    ]
   }
 ]

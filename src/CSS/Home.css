@@ -3,28 +3,67 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  animation: fadeIn 1s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .best-seller-title {
   text-align: center;
-  margin: 20px 0 30px;
-  font-size: 28px;
-  font-weight: 600;
+  margin: 40px 0 30px;
+  font-size: 32px;
+  font-weight: 700;
   color: #242f66;
+  animation: slideDown 0.8s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .best-seller-title span {
   position: relative;
+  padding: 0 20px;
 }
 
+.best-seller-title span::before,
 .best-seller-title span::after {
   content: "";
   position: absolute;
-  left: 50%;
   bottom: -8px;
-  transform: translateX(-50%);
-  width: 60%;
   height: 3px;
-  background-color: #242f66;
+  background: linear-gradient(90deg, #242f66 0%, #9f8d6e 100%);
   border-radius: 5px;
+}
+
+.best-seller-title span::before {
+  left: 0;
+  width: 0;
+  animation: expandLine 1s ease-out 0.5s forwards;
+}
+
+.best-seller-title span::after {
+  right: 0;
+  width: 0;
+  animation: expandLine 1s ease-out 0.5s forwards;
+}
+
+@keyframes expandLine {
+  to {
+    width: 45%;
+  }
 }

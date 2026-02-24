@@ -12,14 +12,19 @@ import ReturnExchange from "./Pages/ReturnExchange";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cart from "./Pages/Cart";
+import Checkout from "./Pages/Checkout";
+import { CartProvider } from "./Context/CartContext";
+import ScrollToTop from "./Components/ScrollToTop";
 
 function App() {
   return (
-    <>
+    <CartProvider>
+    <ScrollToTop />
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
         <Route path="/product/:id" element={<ProductPage />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/contact" element={<ContactUs />} />
@@ -30,7 +35,7 @@ function App() {
       </Route>
     </Routes>
     <ToastContainer position="top-right" autoClose={3000} />
-    </>
+    </CartProvider>
   );
 }
 

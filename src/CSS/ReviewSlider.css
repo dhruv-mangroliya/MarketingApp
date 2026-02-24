@@ -1,10 +1,11 @@
 .review-slider {
   position: relative;
   width: 100%;
-  background: #f6f6f6;
+  background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 60px 0;
 }
 
 .slider-window {
@@ -21,40 +22,45 @@
   min-width: 100%;
   background: white;
   padding: 40px;
-  border-radius: 12px;
+  border-radius: 15px;
   text-align: center;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 25px rgba(36, 47, 102, 0.1);
+  border: 1px solid #e5e5e5;
 }
 
 .stars {
-  color: #f4c150;
-  font-size: 20px;
-  margin-bottom: 15px;
+  color: #ffa500;
+  font-size: 24px;
+  margin-bottom: 20px;
 }
 
 .review-card p {
-  font-size: 16px;
-  margin-bottom: 20px;
+  font-size: 17px;
+  line-height: 1.6;
+  margin-bottom: 25px;
   color: #555;
+  font-style: italic;
 }
 
 .review-card h4 {
-  margin: 0;
-  font-size: 16px;
+  margin: 0 0 5px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #242f66;
 }
 
 .review-card span {
   font-size: 14px;
-  color: #777;
+  color: #9f8d6e;
 }
 
 .nav-btn {
-  background: #CDC9C2;
+  background: linear-gradient(135deg, #242f66 0%, #1a2347 100%);
   color: white;
   border: none;
   font-size: 28px;
-  width: 45px;
-  height: 45px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   cursor: pointer;
   position: absolute;
@@ -63,6 +69,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: 0 4px 15px rgba(36, 47, 102, 0.3);
+  transition: all 0.3s ease;
+  z-index: 10;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .nav-btn.left {
@@ -74,12 +85,39 @@
 }
 
 .nav-btn:hover {
-  background: #b2aca0;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 6px 20px rgba(36, 47, 102, 0.4);
+}
+
+.nav-btn:active {
+  transform: translateY(-50%) scale(0.95);
 }
 
 @media (max-width: 768px) {
+  .review-slider {
+    padding: 40px 0;
+  }
+
   .slider-window {
     width: 85%;
+  }
+
+  .review-card {
+    padding: 30px 20px;
+  }
+
+  .review-card p {
+    font-size: 15px;
+  }
+
+  .stars {
+    font-size: 20px;
+  }
+
+  .nav-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
   }
 
   .nav-btn.left {

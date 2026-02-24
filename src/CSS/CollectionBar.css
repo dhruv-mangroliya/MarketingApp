@@ -15,7 +15,7 @@
 }
 
 .collectionitem{
-    color: white;
+    color: #242f66;
     font-weight: 500;
     width: 100%;
     text-align: center;
@@ -27,15 +27,17 @@
 
 .bg1:hover{
     background-color: white;
-    color: #CDC9C2;
+    color: #242f66;
     cursor: pointer;
     transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    border-bottom: #242f66 2px solid;
 }
 .bg2:hover{
     background-color: white;
-    color: #e1ddd5;
+    color: #242f66;
     cursor: pointer;
     transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    border-bottom: #242f66 2px solid;
 }
 
 @media (max-width: 768px) {
