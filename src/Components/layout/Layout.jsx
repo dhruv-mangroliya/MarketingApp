@@ -1,9 +1,9 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-import NavbarHeader from './NavbarHeader'
-import Navbar from './Navbar'
-import CollectionBar from './CollectionBar'
-import Footer from './Footer'
+import NavbarHeader from './Navbar/NavbarHeader'
+import Navbar from './Navbar/Navbar'
+import CollectionBar from '../CollectionBar'
+import Footer from './Footer/Footer'
 
 const Layout = () => {
   return (

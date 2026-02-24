@@ -1,7 +1,7 @@
-import { useCart } from "../Context/CartContext";
+import { useCart } from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import "../CSS/Cart.css";
+import "./Cart.css";
 
 const Cart = () => {
   const { cart, removeFromCart } = useCart();

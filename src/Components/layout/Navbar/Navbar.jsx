@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import "../CSS/Navbar.css";
-import hamburgerIcon from "../../public/assets/hamburger.png";
-import about from "../../public/assets/person.png";
-import cart from "../../public/assets/cart.png";
-import contact from "../../public/assets/support.png";
-import logo from "../../public/assets/logo.png";
+import "./Navbar.css";
+import hamburgerIcon from "../../../../public/assets/hamburger.png";
+import about from "../../../../public/assets/person.png";
+import cart from "../../../../public/assets/cart.png";
+import contact from "../../../../public/assets/support.png";
+import logo from "../../../../public/assets/logo.png";
 import { useNavigate } from "react-router-dom";
-import home from "../../public/assets/home.png"
+import home from "../../../../public/assets/home.png"
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);

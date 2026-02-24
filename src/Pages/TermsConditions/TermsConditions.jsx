@@ -1,5 +1,5 @@
 import React from "react";
-import "../CSS/StaticPage.css";
+import "../../styles/StaticPage.css";
 
 const TermsConditions = () => {
   return (

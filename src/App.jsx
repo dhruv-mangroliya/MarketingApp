@@ -1,20 +1,19 @@
 import { Routes, Route } from "react-router-dom";
-import Layout from "./Components/Layout";
-import Home from "./Pages/Home";
-import About from "./Components/About";
-import ProductPage from "./Pages/ProductPage";
-import AboutUs from "./Pages/AboutUs";
-import ContactUs from "./Pages/ContactUs";
-import ShippingPolicy from "./Pages/ShippingPolicy";
-import PrivacyPolicy from "./Pages/PrivacyPolicy";
-import TermsConditions from "./Pages/TermsConditions";
-import ReturnExchange from "./Pages/ReturnExchange";
+import Layout from "./components/layout/Layout";
+import Home from "./pages/Home/Home";
+import ProductPage from "./pages/ProductPage/ProductPage";
+import AboutUs from "./pages/AboutUs/AboutUs";
+import ContactUs from "./pages/ContactUs/ContactUs";
+import ShippingPolicy from "./pages/ShippingPolicy/ShippingPolicy";
+import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
+import TermsConditions from "./pages/TermsConditions/TermsConditions";
+import ReturnExchange from "./pages/ReturnExchange/ReturnExchange";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Cart from "./Pages/Cart";
-import Checkout from "./Pages/Checkout";
-import { CartProvider } from "./Context/CartContext";
-import ScrollToTop from "./Components/ScrollToTop";
+import Cart from "./pages/Cart/Cart";
+import Checkout from "./pages/Checkout/Checkout";
+import { CartProvider } from "./context/CartContext";
+import ScrollToTop from "./components/common/ScrollToTop";
 
 function App() {
   return (

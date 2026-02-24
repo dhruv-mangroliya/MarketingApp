@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import reviews from "../data/ReviewsData.json";
-import "../CSS/ReviewSlider.css";
+import reviews from "../../../data/ReviewsData.json";
+import "./ReviewSlider.css";
 
 const ReviewSlider = () => {
   const [currentIndex, setCurrentIndex] = useState(0);

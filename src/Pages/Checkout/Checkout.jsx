@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCart } from "../Context/CartContext";
+import { useCart } from "../../context/CartContext";
 import { toast } from "react-toastify";
-import "../CSS/Checkout.css";
+import "./Checkout.css";
 
 const Checkout = () => {
   const { cart, clearCart } = useCart();

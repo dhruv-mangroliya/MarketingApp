@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "../CSS/ProductCatalog.css";
+import "./ProductCatalog.css";
 
 const ProductCatalog = (props) => {
   const [data, setData] = useState([]);

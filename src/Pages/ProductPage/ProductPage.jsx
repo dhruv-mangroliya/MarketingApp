@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import catalog from "../data/CatalogData1.json";
-import "../CSS/ProductPage.css";
-import { useCart } from "../Context/CartContext";
+import catalog from "../../data/CatalogData1.json";
+import "./ProductPage.css";
+import { useCart } from "../../context/CartContext";
 import { toast } from "react-toastify";
 
 const ProductPage = () => {
