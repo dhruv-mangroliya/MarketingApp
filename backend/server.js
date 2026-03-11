@@ -11,8 +11,12 @@ app.use(express.json());
 // Routes
 const productsRoute = require('./routes/products');
 const otpRoute = require('./routes/otp');
+const paymentRoute = require('./routes/payment');
+const smsRoute = require('./routes/sms');
 app.use('/api/products', productsRoute);
 app.use('/api/otp', otpRoute);
+app.use('/api/payment', paymentRoute);
+app.use('/api/sms', smsRoute);
 
 
 

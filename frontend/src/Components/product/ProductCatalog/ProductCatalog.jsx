@@ -24,7 +24,7 @@ const ProductCatalog = (props) => {
           >
             <div className="product-image-wrapper">
               <img src={item.image} alt={item.name} />
-              {item.discountPercentage > 0 && (
+              {item.discountPercentage >= 20 && (
                 <img src="/assets/690af5f6667d5.png" alt="discount" className="discount-tag" />
               )}
             </div>

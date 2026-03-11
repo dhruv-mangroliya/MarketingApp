@@ -2,24 +2,40 @@ import React, { useState } from "react";
 import "./Footer.css";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import VerifyPhoneModal from "../../common/Modal/VerifyPhoneModal";
+import VerifySMSOTPModal from "../../common/Modal/VerifySMSOTPModal";
+import { sendSMSOTP, verifySMSOTP } from "../../../utils/api";
 
 const Footer = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  const [showPhoneModal, setShowPhoneModal] = useState(false);
+  const [showOTPModal, setShowOTPModal] = useState(false);
+  const [verifiedPhone, setVerifiedPhone] = useState("");
 
   const handleRegister = () => {
-    if (!email) {
-      toast.error("Please enter your email.");
-      return;
-    }
+    setShowPhoneModal(true);
+  };
 
-    if (!email.includes("@")) {
-      toast.warning("Please enter a valid email address.");
-      return;
+  const handlePhoneVerify = async (phone) => {
+    try {
+      await sendSMSOTP(phone);
+      setVerifiedPhone(phone);
+      setShowPhoneModal(false);
+      setShowOTPModal(true);
+      toast.success("OTP sent to your phone!");
+    } catch (error) {
+      toast.error("Failed to send OTP. Please try again.");
     }
+  };
 
-    toast.success("Successfully registered for offers 🎉");
-    setEmail("");
+  const handleOTPVerify = async (otp) => {
+    try {
+      await verifySMSOTP(verifiedPhone, otp);
+      setShowOTPModal(false);
+      toast.success("Successfully registered for offers 🎉");
+    } catch (error) {
+      toast.error("Invalid OTP. Please try again.");
+    }
   };
 
 
@@ -65,13 +81,6 @@ const Footer = () => {
           <p>Sign up for latest updates</p>
 
           <div className="newsletter">
-            <input
-              type="email"
-              placeholder="Enter your email..."
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-
             <button onClick={handleRegister}>
               Register For Offers
             </button>
@@ -85,6 +94,19 @@ const Footer = () => {
       <div className="footer-bottom">
         © 2026 KurtiBazaar. All rights reserved.
       </div>
+
+      <VerifyPhoneModal
+        isOpen={showPhoneModal}
+        onClose={() => setShowPhoneModal(false)}
+        onVerify={handlePhoneVerify}
+      />
+
+      <VerifySMSOTPModal
+        isOpen={showOTPModal}
+        onClose={() => setShowOTPModal(false)}
+        onVerify={handleOTPVerify}
+        phone={verifiedPhone}
+      />
 
     </footer>
   );

@@ -105,11 +105,53 @@
     padding: 20px;
   }
 
+  .checkout-page h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
   .checkout-content {
     flex-direction: column;
   }
 
+  .checkout-form h2 {
+    font-size: 20px;
+  }
+
+  .checkout-form input,
+  .checkout-form textarea {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .place-order-btn {
+    padding: 12px;
+    font-size: 16px;
+  }
+
   .order-summary {
     position: static;
+    padding: 15px;
+  }
+
+  .order-summary h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+
+  .summary-item {
+    padding: 8px 0;
+    font-size: 13px;
+  }
+
+  .summary-row {
+    padding: 8px 0;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+
+  .summary-row.total {
+    font-size: 18px;
+    padding-top: 12px;
   }
 }

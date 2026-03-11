@@ -45,3 +45,43 @@ export const verifyOTP = async (email, otp) => {
     throw error;
   }
 };
+
+export const createPaymentOrder = async (amount) => {
+  try {
+    const response = await api.post('/payment/create-order', { amount });
+    return response.data;
+  } catch (error) {
+    console.error('Error creating payment order:', error);
+    throw error;
+  }
+};
+
+export const verifyPayment = async (paymentData) => {
+  try {
+    const response = await api.post('/payment/verify-payment', paymentData);
+    return response.data;
+  } catch (error) {
+    console.error('Error verifying payment:', error);
+    throw error;
+  }
+};
+
+export const sendSMSOTP = async (phone) => {
+  try {
+    const response = await api.post('/sms/send', { phone });
+    return response.data;
+  } catch (error) {
+    console.error('Error sending SMS OTP:', error);
+    throw error;
+  }
+};
+
+export const verifySMSOTP = async (phone, otp) => {
+  try {
+    const response = await api.post('/sms/verify', { phone, otp });
+    return response.data;
+  } catch (error) {
+    console.error('Error verifying SMS OTP:', error);
+    throw error;
+  }
+};

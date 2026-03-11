@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import "./Checkout.css";
 import VerifyEmailModal from "../../components/common/Modal/VerifyEmailModal";
 import VerifyOTPModal from "../../components/common/Modal/VerifyOTPModal";
-import { sendOTP, verifyOTP } from "../../utils/api";
+import { sendOTP, verifyOTP, createPaymentOrder, verifyPayment } from "../../utils/api";
 
 const Checkout = () => {
   const { cart, clearCart } = useCart();
@@ -66,13 +66,52 @@ const Checkout = () => {
   const handleOTPVerify = async (otp) => {
     try {
       await verifyOTP(verifiedEmail, otp);
-      console.log("User email is right:", verifiedEmail);
       setShowOTPModal(false);
-      toast.success("Email verified! Order placed successfully!");
-      clearCart();
-      navigate("/");
+      initiatePayment();
     } catch (error) {
       toast.error("Invalid OTP. Please try again.");
+    }
+  };
+
+  const initiatePayment = async () => {
+    try {
+      const orderData = await createPaymentOrder(total);
+      
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+        amount: orderData.order.amount,
+        currency: orderData.order.currency,
+        name: 'KurtiBazaar',
+        description: 'Order Payment',
+        order_id: orderData.order.id,
+        handler: async function (response) {
+          try {
+            await verifyPayment({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature
+            });
+            toast.success("Payment successful! Order placed.");
+            clearCart();
+            navigate("/");
+          } catch (error) {
+            toast.error("Payment verification failed!");
+          }
+        },
+        prefill: {
+          name: formData.name,
+          email: verifiedEmail,
+          contact: formData.phone
+        },
+        theme: {
+          color: '#3399cc'
+        }
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (error) {
+      toast.error("Failed to initiate payment. Please try again.");
     }
   };
 
