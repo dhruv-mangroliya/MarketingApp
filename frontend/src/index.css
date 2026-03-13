@@ -5,6 +5,11 @@
   width: 100%;
 }
 
+html {
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+}
+
 body {
   min-height: 100vh;
   font-family: Tahoma, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -16,8 +21,4 @@ body {
 
 body.drawer-open {
   overflow: hidden;
-}
-
-html {
-  scrollbar-gutter: stable;
 }

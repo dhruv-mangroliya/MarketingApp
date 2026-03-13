@@ -2,9 +2,13 @@ import { useState, useEffect } from 'react'
 import Banner from "../../../public/assets/MainBanner.webp"
 import ProductCatalog from '../../components/product/ProductCatalog/ProductCatalog'
 import ReviewSlider from '../../components/product/ReviewSlider/ReviewSlider'
+import { lazy, Suspense } from 'react'
 import "./Home.css"
 import BestSellers from '../../components/product/BestSellers/BestSellers'
 import { getProducts } from '../../utils/api'
+
+// Lazy load BlogSection
+const BlogSection = lazy(() => import('../../components/BlogSection/BlogSection'))
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -32,14 +36,21 @@ const Home = () => {
 
   return (
     <div>
-      <img className="main-banner" src={Banner} alt="Home" />
-      <div className="best-seller-title">
+      <img className="main-banner" src={Banner} alt="Home" loading="lazy" />
+      <div className="best-seller-title" id="best-sellers">
         <span>Best Sellers</span>
       </div> 
 
       <BestSellers data={products}/>
-      <ReviewSlider/>
-      <ProductCatalog data={products}/>
+      <div id="reviews">
+        <ReviewSlider/>
+      </div>
+      <Suspense fallback={<div style={{textAlign: 'center', padding: '50px'}}>Loading blog...</div>}>
+        <BlogSection/>
+      </Suspense>
+      <div id="catalog">
+        <ProductCatalog data={products}/>
+      </div>
     </div>
   )
 }

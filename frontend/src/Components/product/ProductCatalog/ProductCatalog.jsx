@@ -23,7 +23,7 @@ const ProductCatalog = (props) => {
             key={item.id}
           >
             <div className="product-image-wrapper">
-              <img src={item.image} alt={item.name} />
+              <img src={item.image} alt={item.name} loading="lazy" />
               {item.discountPercentage >= 20 && (
                 <img src="/assets/690af5f6667d5.png" alt="discount" className="discount-tag" />
               )}

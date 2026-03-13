@@ -56,7 +56,7 @@ const ProductPage = () => {
     <div className="product-page">
       <div className="product-left">
         <div className="image-slider">
-          <img src={images[currentImage]} alt={product.name} />
+          <img src={images[currentImage]} alt={product.name} loading="lazy" />
           <div className="slider-controls">
             <button onClick={() => setCurrentImage((currentImage - 1 + images.length) % images.length)}>‹</button>
             <button onClick={() => setCurrentImage((currentImage + 1) % images.length)}>›</button>
@@ -64,7 +64,7 @@ const ProductPage = () => {
         </div>
         <div className="thumbnail-container">
           {images.map((img, idx) => (
-            <img key={idx} src={img} alt="" className={idx === currentImage ? "active" : ""} onClick={() => setCurrentImage(idx)} />
+            <img key={idx} src={img} alt="" className={idx === currentImage ? "active" : ""} onClick={() => setCurrentImage(idx)} loading="lazy" />
           ))}
         </div>
       </div>

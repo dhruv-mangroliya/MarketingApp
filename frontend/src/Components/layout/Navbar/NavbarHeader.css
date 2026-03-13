@@ -1,12 +1,36 @@
 .navbar-header {
-  background-color: #CDC9C2;
+  background: linear-gradient(135deg, #CDC9C2 0%, #e1ddd5 50%, #f4f2ef 100%);
   width: 100%;
-  height: 40px;
+  height: 45px;
   display: flex;
   align-items: center;
-  overflow: hidden;   /* hide overflow */
+  overflow: hidden;
   color: #242f66;
   font-size: 14px;
+  font-weight: 600;
+  position: relative;
+  border-bottom: 1px solid rgba(36, 47, 102, 0.1);
+}
+
+.navbar-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255,255,255,0.1) 25%, 
+    rgba(255,255,255,0.2) 50%, 
+    rgba(255,255,255,0.1) 75%, 
+    transparent 100%);
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 
 /* Marquee container */
@@ -15,13 +39,16 @@
   overflow: hidden;
   position: relative;
   width: 100%;
+  z-index: 1;
 }
 
 /* Moving text */
 .marquee span {
   display: inline-block;
   padding-left: 100%;
-  animation: scrollText 10s linear infinite;
+  animation: scrollText 12s linear infinite;
+  text-shadow: 0 1px 2px rgba(36, 47, 102, 0.1);
+  letter-spacing: 0.5px;
 }
 
 /* Animation */

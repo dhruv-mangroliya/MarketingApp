@@ -26,7 +26,7 @@ const BestSellers = (props) => {
         data.map((item) => (
           <div className="product-card" key={item.id}>
             <div className="product-image-wrapper">
-              <img src={item.image} alt={item.name} />
+              <img src={item.image} alt={item.name} loading="lazy" />
             </div>
             <h3>{item.name}</h3>
 
