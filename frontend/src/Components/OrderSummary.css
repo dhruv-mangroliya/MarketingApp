@@ -1,0 +1,233 @@
+/* ================= OVERLAY ================= */
+
+.modal-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0,0,0,0.45);
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 1000;
+}
+
+/* ================= MODAL ================= */
+
+.order-history-modal {
+width: 95%;
+max-width: 1000px;
+max-height: 90vh;
+overflow-y: auto;
+background: white;
+border-radius: 18px;
+padding: 30px;
+box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+
+/* ================= HEADER ================= */
+
+.modal-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+border-bottom: 1px solid #eee;
+padding-bottom: 15px;
+margin-bottom: 25px;
+}
+
+.modal-header h2 {
+font-size: 26px;
+color: #242f66;
+}
+
+.close-btn {
+background: none;
+border: none;
+font-size: 28px;
+cursor: pointer;
+}
+
+/* ================= CONTENT ================= */
+
+.modal-content {
+width: 500px;
+}
+
+/* ================= LOADING ================= */
+
+.loading-state {
+text-align: center;
+padding: 40px;
+}
+
+.spinner {
+width: 45px;
+height: 45px;
+border: 4px solid #eee;
+border-left: 4px solid #242f66;
+border-radius: 50%;
+animation: spin 1s linear infinite;
+margin: auto;
+}
+
+@keyframes spin {
+to { transform: rotate(360deg); }
+}
+
+/* ================= EMPTY ================= */
+
+.empty-state {
+text-align: center;
+padding: 40px;
+}
+
+/* ================= ORDER LIST ================= */
+
+.orders-list {
+display: flex;
+flex-direction: column;
+gap: 25px;
+justify-content: center;
+align-items: center;
+}
+
+/* ================= ORDER CARD ================= */
+
+.order-card {
+width: 100%;
+border-radius: 12px;
+padding: 20px;
+border: 1px solid #eee;
+background: #fafafa;
+}
+
+/* ================= ORDER HEADER ================= */
+
+.order-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 16px;
+}
+
+.order-id {
+font-size: 16px;
+font-weight: 600;
+color: #242f66;
+}
+
+.order-status {
+padding: 5px 14px;
+width: 50%;
+border-radius: 20px;
+font-size: 12px;
+color: white;
+}
+
+/* ================= ORDER INFO ================= */
+
+.order-info {
+background: #f2f2f2;
+padding: 16px;
+border-radius: 10px;
+margin-bottom: 16px;
+
+display: grid;
+grid-template-columns: 150px 1fr;
+row-gap: 10px;
+}
+
+.order-info p {
+display: contents;
+}
+
+.order-info strong {
+color: #777;
+}
+
+/* ================= ORDER ITEMS ================= */
+
+.order-items {
+display: flex;
+flex-direction: column;
+gap: 12px;
+}
+
+/* ================= ITEM CARD ================= */
+
+.order-item {
+display: flex;
+align-items: center;
+gap: 14px;
+padding: 12px;
+border-radius: 10px;
+background: #f8f8f8;
+}
+.info-row{
+    text-align: center;
+}
+/* ================= ITEM IMAGE ================= */
+.item{
+    display: flex;
+    flex-direction: column;
+}
+.item-price{
+    text-align: center;
+    width: 40%;
+}
+.item-image {
+width: 70px;
+height: 70px;
+object-fit: cover;
+border-radius: 8px;
+}
+
+/* ================= ITEM DETAILS ================= */
+.item-name {
+    text-align: center;
+}
+.item-details {
+flex: 1;
+}
+
+.item-details h4 {
+margin-bottom: 4px;
+color: #242f66;
+}
+
+.item-details p {
+font-size: 13px;
+color: #777;
+}
+
+.order-info {
+ display: flex;
+    flex-direction: column;
+}
+/* ================= RESPONSIVE ================= */
+
+@media (max-width:768px){
+
+.order-history-modal {
+padding: 20px;
+}
+
+.order-header {
+flex-direction: column;
+align-items: flex-start;
+gap: 10px;
+}
+
+.order-info {
+ display: flex;
+    flex-direction: column;
+}
+
+.item-image {
+width: 55px;
+height: 55px;
+}
+
+}

@@ -1,11 +1,16 @@
+import { useState } from "react";
 import { useCart } from "../../context/CartContext";
+import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import OrderHistory from "../../components/OrderHistory";
 import "./Cart.css";
 
 const Cart = () => {
   const { cart, removeFromCart } = useCart();
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const [showOrderHistory, setShowOrderHistory] = useState(false);
 
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const total = cart.reduce((sum, item) => sum + item.discountPrice * item.quantity, 0);
@@ -16,11 +21,37 @@ const Cart = () => {
     toast.success(`${name} removed from cart!`);
   };
 
+  const handleViewOrderHistory = () => {
+    if (!isAuthenticated) {
+      toast.info("Please login to view your order history");
+      return;
+    }
+    setShowOrderHistory(true);
+  };
+
   if (cart.length === 0) {
     return (
       <div className="cart-empty">
-        <h2>Your Cart is Empty</h2>
-        <p>Add some products to get started!</p>
+        <div className="empty-content">
+          <div className="empty-icon">🛒</div>
+          <h2>Your Cart is Empty</h2>
+          <p>Add some products to get started!</p>
+          <div className="empty-actions">
+            <button className="continue-shopping" onClick={() => navigate("/")}>
+              Continue Shopping
+            </button>
+            {isAuthenticated && (
+              <button className="view-orders-btn" onClick={handleViewOrderHistory}>
+                View Order History
+              </button>
+            )}
+          </div>
+        </div>
+        
+        <OrderHistory 
+          isOpen={showOrderHistory} 
+          onClose={() => setShowOrderHistory(false)} 
+        />
       </div>
     );
   }
@@ -66,11 +97,23 @@ const Cart = () => {
             <span>Total:</span>
             <span>₹{total}</span>
           </div>
-          <button className="payment-btn" onClick={() => navigate("/checkout")}>
-            Proceed to Payment
-          </button>
+          <div className="cart-actions">
+            <button className="payment-btn" onClick={() => navigate("/checkout")}>
+              Proceed to Payment
+            </button>
+            {isAuthenticated && (
+              <button className="order-history-btn" onClick={handleViewOrderHistory}>
+                View Order History
+              </button>
+            )}
+          </div>
         </div>
       </div>
+      
+      <OrderHistory 
+        isOpen={showOrderHistory} 
+        onClose={() => setShowOrderHistory(false)} 
+      />
     </div>
   );
 };
