@@ -1,0 +1,106 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  padding: 20px;
+}
+
+.phone-verification-modal {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.phone-verification-modal h3 {
+  margin: 0 0 20px 0;
+  color: #242f66;
+  font-size: 24px;
+  text-align: center;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+}
+
+.phone-verification-modal p {
+  color: #666;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.phone-input, .otp-input {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.otp-input {
+  text-align: center;
+  font-size: 20px;
+  letter-spacing: 5px;
+}
+
+.send-otp-btn, .verify-btn {
+  width: 100%;
+  padding: 15px;
+  background: #242f66;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.back-btn {
+  width: 100%;
+  padding: 12px;
+  background: #f0f0f0;
+  color: #666;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 480px) {
+  .modal-overlay {
+    padding: 10px;
+  }
+  
+  .phone-verification-modal {
+    padding: 20px;
+    max-width: none;
+  }
+  
+  .phone-verification-modal h3 {
+    font-size: 20px;
+  }
+  
+  .phone-input {
+    font-size: 14px;
+  }
+}

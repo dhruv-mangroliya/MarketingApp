@@ -5,16 +5,93 @@
   justify-content: center;
   align-items: center;
   text-align: center;
+  padding: 50px 20px;
+}
+
+.empty-content {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.empty-icon {
+  font-size: 100px;
+  margin-bottom: 30px;
+  opacity: 0.6;
 }
 
 .cart-empty h2 {
   font-size: 32px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  color: #242f66;
+  font-weight: 700;
 }
 
 .cart-empty p {
   font-size: 18px;
-  color: #666;
+  color: #9f8d6e;
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+
+.empty-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.continue-shopping {
+  background: linear-gradient(135deg, #242f66, #1a2347);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.continue-shopping::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.continue-shopping:hover::before {
+  left: 100%;
+}
+
+.continue-shopping:hover {
+  background: linear-gradient(135deg, #1a2347, #242f66);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(36, 47, 102, 0.3);
+}
+
+.view-orders-btn {
+  background: linear-gradient(135deg, rgba(159, 141, 110, 0.1), rgba(159, 141, 110, 0.2));
+  color: #9f8d6e;
+  border: 2px solid rgba(159, 141, 110, 0.3);
+  padding: 13px 25px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.view-orders-btn:hover {
+  background: linear-gradient(135deg, rgba(159, 141, 110, 0.2), rgba(159, 141, 110, 0.3));
+  border-color: rgba(159, 141, 110, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(159, 141, 110, 0.2);
 }
 
 .cart-page {
@@ -134,24 +211,29 @@
 
 .cart-summary {
   flex: 1;
-  background: #f9f9f9;
-  padding: 25px;
-  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(248,249,250,0.9));
+  padding: 30px;
+  border-radius: 20px;
   height: fit-content;
   position: sticky;
   top: 20px;
+  border: 1px solid rgba(36, 47, 102, 0.1);
+  backdrop-filter: blur(10px);
 }
 
 .cart-summary h2 {
   font-size: 24px;
-  margin: 0 0 20px 0;
+  margin: 0 0 25px 0;
+  color: #242f66;
+  font-weight: 700;
 }
 
 .summary-row {
   display: flex;
   justify-content: space-between;
-  padding: 10px 0;
+  padding: 12px 0;
   font-size: 16px;
+  color: #242f66;
 }
 
 .summary-row.discount {
@@ -160,29 +242,75 @@
 }
 
 .summary-row.total {
-  border-top: 2px solid #ddd;
-  margin-top: 10px;
+  border-top: 2px solid rgba(36, 47, 102, 0.1);
+  margin-top: 15px;
   padding-top: 15px;
   font-size: 20px;
-  font-weight: bold;
+  font-weight: 700;
+  color: #242f66;
+}
+
+.cart-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 25px;
 }
 
 .payment-btn {
   width: 100%;
-  background: #4caf50;
+  background: linear-gradient(135deg, #242f66, #1a2347);
   color: white;
   border: none;
-  padding: 15px;
+  padding: 18px;
   font-size: 18px;
-  font-weight: bold;
-  border-radius: 5px;
-  margin-top: 20px;
+  font-weight: 700;
+  border-radius: 12px;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.payment-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.payment-btn:hover::before {
+  left: 100%;
 }
 
 .payment-btn:hover {
-  background: #45a049;
+  background: linear-gradient(135deg, #1a2347, #242f66);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(36, 47, 102, 0.3);
+}
+
+.order-history-btn {
+  width: 100%;
+  background: linear-gradient(135deg, rgba(159, 141, 110, 0.1), rgba(159, 141, 110, 0.2));
+  color: #9f8d6e;
+  border: 2px solid rgba(159, 141, 110, 0.3);
+  padding: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.order-history-btn:hover {
+  background: linear-gradient(135deg, rgba(159, 141, 110, 0.2), rgba(159, 141, 110, 0.3));
+  border-color: rgba(159, 141, 110, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(159, 141, 110, 0.2);
 }
 
 @media (max-width: 768px) {
