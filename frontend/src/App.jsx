@@ -21,8 +21,6 @@ import ScrollToTop from "./components/common/ScrollToTop";
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
-console.log('Google Client ID:', GOOGLE_CLIENT_ID); // Debug log
-
 function App() {
   if (!GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID === 'PASTE_YOUR_ACTUAL_CLIENT_ID_HERE') {
     console.error('VITE_GOOGLE_CLIENT_ID is not properly configured');

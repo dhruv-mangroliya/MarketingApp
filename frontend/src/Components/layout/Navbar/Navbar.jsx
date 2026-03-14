@@ -1,12 +1,6 @@
 import { useState, useEffect } from "react";
 import "./Navbar.css";
-import hamburgerIcon from "../../../../public/assets/hamburger.png";
-import about from "../../../../public/assets/person.png";
-import cart from "../../../../public/assets/cart.png";
-import contact from "../../../../public/assets/support.png";
-import logo from "../../../../public/assets/logo.png";
 import { useNavigate } from "react-router-dom";
-import home from "../../../../public/assets/home.png"
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,24 +9,48 @@ const Navbar = () => {
   return (
     <>
       <nav className="navbar">
-        <div className="logo"><img src={logo} alt="Logo" className="logo-img" onClick={() => navigate('/')}/></div>
+        <div className="logo">
+          <img 
+            src="https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/logo.png" 
+            alt="Logo" 
+            className="logo-img" 
+            onClick={() => navigate('/')}
+          />
+        </div>
         <div className="nav-links brand" onClick={() => navigate('/')}>
             <div className="brand-name">KurtiBazaar</div>
             <div className="brand-tagline">Shop with confidence</div>
         </div>
         {/* Desktop Icons */}
         <div className="nav-links-icons">
-            <img src={home} alt="Home" onClick={() => navigate('/')}/>
-            <img src={cart} alt="Cart" onClick={() => navigate('/cart')} />
-            <img src={about} alt="About" onClick={() => navigate('/about')}/>
-            <img src={contact} alt="Contact"  onClick={() => navigate('/contact')}/>
+            <img 
+              src="https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/home.png" 
+              alt="Home" 
+              onClick={() => navigate('/')}
+            />
+            <img 
+              src="https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/cart.png" 
+              alt="Cart" 
+              onClick={() => navigate('/cart')} 
+            />
+            <img 
+              src="https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/person.png" 
+              alt="About" 
+              onClick={() => navigate('/about')}
+            />
+            <img 
+              src="https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/support.png" 
+              alt="Contact"  
+              onClick={() => navigate('/contact')}
+            />
         </div>
-
-        
 
         {!isOpen && (
           <div className="hamburger" onClick={() => setIsOpen(true)}>
-            <img src={hamburgerIcon} alt="menu" />
+            <img 
+              src="https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/hamburger.png" 
+              alt="menu" 
+            />
           </div>
         )}
       </nav>

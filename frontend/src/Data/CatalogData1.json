@@ -9,17 +9,40 @@
     "rating": 3.5,
     "reviews": 124,
     "stock": 25,
-    "sizeStock": {"S": 5, "M": 10, "L": 7, "XL": 3},
+    "sizeStock": {
+      "S": 5,
+      "M": 10,
+      "L": 7,
+      "XL": 3
+    },
     "isNew": true,
     "isBestSeller": false,
-    "image": "/assets/1.jpeg",
-    "images": ["/assets/1.jpeg", "/assets/2.jpeg", "/assets/3.jpeg", "/assets/4.jpeg"],
-    "sizes": ["S", "M", "L", "XL"],
+    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/1.jpeg",
+    "images": [
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/1.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/2.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/3.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/4.jpeg"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
     "description": "Elegant pink cotton kurti set perfect for summer wear.",
     "returnPeriod": 7,
     "userReviews": [
-      {"user": "Priya S.", "rating": 4, "comment": "Good quality fabric, fits well!"},
-      {"user": "Anjali M.", "rating": 3, "comment": "Nice design but color slightly different."}
+      {
+        "user": "Priya S.",
+        "rating": 4,
+        "comment": "Good quality fabric, fits well!"
+      },
+      {
+        "user": "Anjali M.",
+        "rating": 3,
+        "comment": "Nice design but color slightly different."
+      }
     ]
   },
   {
@@ -32,17 +55,39 @@
     "rating": 4.2,
     "reviews": 89,
     "stock": 18,
-    "sizeStock": {"S": 4, "M": 6, "L": 5, "XL": 3},
+    "sizeStock": {
+      "S": 4,
+      "M": 6,
+      "L": 5,
+      "XL": 3
+    },
     "isNew": false,
     "isBestSeller": true,
-    "image": "/assets/2.jpeg",
-    "images": ["/assets/2.jpeg", "/assets/3.jpeg", "/assets/4.jpeg"],
-    "sizes": ["S", "M", "L", "XL"],
+    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/2.jpeg",
+    "images": [
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/2.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/3.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/4.jpeg"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
     "description": "Bright yellow cotton kurti with traditional block prints.",
     "returnPeriod": 7,
     "userReviews": [
-      {"user": "Sneha K.", "rating": 5, "comment": "Excellent quality and vibrant color!"},
-      {"user": "Riya P.", "rating": 4, "comment": "Beautiful print, comfortable to wear."}
+      {
+        "user": "Sneha K.",
+        "rating": 5,
+        "comment": "Excellent quality and vibrant color!"
+      },
+      {
+        "user": "Riya P.",
+        "rating": 4,
+        "comment": "Beautiful print, comfortable to wear."
+      }
     ]
   },
   {
@@ -51,21 +96,43 @@
     "category": "Kurti",
     "price": 1499,
     "discountPrice": 1199,
-    "discountPercentage": 20,
+    "discountPercentage": 15,
     "rating": 4.5,
     "reviews": 124,
     "stock": 25,
-    "sizeStock": {"S": 6, "M": 8, "L": 7, "XL": 4},
+    "sizeStock": {
+      "S": 6,
+      "M": 8,
+      "L": 7,
+      "XL": 4
+    },
     "isNew": true,
     "isBestSeller": false,
-    "image": "/assets/3.jpeg",
-    "images": ["/assets/3.jpeg", "/assets/4.jpeg", "/assets/5.jpeg"],
-    "sizes": ["S", "M", "L", "XL"],
+    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/3.jpeg",
+    "images": [
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/3.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/4.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/5.jpeg"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
     "description": "Elegant pink cotton kurti set perfect for summer wear.",
     "returnPeriod": 7,
     "userReviews": [
-      {"user": "Meera D.", "rating": 5, "comment": "Perfect fit and lovely fabric!"},
-      {"user": "Kavya R.", "rating": 4, "comment": "Great purchase, highly recommend."}
+      {
+        "user": "Meera D.",
+        "rating": 5,
+        "comment": "Perfect fit and lovely fabric!"
+      },
+      {
+        "user": "Kavya R.",
+        "rating": 4,
+        "comment": "Great purchase, highly recommend."
+      }
     ]
   },
   {
@@ -78,17 +145,39 @@
     "rating": 4.2,
     "reviews": 89,
     "stock": 18,
-    "sizeStock": {"S": 3, "M": 7, "L": 5, "XL": 3},
+    "sizeStock": {
+      "S": 3,
+      "M": 7,
+      "L": 5,
+      "XL": 3
+    },
     "isNew": false,
     "isBestSeller": true,
-    "image": "/assets/4.jpeg",
-    "images": ["/assets/4.jpeg", "/assets/5.jpeg", "/assets/6.jpeg"],
-    "sizes": ["S", "M", "L", "XL"],
+    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/4.jpeg",
+    "images": [
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/4.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/5.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/6.jpeg"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
     "description": "Bright yellow cotton kurti with traditional block prints.",
     "returnPeriod": 7,
     "userReviews": [
-      {"user": "Divya S.", "rating": 4, "comment": "Nice quality, worth the price."},
-      {"user": "Pooja M.", "rating": 4, "comment": "Good material and stitching."}
+      {
+        "user": "Divya S.",
+        "rating": 4,
+        "comment": "Nice quality, worth the price."
+      },
+      {
+        "user": "Pooja M.",
+        "rating": 4,
+        "comment": "Good material and stitching."
+      }
     ]
   },
   {
@@ -97,21 +186,43 @@
     "category": "Kurti",
     "price": 1499,
     "discountPrice": 1199,
-    "discountPercentage": 20,
+    "discountPercentage": 15,
     "rating": 4.5,
     "reviews": 124,
     "stock": 25,
-    "sizeStock": {"S": 7, "M": 9, "L": 6, "XL": 3},
+    "sizeStock": {
+      "S": 7,
+      "M": 9,
+      "L": 6,
+      "XL": 3
+    },
     "isNew": true,
     "isBestSeller": false,
-    "image": "/assets/5.jpeg",
-    "images": ["/assets/5.jpeg", "/assets/6.jpeg", "/assets/7.jpeg"],
-    "sizes": ["S", "M", "L", "XL"],
+    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/5.jpeg",
+    "images": [
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/5.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/6.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/7.jpeg"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
     "description": "Elegant pink cotton kurti set perfect for summer wear.",
     "returnPeriod": 7,
     "userReviews": [
-      {"user": "Nisha T.", "rating": 5, "comment": "Absolutely love it!"},
-      {"user": "Aarti K.", "rating": 4, "comment": "Very comfortable and stylish."}
+      {
+        "user": "Nisha T.",
+        "rating": 5,
+        "comment": "Absolutely love it!"
+      },
+      {
+        "user": "Aarti K.",
+        "rating": 4,
+        "comment": "Very comfortable and stylish."
+      }
     ]
   },
   {
@@ -120,21 +231,43 @@
     "category": "Kurti",
     "price": 1399,
     "discountPrice": 1099,
-    "discountPercentage": 21,
+    "discountPercentage": 15,
     "rating": 3.9,
     "reviews": 89,
     "stock": 18,
-    "sizeStock": {"S": 5, "M": 5, "L": 4, "XL": 4},
+    "sizeStock": {
+      "S": 5,
+      "M": 5,
+      "L": 4,
+      "XL": 4
+    },
     "isNew": false,
     "isBestSeller": true,
-    "image": "/assets/6.jpeg",
-    "images": ["/assets/6.jpeg", "/assets/7.jpeg", "/assets/8.jpeg"],
-    "sizes": ["S", "M", "L", "XL"],
+    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/6.jpeg",
+    "images": [
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/6.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/7.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/8.jpeg"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
     "description": "Bright yellow cotton kurti with traditional block prints.",
     "returnPeriod": 7,
     "userReviews": [
-      {"user": "Simran B.", "rating": 4, "comment": "Good product for the price."},
-      {"user": "Tanvi J.", "rating": 4, "comment": "Nice design and comfortable."}
+      {
+        "user": "Simran B.",
+        "rating": 4,
+        "comment": "Good product for the price."
+      },
+      {
+        "user": "Tanvi J.",
+        "rating": 4,
+        "comment": "Nice design and comfortable."
+      }
     ]
   },
   {
@@ -143,21 +276,43 @@
     "category": "Kurti",
     "price": 1499,
     "discountPrice": 1199,
-    "discountPercentage": 20,
+    "discountPercentage": 15,
     "rating": 4.5,
     "reviews": 124,
     "stock": 25,
-    "sizeStock": {"S": 4, "M": 10, "L": 8, "XL": 3},
+    "sizeStock": {
+      "S": 4,
+      "M": 10,
+      "L": 8,
+      "XL": 3
+    },
     "isNew": true,
     "isBestSeller": false,
-    "image": "/assets/7.jpeg",
-    "images": ["/assets/7.jpeg", "/assets/8.jpeg", "/assets/9.jpeg"],
-    "sizes": ["S", "M", "L", "XL"],
+    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/7.jpeg",
+    "images": [
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/7.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/8.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/9.jpeg"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
     "description": "Elegant pink cotton kurti set perfect for summer wear.",
     "returnPeriod": 7,
     "userReviews": [
-      {"user": "Ishita V.", "rating": 5, "comment": "Beautiful kurti, exceeded expectations!"},
-      {"user": "Neha G.", "rating": 4, "comment": "Great quality and fast delivery."}
+      {
+        "user": "Ishita V.",
+        "rating": 5,
+        "comment": "Beautiful kurti, exceeded expectations!"
+      },
+      {
+        "user": "Neha G.",
+        "rating": 4,
+        "comment": "Great quality and fast delivery."
+      }
     ]
   },
   {
@@ -166,21 +321,43 @@
     "category": "Kurti",
     "price": 1399,
     "discountPrice": 1099,
-    "discountPercentage": 21,
+    "discountPercentage": 15,
     "rating": 4.2,
     "reviews": 89,
     "stock": 18,
-    "sizeStock": {"S": 6, "M": 4, "L": 5, "XL": 3},
+    "sizeStock": {
+      "S": 6,
+      "M": 4,
+      "L": 5,
+      "XL": 3
+    },
     "isNew": false,
     "isBestSeller": true,
-    "image": "/assets/8.jpeg",
-    "images": ["/assets/8.jpeg", "/assets/9.jpeg", "/assets/1.jpeg"],
-    "sizes": ["S", "M", "L", "XL"],
+    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/8.jpeg",
+    "images": [
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/8.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/9.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/1.jpeg"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
     "description": "Bright yellow cotton kurti with traditional block prints.",
     "returnPeriod": 7,
     "userReviews": [
-      {"user": "Ritika L.", "rating": 4, "comment": "Lovely print and good fabric."},
-      {"user": "Sakshi N.", "rating": 4, "comment": "Happy with the purchase!"}
+      {
+        "user": "Ritika L.",
+        "rating": 4,
+        "comment": "Lovely print and good fabric."
+      },
+      {
+        "user": "Sakshi N.",
+        "rating": 4,
+        "comment": "Happy with the purchase!"
+      }
     ]
   },
   {
@@ -193,17 +370,39 @@
     "rating": 4.3,
     "reviews": 156,
     "stock": 30,
-    "sizeStock": {"S": 8, "M": 12, "L": 7, "XL": 3},
+    "sizeStock": {
+      "S": 8,
+      "M": 12,
+      "L": 7,
+      "XL": 3
+    },
     "isNew": true,
     "isBestSeller": false,
-    "image": "/assets/9.jpeg",
-    "images": ["/assets/9.jpeg", "/assets/1.jpeg", "/assets/2.jpeg"],
-    "sizes": ["S", "M", "L", "XL"],
+    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/9.jpeg",
+    "images": [
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/9.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/1.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/2.jpeg"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
     "description": "Stylish A-line kurti with modern prints.",
     "returnPeriod": 7,
     "userReviews": [
-      {"user": "Aditi P.", "rating": 4, "comment": "Love the fit and design!"},
-      {"user": "Shreya M.", "rating": 5, "comment": "Perfect for office wear."}
+      {
+        "user": "Aditi P.",
+        "rating": 4,
+        "comment": "Love the fit and design!"
+      },
+      {
+        "user": "Shreya M.",
+        "rating": 5,
+        "comment": "Perfect for office wear."
+      }
     ]
   },
   {
@@ -212,21 +411,43 @@
     "category": "Kurti",
     "price": 1799,
     "discountPrice": 1439,
-    "discountPercentage": 20,
+    "discountPercentage": 15,
     "rating": 4.6,
     "reviews": 203,
     "stock": 22,
-    "sizeStock": {"S": 5, "M": 9, "L": 6, "XL": 2},
+    "sizeStock": {
+      "S": 5,
+      "M": 9,
+      "L": 6,
+      "XL": 2
+    },
     "isNew": false,
     "isBestSeller": true,
-    "image": "/assets/1.jpeg",
-    "images": ["/assets/1.jpeg", "/assets/3.jpeg", "/assets/4.jpeg"],
-    "sizes": ["S", "M", "L", "XL"],
+    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/1.jpeg",
+    "images": [
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/1.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/3.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/4.jpeg"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
     "description": "Complete palazzo set with matching kurti.",
     "returnPeriod": 7,
     "userReviews": [
-      {"user": "Radhika S.", "rating": 5, "comment": "Amazing quality and comfort!"},
-      {"user": "Priyanka K.", "rating": 4, "comment": "Great value for money."}
+      {
+        "user": "Radhika S.",
+        "rating": 5,
+        "comment": "Amazing quality and comfort!"
+      },
+      {
+        "user": "Priyanka K.",
+        "rating": 4,
+        "comment": "Great value for money."
+      }
     ]
   },
   {
@@ -235,21 +456,43 @@
     "category": "Kurti",
     "price": 1299,
     "discountPrice": 1039,
-    "discountPercentage": 20,
+    "discountPercentage": 15,
     "rating": 4.1,
     "reviews": 78,
     "stock": 20,
-    "sizeStock": {"S": 4, "M": 8, "L": 5, "XL": 3},
+    "sizeStock": {
+      "S": 4,
+      "M": 8,
+      "L": 5,
+      "XL": 3
+    },
     "isNew": true,
     "isBestSeller": false,
-    "image": "/assets/2.jpeg",
-    "images": ["/assets/2.jpeg", "/assets/5.jpeg", "/assets/6.jpeg"],
-    "sizes": ["S", "M", "L", "XL"],
+    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/2.jpeg",
+    "images": [
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/2.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/5.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/6.jpeg"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
     "description": "Chic and comfortable kurta set for daily wear.",
     "returnPeriod": 7,
     "userReviews": [
-      {"user": "Mansi R.", "rating": 4, "comment": "Comfortable and stylish."},
-      {"user": "Ananya B.", "rating": 4, "comment": "Good quality fabric."}
+      {
+        "user": "Mansi R.",
+        "rating": 4,
+        "comment": "Comfortable and stylish."
+      },
+      {
+        "user": "Ananya B.",
+        "rating": 4,
+        "comment": "Good quality fabric."
+      }
     ]
   },
   {
@@ -262,17 +505,39 @@
     "rating": 4.4,
     "reviews": 142,
     "stock": 28,
-    "sizeStock": {"S": 7, "M": 11, "L": 7, "XL": 3},
+    "sizeStock": {
+      "S": 7,
+      "M": 11,
+      "L": 7,
+      "XL": 3
+    },
     "isNew": false,
     "isBestSeller": true,
-    "image": "/assets/3.jpeg",
-    "images": ["/assets/3.jpeg", "/assets/7.jpeg", "/assets/8.jpeg"],
-    "sizes": ["S", "M", "L", "XL"],
+    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/3.jpeg",
+    "images": [
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/3.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/7.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/8.jpeg"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
     "description": "Traditional block print kurti with ethnic charm.",
     "returnPeriod": 7,
     "userReviews": [
-      {"user": "Deepika V.", "rating": 5, "comment": "Beautiful traditional design!"},
-      {"user": "Swati L.", "rating": 4, "comment": "Perfect for festivals."}
+      {
+        "user": "Deepika V.",
+        "rating": 5,
+        "comment": "Beautiful traditional design!"
+      },
+      {
+        "user": "Swati L.",
+        "rating": 4,
+        "comment": "Perfect for festivals."
+      }
     ]
   },
   {
@@ -285,17 +550,39 @@
     "rating": 4.7,
     "reviews": 187,
     "stock": 15,
-    "sizeStock": {"S": 3, "M": 6, "L": 4, "XL": 2},
+    "sizeStock": {
+      "S": 3,
+      "M": 6,
+      "L": 4,
+      "XL": 2
+    },
     "isNew": true,
     "isBestSeller": true,
-    "image": "/assets/4.jpeg",
-    "images": ["/assets/4.jpeg", "/assets/9.jpeg", "/assets/1.jpeg"],
-    "sizes": ["S", "M", "L", "XL"],
+    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/4.jpeg",
+    "images": [
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/4.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/9.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/1.jpeg"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
     "description": "Contemporary fusion wear with modern aesthetics.",
     "returnPeriod": 7,
     "userReviews": [
-      {"user": "Aisha T.", "rating": 5, "comment": "Absolutely stunning!"},
-      {"user": "Zara K.", "rating": 5, "comment": "Best purchase ever!"}
+      {
+        "user": "Aisha T.",
+        "rating": 5,
+        "comment": "Absolutely stunning!"
+      },
+      {
+        "user": "Zara K.",
+        "rating": 5,
+        "comment": "Best purchase ever!"
+      }
     ]
   },
   {
@@ -305,20 +592,42 @@
     "price": 1399,
     "discountPrice": 1119,
     "discountPercentage": 20,
-    "rating": 4.0,
+    "rating": 4,
     "reviews": 95,
     "stock": 24,
-    "sizeStock": {"S": 6, "M": 9, "L": 6, "XL": 3},
+    "sizeStock": {
+      "S": 6,
+      "M": 9,
+      "L": 6,
+      "XL": 3
+    },
     "isNew": false,
     "isBestSeller": false,
-    "image": "/assets/5.jpeg",
-    "images": ["/assets/5.jpeg", "/assets/2.jpeg", "/assets/3.jpeg"],
-    "sizes": ["S", "M", "L", "XL"],
+    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/5.jpeg",
+    "images": [
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/5.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/2.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/3.jpeg"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
     "description": "Vibrant colors perfect for summer season.",
     "returnPeriod": 7,
     "userReviews": [
-      {"user": "Tanya M.", "rating": 4, "comment": "Bright and beautiful!"},
-      {"user": "Kiara S.", "rating": 4, "comment": "Love the colors."}
+      {
+        "user": "Tanya M.",
+        "rating": 4,
+        "comment": "Bright and beautiful!"
+      },
+      {
+        "user": "Kiara S.",
+        "rating": 4,
+        "comment": "Love the colors."
+      }
     ]
   },
   {
@@ -327,21 +636,43 @@
     "category": "Kurti",
     "price": 1999,
     "discountPrice": 1599,
-    "discountPercentage": 20,
+    "discountPercentage": 15,
     "rating": 4.8,
     "reviews": 221,
     "stock": 12,
-    "sizeStock": {"S": 2, "M": 5, "L": 3, "XL": 2},
+    "sizeStock": {
+      "S": 2,
+      "M": 5,
+      "L": 3,
+      "XL": 2
+    },
     "isNew": true,
     "isBestSeller": true,
-    "image": "/assets/6.jpeg",
-    "images": ["/assets/6.jpeg", "/assets/4.jpeg", "/assets/5.jpeg"],
-    "sizes": ["S", "M", "L", "XL"],
+    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/6.jpeg",
+    "images": [
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/6.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/4.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/5.jpeg"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
     "description": "Graceful evening wear for special occasions.",
     "returnPeriod": 7,
     "userReviews": [
-      {"user": "Sanya R.", "rating": 5, "comment": "Perfect for parties!"},
-      {"user": "Diya P.", "rating": 5, "comment": "Received so many compliments!"}
+      {
+        "user": "Sanya R.",
+        "rating": 5,
+        "comment": "Perfect for parties!"
+      },
+      {
+        "user": "Diya P.",
+        "rating": 5,
+        "comment": "Received so many compliments!"
+      }
     ]
   },
   {
@@ -350,21 +681,43 @@
     "category": "Kurti",
     "price": 1199,
     "discountPrice": 959,
-    "discountPercentage": 20,
+    "discountPercentage": 15,
     "rating": 3.8,
     "reviews": 67,
     "stock": 35,
-    "sizeStock": {"S": 9, "M": 13, "L": 9, "XL": 4},
+    "sizeStock": {
+      "S": 9,
+      "M": 13,
+      "L": 9,
+      "XL": 4
+    },
     "isNew": false,
     "isBestSeller": false,
-    "image": "/assets/7.jpeg",
-    "images": ["/assets/7.jpeg", "/assets/6.jpeg", "/assets/8.jpeg"],
-    "sizes": ["S", "M", "L", "XL"],
+    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/7.jpeg",
+    "images": [
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/7.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/6.jpeg",
+      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/8.jpeg"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
     "description": "Comfortable kurti for everyday wear.",
     "returnPeriod": 7,
     "userReviews": [
-      {"user": "Vidya N.", "rating": 4, "comment": "Very comfortable!"},
-      {"user": "Lakshmi D.", "rating": 3, "comment": "Good for daily use."}
+      {
+        "user": "Vidya N.",
+        "rating": 4,
+        "comment": "Very comfortable!"
+      },
+      {
+        "user": "Lakshmi D.",
+        "rating": 3,
+        "comment": "Good for daily use."
+      }
     ]
   }
 ]
