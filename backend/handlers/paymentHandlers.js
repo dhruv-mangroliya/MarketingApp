@@ -31,7 +31,7 @@ const createOrder = async (req, res) => {
 const verifyPayment = (req, res) => {
   try {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
-
+    console.log("Hi, Payment received...");
     const sign = razorpay_order_id + '|' + razorpay_payment_id;
     const expectedSign = crypto
       .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
