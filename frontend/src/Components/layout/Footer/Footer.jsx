@@ -56,8 +56,18 @@ const Footer = () => {
           <p><strong>Email:</strong> support@kurtibazaar.com</p>
 
           <div className="social-icons">
-            <div className="icon"><img src="/assets/communication.png" alt="Facebook" /></div>
-            <div className="icon"><img src="/assets/instagram.png" alt="Instagram" /></div>
+            <div className="icon">
+              <img 
+                src="https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/communication.png" 
+                alt="Facebook" 
+              />
+            </div>
+            <div className="icon">
+              <img 
+                src="https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/instagram.png" 
+                alt="Instagram" 
+              />
+            </div>
           </div>
         </div>
 

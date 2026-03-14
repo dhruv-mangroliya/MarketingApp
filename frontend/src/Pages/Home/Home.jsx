@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import Banner from "../../../public/assets/MainBanner.webp"
 import ProductCatalog from '../../components/product/ProductCatalog/ProductCatalog'
 import ReviewSlider from '../../components/product/ReviewSlider/ReviewSlider'
 import { lazy, Suspense } from 'react'
@@ -36,7 +35,8 @@ const Home = () => {
 
   return (
     <div>
-      <img className="main-banner" src={Banner} alt="Home" loading="lazy" />
+      <img className="main-banner" src="https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/MainBanner.webp" alt="Home" loading="lazy" />
+      
       <div className="best-seller-title" id="best-sellers">
         <span>Best Sellers</span>
       </div> 

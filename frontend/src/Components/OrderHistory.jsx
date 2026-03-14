@@ -66,7 +66,7 @@ const OrderHistory = ({ isOpen, onClose }) => {
       <div className="order-history-modal">
         <div className="modal-header">
           <h2>Order History</h2>
-          <button className="close-btn" onClick={onClose}>×</button>
+          <button className="close-btn" style={{ backgroundColor: "green" }} onClick={onClose}>×</button>
         </div>
 
         {loading ? (
@@ -85,7 +85,7 @@ const OrderHistory = ({ isOpen, onClose }) => {
             {orders.map((order) => (
               <div key={order.orderId} className="order-card">
                 <div className="order-header">
-                  <div className="order-id">Order #{order.orderId}</div>
+                  <div className="order-id">{order.orderId}</div>
                   <div 
                     className="order-status"
                     style={{ backgroundColor: getStatusColor(order.status) }}
