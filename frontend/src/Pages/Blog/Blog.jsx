@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import blogData from '../../Data/BlogData.json';
 import './Blog.css';
 
 const Blog = () => {

@@ -17,12 +17,12 @@
     },
     "isNew": true,
     "isBestSeller": false,
-    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/1.jpeg",
+    "image": "/assets/1.jpeg",
     "images": [
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/1.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/2.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/3.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/4.jpeg"
+      "/assets/1.jpeg",
+      "/assets/2.jpeg",
+      "/assets/3.jpeg",
+      "/assets/4.jpeg"
     ],
     "sizes": [
       "S",
@@ -63,11 +63,11 @@
     },
     "isNew": false,
     "isBestSeller": true,
-    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/2.jpeg",
+    "image": "/assets/2.jpeg",
     "images": [
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/2.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/3.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/4.jpeg"
+      "/assets/2.jpeg",
+      "/assets/3.jpeg",
+      "/assets/4.jpeg"
     ],
     "sizes": [
       "S",
@@ -108,11 +108,11 @@
     },
     "isNew": true,
     "isBestSeller": false,
-    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/3.jpeg",
+    "image": "/assets/3.jpeg",
     "images": [
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/3.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/4.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/5.jpeg"
+      "/assets/3.jpeg",
+      "/assets/4.jpeg",
+      "/assets/5.jpeg"
     ],
     "sizes": [
       "S",
@@ -153,11 +153,11 @@
     },
     "isNew": false,
     "isBestSeller": true,
-    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/4.jpeg",
+    "image": "/assets/4.jpeg",
     "images": [
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/4.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/5.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/6.jpeg"
+      "/assets/4.jpeg",
+      "/assets/5.jpeg",
+      "/assets/6.jpeg"
     ],
     "sizes": [
       "S",
@@ -198,11 +198,11 @@
     },
     "isNew": true,
     "isBestSeller": false,
-    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/5.jpeg",
+    "image": "/assets/5.jpeg",
     "images": [
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/5.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/6.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/7.jpeg"
+      "/assets/5.jpeg",
+      "/assets/6.jpeg",
+      "/assets/7.jpeg"
     ],
     "sizes": [
       "S",
@@ -243,11 +243,11 @@
     },
     "isNew": false,
     "isBestSeller": true,
-    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/6.jpeg",
+    "image": "/assets/6.jpeg",
     "images": [
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/6.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/7.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/8.jpeg"
+      "/assets/6.jpeg",
+      "/assets/7.jpeg",
+      "/assets/8.jpeg"
     ],
     "sizes": [
       "S",
@@ -288,11 +288,11 @@
     },
     "isNew": true,
     "isBestSeller": false,
-    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/7.jpeg",
+    "image": "/assets/7.jpeg",
     "images": [
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/7.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/8.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/9.jpeg"
+      "/assets/7.jpeg",
+      "/assets/8.jpeg",
+      "/assets/9.jpeg"
     ],
     "sizes": [
       "S",
@@ -333,11 +333,11 @@
     },
     "isNew": false,
     "isBestSeller": true,
-    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/8.jpeg",
+    "image": "/assets/8.jpeg",
     "images": [
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/8.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/9.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/1.jpeg"
+      "/assets/8.jpeg",
+      "/assets/9.jpeg",
+      "/assets/1.jpeg"
     ],
     "sizes": [
       "S",
@@ -378,11 +378,11 @@
     },
     "isNew": true,
     "isBestSeller": false,
-    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/9.jpeg",
+    "image": "/assets/9.jpeg",
     "images": [
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/9.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/1.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/2.jpeg"
+      "/assets/9.jpeg",
+      "/assets/1.jpeg",
+      "/assets/2.jpeg"
     ],
     "sizes": [
       "S",
@@ -423,11 +423,11 @@
     },
     "isNew": false,
     "isBestSeller": true,
-    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/1.jpeg",
+    "image": "/assets/1.jpeg",
     "images": [
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/1.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/3.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/4.jpeg"
+      "/assets/1.jpeg",
+      "/assets/3.jpeg",
+      "/assets/4.jpeg"
     ],
     "sizes": [
       "S",
@@ -468,11 +468,11 @@
     },
     "isNew": true,
     "isBestSeller": false,
-    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/2.jpeg",
+    "image": "/assets/2.jpeg",
     "images": [
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/2.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/5.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/6.jpeg"
+      "/assets/2.jpeg",
+      "/assets/5.jpeg",
+      "/assets/6.jpeg"
     ],
     "sizes": [
       "S",
@@ -513,11 +513,11 @@
     },
     "isNew": false,
     "isBestSeller": true,
-    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/3.jpeg",
+    "image": "/assets/3.jpeg",
     "images": [
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/3.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/7.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/8.jpeg"
+      "/assets/3.jpeg",
+      "/assets/7.jpeg",
+      "/assets/8.jpeg"
     ],
     "sizes": [
       "S",
@@ -558,11 +558,11 @@
     },
     "isNew": true,
     "isBestSeller": true,
-    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/4.jpeg",
+    "image": "/assets/4.jpeg",
     "images": [
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/4.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/9.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/1.jpeg"
+      "/assets/4.jpeg",
+      "/assets/9.jpeg",
+      "/assets/1.jpeg"
     ],
     "sizes": [
       "S",
@@ -603,11 +603,11 @@
     },
     "isNew": false,
     "isBestSeller": false,
-    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/5.jpeg",
+    "image": "/assets/5.jpeg",
     "images": [
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/5.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/2.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/3.jpeg"
+      "/assets/5.jpeg",
+      "/assets/2.jpeg",
+      "/assets/3.jpeg"
     ],
     "sizes": [
       "S",
@@ -648,11 +648,11 @@
     },
     "isNew": true,
     "isBestSeller": true,
-    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/6.jpeg",
+    "image": "/assets/6.jpeg",
     "images": [
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/6.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/4.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/5.jpeg"
+      "/assets/6.jpeg",
+      "/assets/4.jpeg",
+      "/assets/5.jpeg"
     ],
     "sizes": [
       "S",
@@ -693,11 +693,11 @@
     },
     "isNew": false,
     "isBestSeller": false,
-    "image": "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/7.jpeg",
+    "image": "/assets/7.jpeg",
     "images": [
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/7.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/6.jpeg",
-      "https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/8.jpeg"
+      "/assets/7.jpeg",
+      "/assets/6.jpeg",
+      "/assets/8.jpeg"
     ],
     "sizes": [
       "S",

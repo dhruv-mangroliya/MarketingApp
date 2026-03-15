@@ -1,5 +1,4 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import blogData from '../../Data/BlogData.json';
 import './BlogPost.css';
 
 const BlogPost = () => {

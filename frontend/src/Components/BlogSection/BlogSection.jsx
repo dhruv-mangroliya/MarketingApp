@@ -1,10 +1,25 @@
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import blogData from '../../Data/BlogData.json';
 import './BlogSection.css';
 
 const BlogSection = () => {
   const navigate = useNavigate();
-  const featuredBlogs = blogData.slice(0, 3); // Show first 3 blogs
+  const [blogData, setBlogData] = useState([]);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await fetch('http://localhost:5001/api/blogs');
+        const data = await response.json();
+        setBlogData(data);
+      } catch (error) {
+        console.error('Error fetching blogs:', error);
+      }
+    };
+    fetchBlogs();
+  }, []);
+
+  const featuredBlogs = blogData.slice(0, 3);
 
   return (
     <section className="blog-section">
