@@ -1,9 +1,22 @@
-import React, { useState } from "react";
-import reviews from "../../../data/ReviewsData.json";
+import React, { useState, useEffect } from "react";
 import "./ReviewSlider.css";
 
 const ReviewSlider = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await fetch('http://localhost:5001/api/reviews');
+        const data = await response.json();
+        setReviews(data);
+      } catch (error) {
+        console.error('Error fetching reviews:', error);
+      }
+    };
+    fetchReviews();
+  }, []);
 
   const handlePrev = () => {
     setCurrentIndex((prev) =>
@@ -16,6 +29,10 @@ const ReviewSlider = () => {
       prev === reviews.length - 1 ? 0 : prev + 1
     );
   };
+
+  if (reviews.length === 0) {
+    return <div style={{textAlign: 'center', padding: '50px'}}>Loading reviews...</div>;
+  }
 
   return (
     <div className="review-slider">

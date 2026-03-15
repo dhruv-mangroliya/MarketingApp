@@ -7,7 +7,8 @@ const ProductCatalog = (props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setData(props.data);
+    const newdata = props.data.filter(item => item.rating < 4);
+    setData(newdata);
   }, [props.data]);
 
   return (
@@ -25,7 +26,7 @@ const ProductCatalog = (props) => {
             <div className="product-image-wrapper">
               <img src={item.image} alt={item.name} loading="lazy" />
               {item.discountPercentage >= 20 && (
-                <img src="/assets/690af5f6667d5.png" alt="discount" className="discount-tag" />
+                <img src="https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/690af5f6667d5.png" alt="discount" className="discount-tag" />
               )}
             </div>
             <h3>{item.name}</h3>

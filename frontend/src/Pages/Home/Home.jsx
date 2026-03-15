@@ -45,12 +45,12 @@ const Home = () => {
       <div id="reviews">
         <ReviewSlider/>
       </div>
-      <Suspense fallback={<div style={{textAlign: 'center', padding: '50px'}}>Loading blog...</div>}>
-        <BlogSection/>
-      </Suspense>
       <div id="catalog">
         <ProductCatalog data={products}/>
       </div>
+      <Suspense fallback={<div style={{textAlign: 'center', padding: '50px'}}>Loading blog...</div>}>
+        <BlogSection/>
+      </Suspense>
     </div>
   )
 }

@@ -33,7 +33,6 @@ const uploadToS3 = async (req, res) => {
     await s3Client.send(command);
     
     const url = `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
-    console.log('Upload successful:', url);
     
     res.json({ success: true, url });
   } catch (error) {
