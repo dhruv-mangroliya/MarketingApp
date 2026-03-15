@@ -87,17 +87,17 @@ const Navbar = () => {
         </div>
 
         <ul className="menu-links">
-          <li onClick={() => { setIsOpen(false); navigate("/"); }}>Home</li>
-          <li onClick={() => { setIsOpen(false); navigate("/cart"); }}>Your Cart</li>
-          <li onClick={() => { setIsOpen(false); navigate("/blog"); }}>Blog</li>
-          <li onClick={() => { setIsOpen(false); navigate("/about"); }}>About Us</li>
-          
-          {/* Mobile Login */}
-          <li onClick={() => { setIsOpen(false); setShowLoginModal(true); }}>Login</li>
-          
           {isAdmin && (
             <li onClick={() => { setIsOpen(false); navigate("/admin"); }}>Admin Management</li>
           )}
+          {/* Mobile Login */}
+          <li onClick={() => { setIsOpen(false); setShowLoginModal(true); }}>Login</li>
+          <li onClick={() => { setIsOpen(false); navigate("/cart"); }}>Your Cart</li>
+          <li onClick={() => { setIsOpen(false); navigate("/"); }}>Home</li>
+          <li onClick={() => { setIsOpen(false); navigate("/blog"); }}>Blog</li>
+          <li onClick={() => { setIsOpen(false); navigate("/about"); }}>About Us</li>
+          
+          
           <li onClick={() => { setIsOpen(false); navigate("/shipping-policy")}}>Shipping Policy</li>
           <li onClick={() => { setIsOpen(false); navigate("/return-exchange")}}>Return & Exchange</li>
           <li onClick={() => { setIsOpen(false); navigate("/terms")}}>Terms & Conditions</li>

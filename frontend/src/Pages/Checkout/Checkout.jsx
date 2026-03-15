@@ -133,7 +133,16 @@ const Checkout = () => {
       const rzp = new window.Razorpay(options);
       rzp.open();
     } catch (error) {
-      toast.error("Failed to initiate payment. Please try again.");
+      // Handle rate limiting for payment
+      if (error.response?.status === 429) {
+        const errorData = error.response.data;
+        toast.error(`🚫 ${errorData.error || 'Too many payment attempts'}\n⏰ Please try again after ${errorData.retryAfter || '5 minutes'}`, {
+          autoClose: 8000,
+          style: { whiteSpace: 'pre-line' }
+        });
+      } else {
+        toast.error("Failed to initiate payment. Please try again.");
+      }
     }
   };
 

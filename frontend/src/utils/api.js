@@ -52,6 +52,17 @@ export const createPaymentOrder = async (amount) => {
     return response.data;
   } catch (error) {
     console.error('Error creating payment order:', error);
+    
+    // Handle rate limiting
+    if (error.response?.status === 429) {
+      throw {
+        response: {
+          status: 429,
+          data: error.response.data
+        }
+      };
+    }
+    
     throw error;
   }
 };
@@ -72,6 +83,17 @@ export const sendSMSOTP = async (phone) => {
     return response.data;
   } catch (error) {
     console.error('Error sending SMS OTP:', error);
+    
+    // Handle rate limiting
+    if (error.response?.status === 429) {
+      throw {
+        response: {
+          status: 429,
+          data: error.response.data
+        }
+      };
+    }
+    
     throw error;
   }
 };

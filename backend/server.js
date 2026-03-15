@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
 const multer = require('multer');
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
 // Import route handlers
@@ -61,10 +62,62 @@ MongoClient.connect(MONGODB_URI)
 app.use(cors());
 app.use(express.json());
 
-// Use route handlers
-app.use('/api/auth', authRoutes);
-app.use('/api/sms', smsRoutes);
-app.use('/api/payment', paymentRoutes);
+// Rate limiting configuration
+const globalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: {
+    error: 'Too many requests from this IP, please try again later.',
+    retryAfter: '15 minutes'
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // limit each IP to 5 auth requests per windowMs
+  message: {
+    error: 'Too many authentication attempts, please try again later.',
+    retryAfter: '15 minutes'
+  },
+  skipSuccessfulRequests: true,
+});
+
+const paymentLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000, // 5 minutes
+  max: 3, // limit each IP to 3 payment requests per 5 minutes
+  message: {
+    error: 'Too many payment attempts, please try again later.',
+    retryAfter: '5 minutes'
+  },
+});
+
+const smsLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 3, // limit each IP to 3 SMS requests per windowMs
+  message: {
+    error: 'Too many SMS requests, please try again later.',
+    retryAfter: '15 minutes'
+  },
+});
+
+const adminLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 50, // limit each IP to 50 admin requests per windowMs
+  message: {
+    error: 'Too many admin requests, please try again later.',
+    retryAfter: '15 minutes'
+  },
+});
+
+// Apply global rate limiting
+app.use(globalLimiter);
+
+// Use route handlers with specific rate limiting
+app.use('/api/auth', authLimiter, authRoutes);
+app.use('/api/sms', smsLimiter, smsRoutes);
+app.use('/api/payment', paymentLimiter, paymentRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/upload', uploadRoutes);
 
@@ -122,7 +175,7 @@ const isAdmin = (req, res, next) => {
 };
 
 // Add product (Admin only)
-app.post('/api/admin/products', isAdmin, async (req, res) => {
+app.post('/api/admin/products', adminLimiter, isAdmin, async (req, res) => {
   try {
     const productData = req.body;
     
@@ -146,7 +199,7 @@ app.post('/api/admin/products', isAdmin, async (req, res) => {
 });
 
 // Get all products for admin (including hidden ones)
-app.get('/api/admin/products', isAdmin, async (req, res) => {
+app.get('/api/admin/products', adminLimiter, isAdmin, async (req, res) => {
   try {
     const products = await db.collection('products').find({}).sort({ createdAt: -1 }).toArray();
     res.json({ success: true, products });
@@ -157,7 +210,7 @@ app.get('/api/admin/products', isAdmin, async (req, res) => {
 });
 
 // Remove product (Admin only) - Hide from catalog instead of deleting
-app.delete('/api/admin/products/:id', isAdmin, async (req, res) => {
+app.delete('/api/admin/products/:id', adminLimiter, isAdmin, async (req, res) => {
   try {
     const productId = parseInt(req.params.id);
     const result = await db.collection('products').updateOne(
@@ -182,7 +235,7 @@ app.delete('/api/admin/products/:id', isAdmin, async (req, res) => {
 });
 
 // Restore product (Admin only) - Show in catalog again
-app.patch('/api/admin/products/:id/restore', isAdmin, async (req, res) => {
+app.patch('/api/admin/products/:id/restore', adminLimiter, isAdmin, async (req, res) => {
   try {
     const productId = parseInt(req.params.id);
     const result = await db.collection('products').updateOne(

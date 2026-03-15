@@ -57,6 +57,16 @@ export const AuthProvider = ({ children }) => {
 
       const data = await response.json();
 
+      // Handle rate limiting
+      if (response.status === 429) {
+        throw {
+          response: {
+            status: 429,
+            data: data
+          }
+        };
+      }
+
       if (data.success) {
         setToken(data.token);
         setUser(data.user);
@@ -67,6 +77,12 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       console.error('Login error:', error);
+      
+      // Re-throw rate limiting errors to be handled by the component
+      if (error.response?.status === 429) {
+        throw error;
+      }
+      
       return { success: false, message: 'Login failed' };
     }
   };
