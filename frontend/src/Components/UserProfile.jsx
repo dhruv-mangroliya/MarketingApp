@@ -1,1 +1,19 @@
-import React from 'react';\nimport { useAuth } from '../context/AuthContext';\nimport './UserProfile.css';\n\nconst UserProfile = () => {\n  const { user, logout } = useAuth();\n\n  if (!user) return null;\n\n  return (\n    <div className=\"user-profile\">\n      <div className=\"user-info\">\n        <img src={user.picture} alt={user.name} className=\"user-avatar\" />\n        <div className=\"user-details\">\n          <span className=\"user-name\">{user.name}</span>\n          <span className=\"user-email\">{user.email}</span>\n        </div>\n      </div>\n      <button onClick={logout} className=\"logout-btn\">\n        Logout\n      </button>\n    </div>\n  );\n};\n\nexport default UserProfile;
+import React from 'react';
+import { useAuth } from '../context/AuthContext';
+import './UserProfile.css';
+
+const UserProfile = () => {
+  const { user } = useAuth();
+
+  if (!user) return null;
+
+  return (
+    <div className="user-profile">
+      <div className="user-info">
+        <img src={user.picture} alt={user.name} className="user-avatar" />
+      </div>
+    </div>
+  );
+};
+
+export default UserProfile;
