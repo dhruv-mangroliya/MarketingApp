@@ -1,1 +1,42 @@
-.user-profile {\n  display: flex;\n  align-items: center;\n  gap: 15px;\n  padding: 10px;\n  background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(248,249,250,0.9));\n  border-radius: 12px;\n  border: 1px solid rgba(36, 47, 102, 0.1);\n  backdrop-filter: blur(10px);\n  -webkit-backdrop-filter: blur(10px);\n}\n\n.user-info {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  flex: 1;\n}\n\n.user-avatar {\n  width: 40px;\n  height: 40px;\n  border-radius: 50%;\n  object-fit: cover;\n  border: 2px solid rgba(36, 47, 102, 0.1);\n  transition: all 0.3s ease;\n}\n\n.user-avatar:hover {\n  border-color: rgba(36, 47, 102, 0.3);\n  transform: scale(1.05);\n}\n\n.user-details {\n  display: flex;\n  flex-direction: column;\n  gap: 2px;\n}\n\n.user-name {\n  font-size: 14px;\n  font-weight: 600;\n  color: #242f66;\n  line-height: 1;\n}\n\n.user-email {\n  font-size: 12px;\n  color: #9f8d6e;\n  line-height: 1;\n}\n\n.logout-btn {\n  background: linear-gradient(135deg, rgba(36, 47, 102, 0.1), rgba(159, 141, 110, 0.1));\n  border: 1px solid rgba(36, 47, 102, 0.2);\n  color: #242f66;\n  padding: 8px 16px;\n  border-radius: 8px;\n  font-size: 12px;\n  font-weight: 600;\n  cursor: pointer;\n  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);\n}\n\n.logout-btn:hover {\n  background: linear-gradient(135deg, rgba(36, 47, 102, 0.2), rgba(159, 141, 110, 0.2));\n  border-color: rgba(36, 47, 102, 0.3);\n  transform: translateY(-1px);\n  box-shadow: 0 4px 12px rgba(36, 47, 102, 0.15);\n}\n\n@media (max-width: 768px) {\n  .user-profile {\n    gap: 10px;\n    padding: 8px;\n  }\n  \n  .user-avatar {\n    width: 35px;\n    height: 35px;\n  }\n  \n  .user-name {\n    font-size: 13px;\n  }\n  \n  .user-email {\n    font-size: 11px;\n  }\n  \n  .logout-btn {\n    padding: 6px 12px;\n    font-size: 11px;\n  }\n}
+.user-profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(248,249,250,0.9));
+  border-radius: 50%;
+  border: 1px solid rgba(36, 47, 102, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(36, 47, 102, 0.2);
+  transition: all 0.3s ease;
+}
+
+.user-avatar:hover {
+  border-color: rgba(36, 47, 102, 0.4);
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .user-profile {
+    padding: 3px;
+  }
+  
+  .user-avatar {
+    width: 28px;
+    height: 28px;
+  }
+}

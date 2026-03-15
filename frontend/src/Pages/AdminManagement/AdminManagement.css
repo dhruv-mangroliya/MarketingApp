@@ -362,15 +362,15 @@
 }
 
 .product-thumbnail {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
+  width: 30%;
+  height: 80px;
+  object-fit: contain;
   border-radius: 8px;
   border: 1px solid rgba(36, 47, 102, 0.1);
 }
 
 .product-info {
-  flex: 1;
+  width: 40%;
 }
 
 .product-info h4 {
@@ -412,6 +412,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  width: 30%;
   min-width: 80px;
 }
 
@@ -443,6 +444,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  width: 30%;
   min-width: 80px;
 }
 

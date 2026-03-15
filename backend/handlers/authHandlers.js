@@ -1,10 +1,16 @@
 const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
+const { MongoClient, ObjectId } = require('mongodb');
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-// In-memory user store (replace with database in production)
-const users = new Map();
+// MongoDB connection
+let db;
+MongoClient.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017')
+  .then(client => {
+    db = client.db(process.env.DB_NAME || 'kurtibazaar');
+  })
+  .catch(error => console.error('Auth MongoDB connection error:', error));
 
 const googleAuth = async (req, res) => {
   try {
@@ -23,26 +29,26 @@ const googleAuth = async (req, res) => {
     const payload = ticket.getPayload();
     const { sub: googleId, email, name, picture } = payload;
 
-    // Check if user exists
-    let user = users.get(email);
+    // Check if user exists in MongoDB
+    let user = await db.collection('users').findOne({ email });
     
     if (!user) {
-      // Create new user
+      // Create new user in MongoDB
       user = {
-        id: Date.now().toString(),
         googleId,
         email,
         name,
         picture,
-        createdAt: new Date().toISOString()
+        createdAt: new Date()
       };
-      users.set(email, user);
+      const result = await db.collection('users').insertOne(user);
+      user._id = result.insertedId;
     }
 
     // Generate JWT token
     const jwtToken = jwt.sign(
       { 
-        userId: user.id, 
+        userId: user._id.toString(), 
         email: user.email,
         name: user.name 
       },
@@ -54,7 +60,7 @@ const googleAuth = async (req, res) => {
       success: true,
       token: jwtToken,
       user: {
-        id: user.id,
+        id: user._id,
         email: user.email,
         name: user.name,
         picture: user.picture
@@ -83,9 +89,9 @@ const verifyToken = (req, res, next) => {
   }
 };
 
-const getProfile = (req, res) => {
+const getProfile = async (req, res) => {
   try {
-    const user = users.get(req.user.email);
+    const user = await db.collection('users').findOne({ _id: new ObjectId(req.user.userId) });
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -93,7 +99,7 @@ const getProfile = (req, res) => {
     res.json({
       success: true,
       user: {
-        id: user.id,
+        id: user._id,
         email: user.email,
         name: user.name,
         picture: user.picture
