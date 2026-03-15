@@ -19,7 +19,17 @@ const GoogleLoginButton = ({ onSuccess }) => {
       }
     } catch (error) {
       console.error('Google login error:', error);
-      toast.error('Login failed. Please try again.');
+      
+      // Handle rate limiting
+      if (error.response?.status === 429) {
+        const errorData = error.response.data;
+        toast.error(`🚫 ${errorData.error || 'Too many login attempts'}\n⏰ Please try again after ${errorData.retryAfter || '15 minutes'}`, {
+          autoClose: 8000,
+          style: { whiteSpace: 'pre-line' }
+        });
+      } else {
+        toast.error('Login failed. Please try again.');
+      }
     }
   };
 

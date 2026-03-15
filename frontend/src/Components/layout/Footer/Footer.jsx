@@ -24,7 +24,16 @@ const Footer = () => {
       setShowOTPModal(true);
       toast.success("OTP sent to your phone!");
     } catch (error) {
-      toast.error("Failed to send OTP. Please try again.");
+      // Handle rate limiting
+      if (error.response?.status === 429) {
+        const errorData = error.response.data;
+        toast.error(`${errorData.error || 'Too many SMS requests'}\n Please try again after ${errorData.retryAfter || '15 minutes'}`, {
+          autoClose: 8000,
+          style: { whiteSpace: 'pre-line' }
+        });
+      } else {
+        toast.error("Failed to send OTP. Please try again.");
+      }
     }
   };
 

@@ -26,6 +26,15 @@ const PhoneVerificationModal = ({ isOpen, onClose, onVerified }) => {
 
       const data = await response.json();
       
+      // Handle rate limiting
+      if (response.status === 429) {
+        toast.error(`🚫 ${data.error || 'Too many SMS requests'}\n⏰ Please try again after ${data.retryAfter || '15 minutes'}`, {
+          autoClose: 8000,
+          style: { whiteSpace: 'pre-line' }
+        });
+        return;
+      }
+      
       if (data.success) {
         toast.success('OTP sent successfully!');
         setStep(2);
