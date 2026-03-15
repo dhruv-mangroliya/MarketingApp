@@ -11,6 +11,7 @@ import TermsConditions from "./pages/TermsConditions/TermsConditions";
 import ReturnExchange from "./pages/ReturnExchange/ReturnExchange";
 import Blog from "./pages/Blog/Blog";
 import BlogPost from "./pages/Blog/BlogPost";
+import AdminManagement from "./pages/AdminManagement/AdminManagement";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cart from "./pages/Cart/Cart";
@@ -52,6 +53,7 @@ function App() {
               <Route path="/blog/:id" element={<BlogPost />} />
               <Route path="/about" element={<AboutUs />} />
               <Route path="/contact" element={<ContactUs />} />
+              <Route path="/admin" element={<AdminManagement />} />
               <Route path="/shipping-policy" element={<ShippingPolicy />} />
               <Route path="/return-exchange" element={<ReturnExchange />} />
               <Route path="/terms" element={<TermsConditions />} />

@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react";
 import "./Navbar.css";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../Context/AuthContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+  const { user } = useAuth();
+  
+  const isAdmin = user?.email === 'dhruvmangroliya642@gmail.com';
 
   return (
     <>
@@ -43,6 +47,14 @@ const Navbar = () => {
               alt="Contact"  
               onClick={() => navigate('/contact')}
             />
+            {isAdmin && (
+              <button 
+                className="admin-btn"
+                onClick={() => navigate('/admin')}
+              >
+                Admin
+              </button>
+            )}
         </div>
 
         {!isOpen && (
@@ -68,6 +80,9 @@ const Navbar = () => {
           <li onClick={() => { setIsOpen(false); navigate("/cart"); }}>Your Cart</li>
           <li onClick={() => { setIsOpen(false); navigate("/blog"); }}>Blog</li>
           <li onClick={() => { setIsOpen(false); navigate("/about"); }}>About Us</li>
+          {isAdmin && (
+            <li onClick={() => { setIsOpen(false); navigate("/admin"); }}>Admin Management</li>
+          )}
           <li onClick={() => { setIsOpen(false); navigate("/shipping-policy")}}>Shipping Policy</li>
           <li onClick={() => { setIsOpen(false); navigate("/return-exchange")}}>Return & Exchange</li>
           <li onClick={() => { setIsOpen(false); navigate("/terms")}}>Terms & Conditions</li>

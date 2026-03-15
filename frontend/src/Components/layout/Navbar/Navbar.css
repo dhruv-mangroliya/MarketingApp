@@ -153,6 +153,24 @@
 .hamburger:hover img {
   transform: rotate(90deg);
 }
+
+.admin-btn {
+  background: linear-gradient(135deg, #242f66, #1a2347);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.admin-btn:hover {
+  background: linear-gradient(135deg, #1a2347, #242f66);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(36, 47, 102, 0.3);
+}
 .brand {
   font-size: 32px;
   font-weight: 700;
