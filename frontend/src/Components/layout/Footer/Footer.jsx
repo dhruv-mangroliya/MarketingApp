@@ -2,49 +2,96 @@ import React, { useState } from "react";
 import "./Footer.css";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import VerifyPhoneModal from "../../common/Modal/VerifyPhoneModal";
-import VerifySMSOTPModal from "../../common/Modal/VerifySMSOTPModal";
-import { sendSMSOTP, verifySMSOTP } from "../../../utils/api";
 
 const Footer = () => {
   const navigate = useNavigate();
-  const [showPhoneModal, setShowPhoneModal] = useState(false);
-  const [showOTPModal, setShowOTPModal] = useState(false);
-  const [verifiedPhone, setVerifiedPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [showOTPInput, setShowOTPInput] = useState(false);
 
-  const handleRegister = () => {
-    setShowPhoneModal(true);
-  };
+  const handleSendOTP = async (e) => {
+    e.preventDefault();
+    if (!email) {
+      toast.error("Please enter your email address");
+      return;
+    }
 
-  const handlePhoneVerify = async (phone) => {
+    setLoading(true);
     try {
-      await sendSMSOTP(phone);
-      setVerifiedPhone(phone);
-      setShowPhoneModal(false);
-      setShowOTPModal(true);
-      toast.success("OTP sent to your phone!");
-    } catch (error) {
-      // Handle rate limiting
-      if (error.response?.status === 429) {
-        const errorData = error.response.data;
-        toast.error(`${errorData.error || 'Too many SMS requests'}\n Please try again after ${errorData.retryAfter || '15 minutes'}`, {
-          autoClose: 8000,
-          style: { whiteSpace: 'pre-line' }
-        });
+      const response = await fetch('http://localhost:5001/api/otp/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        toast.success("OTP sent to your email! Check your inbox.");
+        setShowOTPInput(true);
       } else {
-        toast.error("Failed to send OTP. Please try again.");
+        toast.error(result.message || "Failed to send OTP");
       }
+    } catch (error) {
+      console.error('OTP send error:', error);
+      toast.error("Failed to send OTP. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleOTPVerify = async (otp) => {
-    try {
-      await verifySMSOTP(verifiedPhone, otp);
-      setShowOTPModal(false);
-      toast.success("Successfully registered for offers 🎉");
-    } catch (error) {
-      toast.error("Invalid OTP. Please try again.");
+  const handleVerifyAndSubscribe = async (e) => {
+    e.preventDefault();
+    if (!otp) {
+      toast.error("Please enter the OTP");
+      return;
     }
+
+    setLoading(true);
+    try {
+      // First verify OTP
+      const verifyResponse = await fetch('http://localhost:5001/api/otp/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, otp })
+      });
+      
+      const verifyResult = await verifyResponse.json();
+      
+      if (!verifyResult.success) {
+        toast.error(verifyResult.message || "Invalid OTP");
+        return;
+      }
+
+      // Then subscribe to newsletter
+      const subscribeResponse = await fetch('http://localhost:5001/api/newsletter/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+      
+      const subscribeResult = await subscribeResponse.json();
+      
+      if (subscribeResult.success) {
+        toast.success("Successfully subscribed to newsletter! 🎉");
+        setEmail("");
+        setOtp("");
+        setShowOTPInput(false);
+      } else {
+        toast.error(subscribeResult.message || "Failed to subscribe");
+      }
+    } catch (error) {
+      console.error('Newsletter subscription error:', error);
+      toast.error("Failed to subscribe. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleBackToEmail = () => {
+    setShowOTPInput(false);
+    setOtp("");
   };
 
 
@@ -99,11 +146,38 @@ const Footer = () => {
           <h3>Sign Up to Newsletter</h3>
           <p>Sign up for latest updates</p>
 
-          <div className="newsletter">
-            <button onClick={handleRegister}>
-              Register For Offers
-            </button>
-          </div>
+          {!showOTPInput ? (
+            <form className="newsletter" onSubmit={handleSendOTP}>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                required
+              />
+              <button type="submit" disabled={loading}>
+                {loading ? 'Sending OTP...' : 'Send OTP'}
+              </button>
+            </form>
+          ) : (
+            <form className="newsletter" onSubmit={handleVerifyAndSubscribe}>
+              <p className="otp-info">OTP sent to {email}</p>
+              <input
+                type="text"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                placeholder="Enter 6-digit OTP"
+                maxLength={6}
+                required
+              />
+              <button type="submit" disabled={loading}>
+                {loading ? 'Verifying...' : 'Verify & Subscribe'}
+              </button>
+              <button type="button" onClick={handleBackToEmail} className="back-btn">
+                Change Email
+              </button>
+            </form>
+          )}
 
           <p>For latest offers and new features</p>
         </div>
@@ -113,19 +187,6 @@ const Footer = () => {
       <div className="footer-bottom">
         © 2026 KurtiBazaar. All rights reserved.
       </div>
-
-      <VerifyPhoneModal
-        isOpen={showPhoneModal}
-        onClose={() => setShowPhoneModal(false)}
-        onVerify={handlePhoneVerify}
-      />
-
-      <VerifySMSOTPModal
-        isOpen={showOTPModal}
-        onClose={() => setShowOTPModal(false)}
-        onVerify={handleOTPVerify}
-        phone={verifiedPhone}
-      />
 
     </footer>
   );

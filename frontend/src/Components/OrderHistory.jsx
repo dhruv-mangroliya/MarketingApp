@@ -19,7 +19,7 @@ const OrderHistory = ({ isOpen, onClose }) => {
 
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:5001/api/orders/user/${user.id}`, {
+      const response = await fetch(`http://localhost:5001/api/orders/user/${encodeURIComponent(user.email)}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

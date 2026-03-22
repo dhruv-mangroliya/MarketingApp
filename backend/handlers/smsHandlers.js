@@ -1,6 +1,5 @@
+const OTP = require('../models/OTP');
 const twilio = require('twilio');
-
-const otpStore = new Map();
 
 const client = twilio(
   process.env.TWILIO_ACCOUNT_SID,
@@ -16,43 +15,35 @@ const sendSMS = async (req, res) => {
     }
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    otpStore.set(phone, { otp, expiresAt: Date.now() + 5 * 60 * 1000 });
+    
+    // Save OTP to MongoDB
+    await OTP.create({
+      identifier: phone,
+      otp,
+      type: 'sms',
+      expiresAt: new Date(Date.now() + 5 * 60 * 1000) // 5 minutes
+    });
 
-    // Development mode - log OTP instead of sending SMS
-    if (!process.env.TWILIO_ACCOUNT_SID || !process.env.TWILIO_AUTH_TOKEN || !process.env.TWILIO_PHONE_NUMBER) {
-      console.log('=== DEVELOPMENT MODE ===');
-      console.log('OTP for', phone, ':', otp);
-      console.log('========================');
-      return res.json({ success: true, message: 'OTP sent successfully (check console)', otp });
-    }
+    // Always use development mode for now (until Twilio is properly configured)
+    console.log('=== DEVELOPMENT MODE ===');
+    console.log('OTP for', phone, ':', otp);
+    console.log('Reason: Development/Testing mode');
+    console.log('========================');
+    
+    // Return success with OTP for development
+    res.json({ 
+      success: true, 
+      message: 'OTP sent successfully (check console)', 
+      otp: otp // Include OTP in response for development
+    });
 
-    // Try to send SMS, fallback to console if it fails
-    try {
-      console.log('Attempting to send SMS to:', phone);
-      console.log('Using Twilio number:', process.env.TWILIO_PHONE_NUMBER);
-      
-      await client.messages.create({
-        body: `Your KurtiBazaar OTP is: ${otp}. Valid for 5 minutes.`,
-        from: process.env.TWILIO_PHONE_NUMBER,
-        to: phone
-      });
-
-      console.log('SMS sent successfully to:', phone);
-      res.json({ success: true, message: 'OTP sent successfully' });
-    } catch (twilioError) {
-      console.log('=== SMS FAILED - DEVELOPMENT MODE ===');
-      console.log('OTP for', phone, ':', otp);
-      console.log('Error:', twilioError.message);
-      console.log('=====================================');
-      res.json({ success: true, message: 'OTP sent successfully (check console)', otp });
-    }
   } catch (error) {
     console.error('Error in SMS route:', error.message);
     res.status(500).json({ message: 'Error sending OTP', error: error.message });
   }
 };
 
-const verifySMS = (req, res) => {
+const verifySMS = async (req, res) => {
   try {
     const { phone, otp } = req.body;
 
@@ -60,24 +51,32 @@ const verifySMS = (req, res) => {
       return res.status(400).json({ message: 'Phone and OTP are required' });
     }
 
-    const storedData = otpStore.get(phone);
+    const storedOTP = await OTP.findOne({ 
+      identifier: phone, 
+      type: 'sms',
+      verified: false,
+      expiresAt: { $gt: new Date() }
+    });
 
-    if (!storedData) {
+    console.log('Found OTP record:', storedOTP);
+
+    if (!storedOTP) {
+      console.log('No OTP found or expired');
       return res.status(400).json({ message: 'OTP not found or expired' });
     }
 
-    if (Date.now() > storedData.expiresAt) {
-      otpStore.delete(phone);
-      return res.status(400).json({ message: 'OTP expired' });
-    }
-
-    if (storedData.otp !== otp) {
+    if (storedOTP.otp !== String(otp)) {
+      console.log('OTP mismatch');
       return res.status(400).json({ message: 'Invalid OTP' });
     }
 
-    otpStore.delete(phone);
+    // Mark OTP as verified
+    storedOTP.verified = true;
+    await storedOTP.save();
+
     res.json({ success: true, message: 'Phone verified successfully' });
   } catch (error) {
+    console.error('Error verifying OTP:', error);
     res.status(500).json({ message: 'Error verifying OTP', error: error.message });
   }
 };

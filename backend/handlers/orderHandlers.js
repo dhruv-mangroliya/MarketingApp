@@ -1,10 +1,9 @@
-// In-memory order store (replace with database in production)
-const orders = new Map();
+const Order = require('../models/Order');
 
 const createOrder = async (req, res) => {
   try {
     const { 
-      userId, 
+      userEmail, 
       items, 
       totalAmount, 
       shippingAddress, 
@@ -12,28 +11,55 @@ const createOrder = async (req, res) => {
       paymentDetails 
     } = req.body;
 
-    if (!userId || !items || !totalAmount || !shippingAddress || !phoneNumber) {
+    // Validate required fields
+    if (!userEmail || !items || !totalAmount || !shippingAddress || !phoneNumber) {
       return res.status(400).json({ 
-        message: 'Missing required fields: userId, items, totalAmount, shippingAddress, phoneNumber' 
+        message: 'Missing required fields: userEmail, items, totalAmount, shippingAddress, phoneNumber' 
       });
+    }
+
+    // Validate items array
+    if (!Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ 
+        message: 'Items array is required and must not be empty' 
+      });
+    }
+
+    // Validate each item
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      if (!item.productId || !item.productName || !item.quantity || !item.size || !item.price) {
+        return res.status(400).json({ 
+          message: `Item ${i + 1} is missing required fields: productId, productName, quantity, size, price` 
+        });
+      }
+    }
+
+    // Validate shipping address
+    const requiredAddressFields = ['name', 'phone', 'address', 'city', 'state', 'pincode'];
+    for (const field of requiredAddressFields) {
+      if (!shippingAddress[field]) {
+        return res.status(400).json({ 
+          message: `Shipping address is missing required field: ${field}` 
+        });
+      }
     }
 
     const orderId = `ORDER_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     
-    const order = {
+    const order = new Order({
       orderId,
-      userId,
+      userEmail,
       items,
       totalAmount,
       shippingAddress,
       phoneNumber,
       paymentDetails,
       status: 'confirmed',
-      orderDate: new Date().toISOString(),
-      estimatedDelivery: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() // 7 days from now
-    };
+      estimatedDelivery: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+    });
 
-    orders.set(orderId, order);
+    await order.save();
 
     res.json({
       success: true,
@@ -50,14 +76,24 @@ const createOrder = async (req, res) => {
 
   } catch (error) {
     console.error('Error creating order:', error);
+    
+    // Handle validation errors specifically
+    if (error.name === 'ValidationError') {
+      const validationErrors = Object.values(error.errors).map(err => err.message);
+      return res.status(400).json({ 
+        message: 'Validation failed', 
+        errors: validationErrors 
+      });
+    }
+    
     res.status(500).json({ message: 'Error creating order', error: error.message });
   }
 };
 
-const getOrder = (req, res) => {
+const getOrder = async (req, res) => {
   try {
     const { orderId } = req.params;
-    const order = orders.get(orderId);
+    const order = await Order.findOne({ orderId });
 
     if (!order) {
       return res.status(404).json({ message: 'Order not found' });
@@ -74,10 +110,10 @@ const getOrder = (req, res) => {
   }
 };
 
-const getUserOrders = (req, res) => {
+const getUserOrders = async (req, res) => {
   try {
-    const { userId } = req.params;
-    const userOrders = Array.from(orders.values()).filter(order => order.userId === userId);
+    const { userEmail } = req.params;
+    const userOrders = await Order.find({ userEmail }).sort({ createdAt: -1 });
 
     res.json({
       success: true,

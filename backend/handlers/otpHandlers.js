@@ -1,6 +1,5 @@
+const OTP = require('../models/OTP');
 const nodemailer = require('nodemailer');
-
-const otpStore = new Map();
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -24,7 +23,14 @@ const sendOTP = async (req, res) => {
     }
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    otpStore.set(email, { otp, expiresAt: Date.now() + 5 * 60 * 1000 });
+    
+    // Save OTP to MongoDB
+    await OTP.create({
+      identifier: email,
+      otp,
+      type: 'email',
+      expiresAt: new Date(Date.now() + 5 * 60 * 1000) // 5 minutes
+    });
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
@@ -44,7 +50,7 @@ const sendOTP = async (req, res) => {
   }
 };
 
-const verifyOTP = (req, res) => {
+const verifyOTP = async (req, res) => {
   try {
     const { email, otp } = req.body;
 
@@ -52,22 +58,25 @@ const verifyOTP = (req, res) => {
       return res.status(400).json({ message: 'Email and OTP are required' });
     }
 
-    const storedData = otpStore.get(email);
+    const storedOTP = await OTP.findOne({ 
+      identifier: email, 
+      type: 'email',
+      verified: false,
+      expiresAt: { $gt: new Date() }
+    });
 
-    if (!storedData) {
+    if (!storedOTP) {
       return res.status(400).json({ message: 'OTP not found or expired' });
     }
 
-    if (Date.now() > storedData.expiresAt) {
-      otpStore.delete(email);
-      return res.status(400).json({ message: 'OTP expired' });
-    }
-
-    if (storedData.otp !== otp) {
+    if (storedOTP.otp !== otp) {
       return res.status(400).json({ message: 'Invalid OTP' });
     }
 
-    otpStore.delete(email);
+    // Mark OTP as verified
+    storedOTP.verified = true;
+    await storedOTP.save();
+
     res.json({ success: true, message: 'OTP verified successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Error verifying OTP', error: error.message });

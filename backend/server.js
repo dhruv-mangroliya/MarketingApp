@@ -6,6 +6,7 @@ const { OAuth2Client } = require('google-auth-library');
 const multer = require('multer');
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const rateLimit = require('express-rate-limit');
+const mongoose = require('mongoose');
 require('dotenv').config();
 
 // Import route handlers
@@ -14,6 +15,8 @@ const smsRoutes = require('./routes/sms');
 const paymentRoutes = require('./routes/payment');
 const orderRoutes = require('./routes/orders');
 const uploadRoutes = require('./routes/upload');
+const newsletterRoutes = require('./routes/newsletter');
+const otpRoutes = require('./routes/otp');
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -51,10 +54,17 @@ const upload = multer({
   }
 });
 
-// Connect to MongoDB
+// Connect to MongoDB with Mongoose
+mongoose.connect(MONGODB_URI + '/' + DB_NAME)
+  .then(() => {
+    console.log('Connected to MongoDB with Mongoose');
+  })
+  .catch(error => console.error('Mongoose connection error:', error));
+
+// Connect to MongoDB with native driver for existing functionality
 MongoClient.connect(MONGODB_URI)
   .then(client => {
-    console.log('Connected to MongoDB');
+    console.log('Connected to MongoDB with native driver');
     db = client.db(DB_NAME);
   })
   .catch(error => console.error('MongoDB connection error:', error));
@@ -120,6 +130,8 @@ app.use('/api/sms', smsLimiter, smsRoutes);
 app.use('/api/payment', paymentLimiter, paymentRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/newsletter', newsletterRoutes);
+app.use('/api/otp', otpRoutes);
 
 // Get all products
 app.get('/api/products', async (req, res) => {
@@ -320,3 +332,6 @@ app.post('/api/upload/image', upload.single('image'), async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
+
+// we are implementing newsletter email verification feature...
