@@ -99,7 +99,7 @@ const OrderHistory = ({ isOpen, onClose }) => {
                   <div className="order-info">
                     <div className="info-row">
                       <span className="info-label">Date:</span>
-                      <span className="info-value">{formatDate(order.orderDate)}</span>
+                      <span className="info-value">{formatDate(order.orderDate || order.createdAt)}</span>
                     </div>
                     <div className="info-row">
                       <span className="info-label">Total:</span>
@@ -107,23 +107,23 @@ const OrderHistory = ({ isOpen, onClose }) => {
                     </div>
                     <div className="info-row">
                       <span className="info-label">Items:</span>
-                      <span className="info-value">{order.items.length}</span>
+                      <span className="info-value">{(order.orderItems || order.items || []).length}</span>
                     </div>
                   </div>
 
                   <div className="order-items">
                     <h4>Items</h4>
-                    {order.items.map((item, index) => (
+                    {(order.orderItems || order.items || []).map((item, index) => (
                       <div key={index} className="item">
-                        <img src={item.image} alt={item.name} className="item-image" />
+                        <img src={item.image} alt={item.productName || item.name} className="item-image" />
                         <div className="item-info">
-                          <div className="item-name">{item.name}</div>
+                          <div className="item-name">{item.productName || item.name}</div>
                           <div className="item-details">
                             {item.size && <div>Size: {item.size}</div>}
                             <div>Qty: {item.quantity}</div>
                           </div>
                         </div>
-                        <div className="item-price">₹{item.discountPrice || item.price}</div>
+                        <div className="item-price">₹{item.price}</div>
                       </div>
                     ))}
                   </div>

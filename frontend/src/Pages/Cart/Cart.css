@@ -40,10 +40,9 @@
   flex-wrap: wrap;
 }
 
-.continue-shopping {
-  background: linear-gradient(135deg, #242f66, #1a2347);
-  color: white;
-  border: none;
+.continue-shopping,
+.view-orders-btn,
+.track-refunds-btn {
   padding: 15px 30px;
   border-radius: 12px;
   font-size: 16px;
@@ -52,6 +51,12 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
+}
+
+.continue-shopping {
+  background: linear-gradient(135deg, #242f66, #1a2347);
+  color: white;
+  border: none;
 }
 
 .continue-shopping::before {
@@ -75,19 +80,16 @@
   box-shadow: 0 8px 25px rgba(36, 47, 102, 0.3);
 }
 
-.view-orders-btn {
+.view-orders-btn,
+.track-refunds-btn {
   background: linear-gradient(135deg, rgba(159, 141, 110, 0.1), rgba(159, 141, 110, 0.2));
   color: #9f8d6e;
   border: 2px solid rgba(159, 141, 110, 0.3);
   padding: 13px 25px;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
 }
 
-.view-orders-btn:hover {
+.view-orders-btn:hover,
+.track-refunds-btn:hover {
   background: linear-gradient(135deg, rgba(159, 141, 110, 0.2), rgba(159, 141, 110, 0.3));
   border-color: rgba(159, 141, 110, 0.5);
   transform: translateY(-2px);
@@ -257,11 +259,10 @@
   margin-top: 25px;
 }
 
-.payment-btn {
+.payment-btn,
+.order-history-btn,
+.refund-tracker-btn {
   width: 100%;
-  background: linear-gradient(135deg, #242f66, #1a2347);
-  color: white;
-  border: none;
   padding: 18px;
   font-size: 18px;
   font-weight: 700;
@@ -270,6 +271,12 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
+}
+
+.payment-btn {
+  background: linear-gradient(135deg, #242f66, #1a2347);
+  color: white;
+  border: none;
 }
 
 .payment-btn::before {
@@ -293,20 +300,18 @@
   box-shadow: 0 8px 25px rgba(36, 47, 102, 0.3);
 }
 
-.order-history-btn {
-  width: 100%;
+.order-history-btn,
+.refund-tracker-btn {
   background: linear-gradient(135deg, rgba(159, 141, 110, 0.1), rgba(159, 141, 110, 0.2));
   color: #9f8d6e;
   border: 2px solid rgba(159, 141, 110, 0.3);
   padding: 15px;
   font-size: 16px;
   font-weight: 600;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
 }
 
-.order-history-btn:hover {
+.order-history-btn:hover,
+.refund-tracker-btn:hover {
   background: linear-gradient(135deg, rgba(159, 141, 110, 0.2), rgba(159, 141, 110, 0.3));
   border-color: rgba(159, 141, 110, 0.5);
   transform: translateY(-2px);

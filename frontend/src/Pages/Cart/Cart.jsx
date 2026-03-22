@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { useCart } from "../../context/CartContext";
-import { useAuth } from "../../context/AuthContext";
+import { useCart } from "../../Context/CartContext";
+import { useAuth } from "../../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import OrderHistory from "../../components/OrderHistory";
+import OrderHistory from "../../Components/OrderHistory";
+import RefundTracker from "../../Components/RefundTracker";
 import "./Cart.css";
 
 const Cart = () => {
@@ -11,6 +12,7 @@ const Cart = () => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [showOrderHistory, setShowOrderHistory] = useState(false);
+  const [showRefundTracker, setShowRefundTracker] = useState(false);
 
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const total = cart.reduce((sum, item) => sum + item.discountPrice * item.quantity, 0);
@@ -29,6 +31,14 @@ const Cart = () => {
     setShowOrderHistory(true);
   };
 
+  const handleViewRefundTracker = () => {
+    if (!isAuthenticated) {
+      toast.info("Please login to track your refunds");
+      return;
+    }
+    setShowRefundTracker(true);
+  };
+
   if (cart.length === 0) {
     return (
       <div className="cart-empty">
@@ -41,9 +51,14 @@ const Cart = () => {
               Continue Shopping
             </button>
             {isAuthenticated && (
-              <button className="view-orders-btn" onClick={handleViewOrderHistory}>
-                View Order History
-              </button>
+              <>
+                <button className="view-orders-btn" onClick={handleViewOrderHistory}>
+                  View Order History
+                </button>
+                <button className="track-refunds-btn" onClick={handleViewRefundTracker}>
+                  Track Refunds
+                </button>
+              </>
             )}
           </div>
         </div>
@@ -51,6 +66,10 @@ const Cart = () => {
         <OrderHistory 
           isOpen={showOrderHistory} 
           onClose={() => setShowOrderHistory(false)} 
+        />
+        <RefundTracker 
+          isOpen={showRefundTracker} 
+          onClose={() => setShowRefundTracker(false)} 
         />
       </div>
     );
@@ -102,9 +121,14 @@ const Cart = () => {
               Proceed to Payment
             </button>
             {isAuthenticated && (
-              <button className="order-history-btn" onClick={handleViewOrderHistory}>
-                View Order History
-              </button>
+              <>
+                <button className="order-history-btn" onClick={handleViewOrderHistory}>
+                  View Order History
+                </button>
+                <button className="refund-tracker-btn" onClick={handleViewRefundTracker}>
+                  Track Refunds
+                </button>
+              </>
             )}
           </div>
         </div>
@@ -113,6 +137,10 @@ const Cart = () => {
       <OrderHistory 
         isOpen={showOrderHistory} 
         onClose={() => setShowOrderHistory(false)} 
+      />
+      <RefundTracker 
+        isOpen={showRefundTracker} 
+        onClose={() => setShowRefundTracker(false)} 
       />
     </div>
   );

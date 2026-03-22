@@ -1,4 +1,5 @@
 const Order = require('../models/Order');
+const refundService = require('../services/refundService');
 
 const createOrder = async (req, res) => {
   try {
@@ -31,6 +32,20 @@ const createOrder = async (req, res) => {
       if (!item.productId || !item.productName || !item.quantity || !item.size || !item.price) {
         return res.status(400).json({ 
           message: `Item ${i + 1} is missing required fields: productId, productName, quantity, size, price` 
+        });
+      }
+      
+      // Validate quantity is positive
+      if (item.quantity <= 0) {
+        return res.status(400).json({ 
+          message: `Item ${i + 1} (${item.productName}) must have quantity greater than 0` 
+        });
+      }
+      
+      // Validate price is positive
+      if (item.price <= 0) {
+        return res.status(400).json({ 
+          message: `Item ${i + 1} (${item.productName}) must have price greater than 0` 
         });
       }
     }
@@ -76,6 +91,30 @@ const createOrder = async (req, res) => {
 
   } catch (error) {
     console.error('Error creating order:', error);
+    
+    // If payment was already processed, initiate refund
+    if (paymentDetails && paymentDetails.razorpayPaymentId) {
+      const refundResult = await refundService.handleOrderFailureRefund(
+        paymentDetails.razorpayPaymentId,
+        'UNKNOWN_ORDER', // Order wasn't created yet
+        userEmail
+      );
+      
+      if (refundResult.success) {
+        return res.status(500).json({ 
+          message: 'Order creation failed. Payment has been automatically refunded.',
+          refund: refundResult.refund,
+          error: error.message 
+        });
+      } else {
+        return res.status(500).json({ 
+          message: 'Order creation failed and automatic refund failed. Please contact support immediately.',
+          paymentId: paymentDetails.razorpayPaymentId,
+          error: error.message,
+          refundError: refundResult.error
+        });
+      }
+    }
     
     // Handle validation errors specifically
     if (error.name === 'ValidationError') {

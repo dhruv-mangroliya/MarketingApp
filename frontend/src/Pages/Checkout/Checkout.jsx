@@ -84,7 +84,62 @@ const Checkout = () => {
       return;
     }
     
-    initiatePayment();
+    // Check inventory BEFORE payment
+    checkInventoryAndProceed();
+  };
+
+  const checkInventoryAndProceed = async () => {
+    try {
+      const token = localStorage.getItem('authToken');
+      
+      // Map cart items for inventory check
+      const mappedItems = cart.map(item => ({
+        productId: item.id,
+        productName: item.name,
+        quantity: item.quantity,
+        size: item.size,
+        price: item.discountPrice,
+        image: item.image
+      }));
+      
+      // Check inventory availability BEFORE payment
+      const response = await fetch('http://localhost:5001/api/inventory-validation/check-availability', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          items: mappedItems
+        })
+      });
+
+      const data = await response.json();
+      
+      if (data.success && data.available) {
+        // All items available - proceed with payment
+        initiatePayment();
+      } else {
+        // Stock shortage - show error WITHOUT processing payment
+        const shortage = data.shortages[0]; // First shortage item
+        toast.error(
+          `😔 Stock Shortage Alert\n` +
+          `Product: ${shortage.productName}\n` +
+          `Size: ${shortage.size}\n` +
+          `You requested: ${shortage.requested} items\n` +
+          `Available: ${shortage.available} items\n\n` +
+          `Please reduce quantity or try a different size.`,
+          { 
+            autoClose: 10000,
+            style: { whiteSpace: 'pre-line', fontSize: '14px' }
+          }
+        );
+      }
+      
+    } catch (error) {
+      console.error('Error checking inventory:', error);
+      toast.error("Failed to check inventory. Please try again.");
+    }
   };
 
   const initiatePayment = async () => {
@@ -180,7 +235,13 @@ const Checkout = () => {
             pincode: formData.pincode
           },
           phoneNumber: verifiedPhone,
-          paymentDetails
+          paymentDetails: {
+            razorpayOrderId: paymentDetails.razorpay_order_id,
+            razorpayPaymentId: paymentDetails.razorpay_payment_id,
+            razorpaySignature: paymentDetails.razorpay_signature,
+            paymentStatus: 'captured',
+            paymentMethod: 'card' // You can detect this from Razorpay response
+          }
         })
       });
 
@@ -193,7 +254,98 @@ const Checkout = () => {
         setShowOrderSummary(true);
         toast.success("Order placed successfully!");
       } else {
-        toast.error(data.message || "Failed to create order");
+        console.error('Order creation failed:', data);
+        
+        // Check if this is a stock shortage scenario
+        if (data.stockShortage) {
+          // Check if refund was processed
+          if (data.refund) {
+            toast.error(
+              `❌ Payment Refunded - Stock Shortage\n` +
+              `Product: ${data.productName}\n` +
+              `Size: ${data.size}\n` +
+              `You requested: ${data.requested} items\n` +
+              `Available: ${data.available} items\n\n` +
+              `💰 Refund ID: ${data.refund.id}\n` +
+              `Amount: ₹${data.refund.amount}\n` +
+              `Processing Time: ${data.refund.estimatedProcessingTime}\n\n` +
+              `📧 Refund details sent to your email.\n` +
+              `You can track your refund in the Cart section.`,
+              { 
+                autoClose: 15000,
+                style: { whiteSpace: 'pre-line', fontSize: '14px' }
+              }
+            );
+            
+            // Send refund notification email
+            try {
+              await fetch('http://localhost:5001/api/refunds/send-notification', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                },
+                body: JSON.stringify({
+                  email: user.email,
+                  refund: data.refund,
+                  orderId: 'STOCK_SHORTAGE'
+                })
+              });
+            } catch (emailError) {
+              console.error('Failed to send refund email:', emailError);
+            }
+          } else {
+            toast.error(
+              `😔 Stock Shortage Alert\n` +
+              `Product: ${data.productName}\n` +
+              `Size: ${data.size}\n` +
+              `You requested: ${data.requested} items\n` +
+              `Available: ${data.available} items\n\n` +
+              `📧 Stock shortage details sent to your email.\n` +
+              `Please reduce quantity or try a different size.`,
+              { 
+                autoClose: 10000,
+                style: { whiteSpace: 'pre-line', fontSize: '14px' }
+              }
+            );
+          }
+        }
+        // Check if this is a refund scenario (inventory failure after payment)
+        else if (data.refund) {
+          toast.error(
+            `❌ Order Failed - Payment Refunded\n` +
+            `Refund ID: ${data.refund.id}\n` +
+            `Amount: ₹${data.refund.amount}\n` +
+            `Status: ${data.refund.status}\n` +
+            `Processing Time: ${data.refund.estimatedProcessingTime}\n\n` +
+            `📧 Refund details sent to your email.\n` +
+            `You can track your refund in the Cart section.`,
+            { 
+              autoClose: 12000,
+              style: { whiteSpace: 'pre-line', fontSize: '14px' }
+            }
+          );
+          
+          // Send refund notification email
+          try {
+            await fetch('http://localhost:5001/api/refunds/send-notification', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+              },
+              body: JSON.stringify({
+                email: user.email,
+                refund: data.refund,
+                orderId: 'FAILED_ORDER'
+              })
+            });
+          } catch (emailError) {
+            console.error('Failed to send refund email:', emailError);
+          }
+        } else {
+          toast.error(data.message || "Failed to create order");
+        }
       }
     } catch (error) {
       console.error('Error creating order:', error);
@@ -282,7 +434,7 @@ const Checkout = () => {
               <input 
                 type="text" 
                 name="state" 
-                placeholder="State" 
+                placeholder="State (e.g., Maharashtra, Delhi)" 
                 value={formData.state} 
                 onChange={handleChange} 
                 required 

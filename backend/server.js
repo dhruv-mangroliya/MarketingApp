@@ -12,11 +12,14 @@ require('dotenv').config();
 // Import route handlers
 const authRoutes = require('./routes/auth');
 const smsRoutes = require('./routes/sms');
-const paymentRoutes = require('./routes/payment');
-const orderRoutes = require('./routes/orders');
+const paymentRoutes = require('./routes/postgresPayments'); // Use PostgreSQL payments
+const orderRoutes = require('./routes/postgresOrders'); // Use PostgreSQL orders
 const uploadRoutes = require('./routes/upload');
 const newsletterRoutes = require('./routes/newsletter');
 const otpRoutes = require('./routes/otp');
+const inventoryRoutes = require('./routes/inventory'); // Add inventory routes
+const refundRoutes = require('./routes/refunds'); // Add refund routes
+const prisma = require('./lib/prisma'); // Add Prisma client
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -132,6 +135,10 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/otp', otpRoutes);
+app.use('/api/inventory', inventoryRoutes); // Add inventory routes
+app.use('/api/refunds', refundRoutes); // Add refund routes
+app.use('/api/inventory-validation', require('./routes/inventory-validation')); // Add inventory validation routes
+app.use('/api/admin/inventory', require('./routes/inventory-sync')); // Add inventory sync routes
 
 // Get all products
 app.get('/api/products', async (req, res) => {
@@ -202,8 +209,27 @@ app.post('/api/admin/products', adminLimiter, isAdmin, async (req, res) => {
       createdAt: new Date()
     };
     
+    // Create product in MongoDB
     const result = await db.collection('products').insertOne(newProduct);
-    res.json({ success: true, productId: result.insertedId });
+    
+    // Create inventory entries in PostgreSQL if sizes are provided
+    if (productData.sizes && Array.isArray(productData.sizes) && productData.sizes.length > 0) {
+      try {
+        const inventoryService = require('./services/inventoryService');
+        const sizeStock = productData.sizes.map(size => ({
+          size: size,
+          quantity: productData.stock || 0 // Use provided stock or default to 0
+        }));
+        
+        await inventoryService.initializeInventory(newId, sizeStock);
+        console.log(`✅ Inventory initialized for product ${newId}`);
+      } catch (inventoryError) {
+        console.error('❌ Failed to initialize inventory:', inventoryError);
+        // Don't fail the product creation, just log the error
+      }
+    }
+    
+    res.json({ success: true, productId: result.insertedId, inventoryCreated: !!productData.sizes });
   } catch (error) {
     console.error('Error adding product:', error);
     res.status(500).json({ error: 'Failed to add product' });
