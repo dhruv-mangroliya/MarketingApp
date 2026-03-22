@@ -3,10 +3,12 @@ import "./Navbar.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../Context/AuthContext";
 import GoogleLoginButton from "../../GoogleLoginButton";
+import RefundTracker from "../../RefundTracker";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showRefundTracker, setShowRefundTracker] = useState(false);
   const navigate = useNavigate();
   const { user, isAuthenticated } = useAuth();
   
@@ -49,6 +51,15 @@ const Navbar = () => {
               alt="Contact"  
               onClick={() => navigate('/contact')}
             />
+            
+            {/* Track Refund Button */}
+            <button 
+              className="track-refund-btn"
+              onClick={() => setShowRefundTracker(true)}
+              title="Track Refund"
+            >
+              📋
+            </button>
             
             {/* Login Button */}
             <button 
@@ -93,6 +104,7 @@ const Navbar = () => {
           {/* Mobile Login */}
           <li onClick={() => { setIsOpen(false); setShowLoginModal(true); }}>Login</li>
           <li onClick={() => { setIsOpen(false); navigate("/cart"); }}>Your Cart</li>
+          <li onClick={() => { setIsOpen(false); setShowRefundTracker(true); }}>Track Refund</li>
           <li onClick={() => { setIsOpen(false); navigate("/"); }}>Home</li>
           <li onClick={() => { setIsOpen(false); navigate("/blog"); }}>Blog</li>
           <li onClick={() => { setIsOpen(false); navigate("/about"); }}>About Us</li>
@@ -133,6 +145,11 @@ const Navbar = () => {
           </div>
         </div>
       )}
+      {/* Refund Tracker Modal */}
+      <RefundTracker 
+        isOpen={showRefundTracker} 
+        onClose={() => setShowRefundTracker(false)} 
+      />
     </>
   );
 };

@@ -1,0 +1,167 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Products table with optimistic locking
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  price       Decimal  @db.Decimal(10, 2)
+  discountPrice Decimal @db.Decimal(10, 2)
+  stock       Int      @default(0)
+  version     Int      @default(0) // Optimistic locking
+  image       String?
+  category    String?
+  description String?
+  sizes       String[] // Array of available sizes
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  inventoryItems InventoryItem[]
+  orderItems     OrderItem[]
+
+  @@map("products")
+}
+
+// Inventory table for size-specific stock with optimistic locking
+model InventoryItem {
+  id              Int     @id @default(autoincrement())
+  productId       Int
+  size            String
+  stockQuantity   Int     @default(0)
+  reservedQuantity Int    @default(0)
+  version         Int     @default(0) // Optimistic locking for inventory
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, size])
+  @@map("inventory_items")
+}
+
+// Orders table linked by email
+model Order {
+  id                String    @id @default(cuid())
+  orderId           String    @unique
+  userEmail         String
+  totalAmount       Decimal   @db.Decimal(10, 2)
+  status            OrderStatus @default(CONFIRMED)
+  shippingAddress   Json      // Store as JSON
+  phoneNumber       String
+  orderDate         DateTime  @default(now())
+  estimatedDelivery DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  // Relations
+  orderItems OrderItem[]
+  payment    Payment?
+  refunds    Refund[]
+
+  @@index([userEmail])
+  @@index([status])
+  @@map("orders")
+}
+
+// Order items table
+model OrderItem {
+  id          Int     @id @default(autoincrement())
+  orderId     String
+  productId   Int
+  productName String
+  quantity    Int
+  size        String
+  price       Decimal @db.Decimal(10, 2)
+  image       String?
+  createdAt   DateTime @default(now())
+
+  // Relations
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+
+  @@map("order_items")
+}
+
+// Payments table linked to orders
+model Payment {
+  id                  Int           @id @default(autoincrement())
+  orderId             String        @unique
+  razorpayOrderId     String?
+  razorpayPaymentId   String?
+  razorpaySignature   String?
+  amount              Decimal       @db.Decimal(10, 2)
+  currency            String        @default("INR")
+  status              PaymentStatus @default(PENDING)
+  paymentMethod       String?
+  createdAt           DateTime      @default(now())
+  verifiedAt          DateTime?
+  updatedAt           DateTime      @updatedAt
+
+  // Relations
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  refunds Refund[]
+
+  @@index([razorpayOrderId])
+  @@map("payments")
+}
+
+
+
+// Refunds table for tracking refund status
+model Refund {
+  id                String        @id @default(cuid())
+  orderId           String
+  paymentId         Int
+  razorpayRefundId  String        @unique
+  amount            Decimal       @db.Decimal(10, 2)
+  reason            String
+  status            RefundStatus  @default(PENDING)
+  userEmail         String
+  createdAt         DateTime      @default(now())
+  processedAt       DateTime?
+  updatedAt         DateTime      @updatedAt
+
+  // Relations
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  payment Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+
+  @@index([userEmail])
+  @@index([razorpayRefundId])
+  @@map("refunds")
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentStatus {
+  PENDING
+  CAPTURED
+  FAILED
+  REFUNDED
+}
+
+enum RefundStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
