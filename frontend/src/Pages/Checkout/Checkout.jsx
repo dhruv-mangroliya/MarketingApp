@@ -17,6 +17,7 @@ const Checkout = () => {
     name: "",
     address: "",
     city: "",
+    state: "",
     pincode: ""
   });
   const [showPhoneModal, setShowPhoneModal] = useState(false);
@@ -149,6 +150,17 @@ const Checkout = () => {
   const createOrder = async (paymentDetails) => {
     try {
       const token = localStorage.getItem('authToken');
+      
+      // Map cart items to the format expected by backend
+      const mappedItems = cart.map(item => ({
+        productId: item.id, // cart uses 'id', backend expects 'productId'
+        productName: item.name, // cart uses 'name', backend expects 'productName'
+        quantity: item.quantity,
+        size: item.size,
+        price: item.discountPrice, // Use discountPrice as the actual price
+        image: item.image // Add image URL to order items
+      }));
+      
       const response = await fetch('http://localhost:5001/api/orders/create', {
         method: 'POST',
         headers: {
@@ -156,13 +168,15 @@ const Checkout = () => {
           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
-          userId: user.id,
-          items: cart,
+          userEmail: user.email, // Use email instead of user.id
+          items: mappedItems, // Use mapped items instead of cart directly
           totalAmount: total,
           shippingAddress: {
             name: formData.name,
+            phone: verifiedPhone, // Add phone to shipping address
             address: formData.address,
             city: formData.city,
+            state: formData.state || 'N/A', // Add state field
             pincode: formData.pincode
           },
           phoneNumber: verifiedPhone,
@@ -262,6 +276,14 @@ const Checkout = () => {
                 name="city" 
                 placeholder="City" 
                 value={formData.city} 
+                onChange={handleChange} 
+                required 
+              />
+              <input 
+                type="text" 
+                name="state" 
+                placeholder="State" 
+                value={formData.state} 
                 onChange={handleChange} 
                 required 
               />

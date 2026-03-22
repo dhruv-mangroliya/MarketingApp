@@ -66,19 +66,54 @@
 
 .newsletter input {
   flex: 1;
-  padding: 8px;
+  padding: 12px;
   border: 1px solid #ccc;
-  border-radius: 4px 0 0 4px;
+  border-radius: 4px;
   outline: none;
+  font-size: 14px;
+}
+
+.newsletter input:focus {
+  border-color: #242f66;
 }
 
 .newsletter button {
-  padding: 8px 15px;
+  padding: 12px 20px;
   border: none;
-  background-color: black;
+  background-color: #242f66;
   color: white;
-  border-radius: 0 4px 4px 0;
+  border-radius: 4px;
   cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.newsletter button:hover {
+  background-color: #1a2347;
+}
+
+.newsletter button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.newsletter .back-btn {
+  background-color: #f0f0f0;
+  color: #333;
+  font-size: 12px;
+  padding: 8px 16px;
+}
+
+.newsletter .back-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.otp-info {
+  font-size: 12px;
+  color: #666;
+  margin: 0 0 5px 0;
+  text-align: center;
 }
 
 /* Bottom */

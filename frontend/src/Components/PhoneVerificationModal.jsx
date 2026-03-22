@@ -37,6 +37,14 @@ const PhoneVerificationModal = ({ isOpen, onClose, onVerified }) => {
       
       if (data.success) {
         toast.success('OTP sent successfully!');
+        
+        // In development mode, show the OTP
+        if (data.otp) {
+          toast.info(`Development Mode - OTP: ${data.otp}`, {
+            autoClose: 10000
+          });
+        }
+        
         setStep(2);
       } else {
         toast.error(data.message || 'Failed to send OTP');

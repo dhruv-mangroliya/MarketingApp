@@ -5,6 +5,6 @@ const { verifyToken } = require('../handlers/authHandlers');
 
 router.post('/create', verifyToken, createOrder);
 router.get('/:orderId', verifyToken, getOrder);
-router.get('/user/:userId', verifyToken, getUserOrders);
+router.get('/user/:userEmail', verifyToken, getUserOrders);
 
 module.exports = router;
