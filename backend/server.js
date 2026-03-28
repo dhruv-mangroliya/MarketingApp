@@ -19,6 +19,10 @@ const newsletterRoutes = require('./routes/newsletter');
 const otpRoutes = require('./routes/otp');
 const inventoryRoutes = require('./routes/inventory'); // Add inventory routes
 const refundRoutes = require('./routes/refunds'); // Add refund routes
+const productsRoutes = require('./routes/products'); // Add products routes
+const reviewsRoutes = require('./routes/reviews'); // Add reviews routes
+const blogsRoutes = require('./routes/blogs'); // Add blogs routes
+const adminRoutes = require('./routes/admin'); // Add admin routes
 const prisma = require('./lib/prisma'); // Add Prisma client
 
 const app = express();
@@ -69,6 +73,8 @@ MongoClient.connect(MONGODB_URI)
   .then(client => {
     console.log('Connected to MongoDB with native driver');
     db = client.db(DB_NAME);
+    // Make db available to routes
+    app.locals.db = db;
   })
   .catch(error => console.error('MongoDB connection error:', error));
 
@@ -137,165 +143,12 @@ app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/otp', otpRoutes);
 app.use('/api/inventory', inventoryRoutes); // Add inventory routes
 app.use('/api/refunds', refundRoutes); // Add refund routes
+app.use('/api/products', productsRoutes); // Add products routes
+app.use('/api/reviews', reviewsRoutes); // Add reviews routes
+app.use('/api/blogs', blogsRoutes); // Add blogs routes
+app.use('/api/admin', adminLimiter, adminRoutes); // Add admin routes
 app.use('/api/inventory-validation', require('./routes/inventory-validation')); // Add inventory validation routes
 app.use('/api/admin/inventory', require('./routes/inventory-sync')); // Add inventory sync routes
-
-// Get all products
-app.get('/api/products', async (req, res) => {
-  try {
-    const products = await db.collection('products').find({ isInCatalog: { $ne: false } }).toArray();
-    res.json(products);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch products' });
-  }
-});
-
-// Get product by ID
-app.get('/api/products/:id', async (req, res) => {
-  try {
-    const product = await db.collection('products').findOne({ id: parseInt(req.params.id) });
-    if (!product) {
-      return res.status(404).json({ error: 'Product not found' });
-    }
-    res.json(product);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch product' });
-  }
-});
-
-// Get all reviews
-app.get('/api/reviews', async (req, res) => {
-  try {
-    const reviews = await db.collection('reviews').find({}).toArray();
-    res.json(reviews);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch reviews' });
-  }
-});
-
-// Get all blogs
-app.get('/api/blogs', async (req, res) => {
-  try {
-    const blogs = await db.collection('blogs').find({}).toArray();
-    res.json(blogs);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch blogs' });
-  }
-});
-
-// Admin middleware
-const isAdmin = (req, res, next) => {
-  const token = req.headers.authorization?.split(' ')[1];
-  if (!token) {
-    return res.status(401).json({ error: 'No token provided' });
-  }
-  // For now, just check if token exists - you can add JWT verification here
-  next();
-};
-
-// Add product (Admin only)
-app.post('/api/admin/products', adminLimiter, isAdmin, async (req, res) => {
-  try {
-    const productData = req.body;
-    
-    // Get the highest ID and increment
-    const lastProduct = await db.collection('products').findOne({}, { sort: { id: -1 } });
-    const newId = lastProduct ? lastProduct.id + 1 : 1;
-    
-    const newProduct = {
-      id: newId,
-      ...productData,
-      isInCatalog: productData.isInCatalog !== false, // Default to true if not specified
-      createdAt: new Date()
-    };
-    
-    // Create product in MongoDB
-    const result = await db.collection('products').insertOne(newProduct);
-    
-    // Create inventory entries in PostgreSQL if sizes are provided
-    if (productData.sizes && Array.isArray(productData.sizes) && productData.sizes.length > 0) {
-      try {
-        const inventoryService = require('./services/inventoryService');
-        const sizeStock = productData.sizes.map(size => ({
-          size: size,
-          quantity: productData.stock || 0 // Use provided stock or default to 0
-        }));
-        
-        await inventoryService.initializeInventory(newId, sizeStock);
-        console.log(`✅ Inventory initialized for product ${newId}`);
-      } catch (inventoryError) {
-        console.error('❌ Failed to initialize inventory:', inventoryError);
-        // Don't fail the product creation, just log the error
-      }
-    }
-    
-    res.json({ success: true, productId: result.insertedId, inventoryCreated: !!productData.sizes });
-  } catch (error) {
-    console.error('Error adding product:', error);
-    res.status(500).json({ error: 'Failed to add product' });
-  }
-});
-
-// Get all products for admin (including hidden ones)
-app.get('/api/admin/products', adminLimiter, isAdmin, async (req, res) => {
-  try {
-    const products = await db.collection('products').find({}).sort({ createdAt: -1 }).toArray();
-    res.json({ success: true, products });
-  } catch (error) {
-    console.error('Error fetching admin products:', error);
-    res.status(500).json({ error: 'Failed to fetch products' });
-  }
-});
-
-// Remove product (Admin only) - Hide from catalog instead of deleting
-app.delete('/api/admin/products/:id', adminLimiter, isAdmin, async (req, res) => {
-  try {
-    const productId = parseInt(req.params.id);
-    const result = await db.collection('products').updateOne(
-      { id: productId },
-      { 
-        $set: { 
-          isInCatalog: false,
-          updatedAt: new Date()
-        }
-      }
-    );
-    
-    if (result.matchedCount === 0) {
-      return res.status(404).json({ error: 'Product not found' });
-    }
-    
-    res.json({ success: true, message: 'Product hidden from catalog successfully' });
-  } catch (error) {
-    console.error('Error hiding product:', error);
-    res.status(500).json({ error: 'Failed to hide product' });
-  }
-});
-
-// Restore product (Admin only) - Show in catalog again
-app.patch('/api/admin/products/:id/restore', adminLimiter, isAdmin, async (req, res) => {
-  try {
-    const productId = parseInt(req.params.id);
-    const result = await db.collection('products').updateOne(
-      { id: productId },
-      { 
-        $set: { 
-          isInCatalog: true,
-          updatedAt: new Date()
-        }
-      }
-    );
-    
-    if (result.matchedCount === 0) {
-      return res.status(404).json({ error: 'Product not found' });
-    }
-    
-    res.json({ success: true, message: 'Product restored to catalog successfully' });
-  } catch (error) {
-    console.error('Error restoring product:', error);
-    res.status(500).json({ error: 'Failed to restore product' });
-  }
-});
 
 // S3 image upload endpoint
 app.post('/api/upload/image', upload.single('image'), async (req, res) => {
