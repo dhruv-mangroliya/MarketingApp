@@ -14,9 +14,9 @@ const createOrder = async (req, res) => {
     } = req.body;
 
     // Validate required fields
-    if (!userEmail || !items || !totalAmount || !shippingAddress || !phoneNumber) {
+    if (!userEmail || !items || !totalAmount || !shippingAddress) {
       return res.status(400).json({ 
-        message: 'Missing required fields: userEmail, items, totalAmount, shippingAddress, phoneNumber' 
+        message: 'Missing required fields: userEmail, items, totalAmount, shippingAddress' 
       });
     }
 
@@ -157,7 +157,7 @@ const createOrder = async (req, res) => {
             totalAmount,
             status: 'CONFIRMED',
             shippingAddress,
-            phoneNumber,
+            phoneNumber: phoneNumber || '',
             estimatedDelivery: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
             orderItems: {
               create: items.map(item => ({
@@ -264,6 +264,7 @@ const createOrder = async (req, res) => {
           id: result.orderId,
           totalAmount: result.totalAmount,
           paymentStatus: paymentDetails?.paymentStatus || 'PENDING',
+          paymentId: paymentDetails?.razorpayPaymentId || null,
           status: result.status,
           items: result.orderItems,
           shippingAddress: shippingAddress

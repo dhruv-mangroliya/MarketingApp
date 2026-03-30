@@ -6,6 +6,26 @@ const api = axios.create({
   baseURL: API_BASE_URL,
 });
 
+// Add response interceptor to handle rate limiting globally
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 429) {
+      const errorData = error.response.data;
+      throw {
+        response: {
+          status: 429,
+          data: {
+            error: errorData.error || 'Too many requests',
+            retryAfter: errorData.retryAfter || '15 minutes'
+          }
+        }
+      };
+    }
+    throw error;
+  }
+);
+
 export const getProducts = async () => {
   try {
     const response = await api.get('/products');
@@ -32,6 +52,17 @@ export const sendOTP = async (email) => {
     return response.data;
   } catch (error) {
     console.error('Error sending OTP:', error);
+    
+    // Handle rate limiting
+    if (error.response?.status === 429) {
+      throw {
+        response: {
+          status: 429,
+          data: error.response.data
+        }
+      };
+    }
+    
     throw error;
   }
 };
@@ -77,12 +108,12 @@ export const verifyPayment = async (paymentData) => {
   }
 };
 
-export const sendSMSOTP = async (phone) => {
+export const sendPhoneOTP = async (email, phoneNumber) => {
   try {
-    const response = await api.post('/sms/send', { phone });
+    const response = await api.post('/otp/send-phone', { email, phoneNumber });
     return response.data;
   } catch (error) {
-    console.error('Error sending SMS OTP:', error);
+    console.error('Error sending phone OTP:', error);
     
     // Handle rate limiting
     if (error.response?.status === 429) {
@@ -98,12 +129,22 @@ export const sendSMSOTP = async (phone) => {
   }
 };
 
-export const verifySMSOTP = async (phone, otp) => {
+export const verifyPhoneOTP = async (phoneNumber, otp) => {
   try {
-    const response = await api.post('/sms/verify', { phone, otp });
+    const response = await api.post('/otp/verify-phone', { phoneNumber, otp });
     return response.data;
   } catch (error) {
-    console.error('Error verifying SMS OTP:', error);
+    console.error('Error verifying phone OTP:', error);
+    throw error;
+  }
+};
+
+export const getUserPhone = async (email) => {
+  try {
+    const response = await api.get(`/otp/user-phone/${encodeURIComponent(email)}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching user phone:', error);
     throw error;
   }
 };

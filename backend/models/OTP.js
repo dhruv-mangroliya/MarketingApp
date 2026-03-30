@@ -22,11 +22,17 @@ const otpSchema = new mongoose.Schema({
   verified: {
     type: Boolean,
     default: false
+  },
+  metadata: {
+    type: mongoose.Schema.Types.Mixed,
+    default: {}
   }
 }, {
   timestamps: true
 });
 
 otpSchema.index({ identifier: 1 });
+otpSchema.index({ type: 1 });
+otpSchema.index({ expiresAt: 1 });
 
 module.exports = mongoose.model('OTP', otpSchema);
