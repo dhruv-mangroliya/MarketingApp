@@ -6,7 +6,7 @@
 .checkout-page h1 {
   font-size: 32px;
   margin-bottom: 30px;
-  color: #242f66;
+  color: #5A3E36;
   text-align: center;
 }
 
@@ -62,7 +62,7 @@
 }
 
 .step.active .step-number {
-  background: linear-gradient(135deg, #242f66, #1a2347);
+  background: linear-gradient(135deg, #C62828, #E88C7D);
   color: white;
 }
 
@@ -199,7 +199,7 @@
 }
 
 .place-order-btn {
-  background: linear-gradient(135deg, #242f66, #1a2347);
+  background: linear-gradient(135deg, #C62828, #E88C7D);
   color: white;
   border: none;
   padding: 18px;
@@ -229,9 +229,9 @@
 }
 
 .place-order-btn:hover {
-  background: linear-gradient(135deg, #1a2347, #242f66);
+  background: linear-gradient(135deg, #D4A017, #C62828);
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(36, 47, 102, 0.3);
+  box-shadow: 0 8px 25px rgba(198,40,40,0.3);
 }
 
 .place-order-btn:disabled {

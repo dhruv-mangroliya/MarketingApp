@@ -1,8 +1,8 @@
 .footer {
-  background-color: #f4f2ef;
+  background: linear-gradient(135deg, #5A3E36 0%, #3D2B23 100%);
   padding: 60px 40px 20px 40px;
-  font-family: Arial, sans-serif;
-  color: #333;
+  font-family: 'Jost', Arial, sans-serif;
+  color: #FFF5E9;
 }
 
 .footer-container {
@@ -14,12 +14,14 @@
 .footer-column h3 {
   margin-bottom: 15px;
   font-size: 18px;
+  color: #E6C27A;
 }
 
 .footer-column p {
   font-size: 14px;
   line-height: 1.6;
   margin-bottom: 10px;
+  color: rgba(255,245,233,0.8);
 }
 
 .footer-column ul {
@@ -31,11 +33,12 @@
   margin-bottom: 8px;
   font-size: 14px;
   cursor: pointer;
+  color: rgba(255,245,233,0.8);
   transition: color 0.2s ease;
 }
 
 .footer-column ul li:hover {
-  color: #000;
+  color: #E6C27A;
 }
 
 /* Social icons */
@@ -80,7 +83,7 @@
 .newsletter button {
   padding: 12px 20px;
   border: none;
-  background-color: #242f66;
+  background: linear-gradient(135deg, #C62828, #D4A017);
   color: white;
   border-radius: 4px;
   cursor: pointer;
@@ -90,7 +93,7 @@
 }
 
 .newsletter button:hover {
-  background-color: #1a2347;
+  background: linear-gradient(135deg, #D4A017, #C62828);
 }
 
 .newsletter button:disabled {
@@ -121,8 +124,9 @@
   margin-top: 40px;
   text-align: center;
   font-size: 13px;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid rgba(230,194,122,0.3);
   padding-top: 15px;
+  color: rgba(255,245,233,0.6);
 }
 
 /* ================= RESPONSIVE ================= */

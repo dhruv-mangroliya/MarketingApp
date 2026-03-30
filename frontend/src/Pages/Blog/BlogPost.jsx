@@ -1,10 +1,21 @@
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './BlogPost.css';
 
 const BlogPost = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const blog = blogData.find(b => b.id === parseInt(id));
+  const [blog, setBlog] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`http://localhost:5001/api/blogs/${id}`)
+      .then(res => res.json())
+      .then(data => { setBlog(data); setLoading(false); })
+      .catch(err => { console.error('Error fetching blog:', err); setLoading(false); });
+  }, [id]);
+
+  if (loading) return <div className="blog-post-page">Loading...</div>;
 
   if (!blog) {
     return (

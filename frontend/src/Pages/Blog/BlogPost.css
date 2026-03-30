@@ -3,6 +3,7 @@
   min-height: 80vh;
   max-width: 800px;
   margin: 0 auto;
+  background: #FFF5E9;
 }
 
 .back-btn {
@@ -38,9 +39,9 @@
 
 .blog-content h2 {
   font-size: 24px;
-  color: #333;
+  color: #5A3E36;
   margin: 30px 0 15px 0;
-  border-bottom: 2px solid #4CAF50;
+  border-bottom: 2px solid #D4A017;
   padding-bottom: 5px;
 }
 

@@ -1,7 +1,7 @@
 .review-slider {
   position: relative;
   width: 100%;
-  background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
+  background: linear-gradient(135deg, #FFF5E9 0%, rgba(244,182,166,0.1) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -46,16 +46,16 @@
   margin: 0 0 5px 0;
   font-size: 18px;
   font-weight: 700;
-  color: #242f66;
+  color: #C62828;
 }
 
 .review-card span {
   font-size: 14px;
-  color: #9f8d6e;
+  color: #D4A017;
 }
 
 .nav-btn {
-  background: linear-gradient(135deg, #242f66 0%, #1a2347 100%);
+  background: linear-gradient(135deg, #C62828 0%, #D4A017 100%);
   color: white;
   border: none;
   font-size: 28px;
@@ -69,7 +69,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 4px 15px rgba(36, 47, 102, 0.3);
+  box-shadow: 0 4px 15px rgba(198,40,40,0.3);
   transition: all 0.3s ease;
   z-index: 10;
   outline: none;

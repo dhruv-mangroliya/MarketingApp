@@ -12,4 +12,16 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Get blog by id
+router.get('/:id', async (req, res) => {
+  try {
+    const db = req.app.locals.db;
+    const blog = await db.collection('blogs').findOne({ id: parseInt(req.params.id) });
+    if (!blog) return res.status(404).json({ error: 'Blog not found' });
+    res.json(blog);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch blog' });
+  }
+});
+
 module.exports = router;

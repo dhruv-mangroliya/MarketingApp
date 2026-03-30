@@ -52,14 +52,16 @@ const Navbar = () => {
               onClick={() => navigate('/contact')}
             />
             
-            {/* Track Refund Button */}
-            <button 
-              className="track-refund-btn"
-              onClick={() => setShowRefundTracker(true)}
-              title="Track Refund"
-            >
-              📋
-            </button>
+            {/* Track Refund Button - Only for logged in users */}
+            {isAuthenticated && (
+              <button 
+                className="track-refund-btn"
+                onClick={() => setShowRefundTracker(true)}
+                title="Track Refund"
+              >
+                Refund
+              </button>
+            )}
             
             {/* Login Button */}
             <button 
@@ -92,7 +94,7 @@ const Navbar = () => {
       {/* Fullscreen Mobile Slider */}
       <div className={`mobile-menu-full ${isOpen ? "open" : ""}`}>
         <div className="menu-header">
-          <button className="close-btn" onClick={() => setIsOpen(false)}>
+          <button className="navbar-close-btn" onClick={() => setIsOpen(false)}>
             x
           </button>
         </div>
@@ -104,7 +106,9 @@ const Navbar = () => {
           {/* Mobile Login */}
           <li onClick={() => { setIsOpen(false); setShowLoginModal(true); }}>Login</li>
           <li onClick={() => { setIsOpen(false); navigate("/cart"); }}>Your Cart</li>
-          <li onClick={() => { setIsOpen(false); setShowRefundTracker(true); }}>Track Refund</li>
+          {isAuthenticated && (
+            <li onClick={() => { setIsOpen(false); setShowRefundTracker(true); }}>Track Refund</li>
+          )}
           <li onClick={() => { setIsOpen(false); navigate("/"); }}>Home</li>
           <li onClick={() => { setIsOpen(false); navigate("/blog"); }}>Blog</li>
           <li onClick={() => { setIsOpen(false); navigate("/about"); }}>About Us</li>
