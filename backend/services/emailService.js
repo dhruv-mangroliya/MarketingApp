@@ -103,6 +103,7 @@ class EmailService {
                 <p style="margin: 5px 0; color: #155724;"><strong>Order Date:</strong> ${new Date().toLocaleDateString('en-IN')}</p>
                 <p style="margin: 5px 0; color: #155724;"><strong>Total Amount:</strong> ₹${orderDetails.totalAmount}</p>
                 <p style="margin: 5px 0; color: #155724;"><strong>Payment Status:</strong> ${orderDetails.paymentStatus}</p>
+                ${orderDetails.paymentId ? `<p style="margin: 5px 0; color: #155724;"><strong>Payment ID:</strong> <code style="background: #c3e6cb; padding: 4px 8px; border-radius: 4px;">${orderDetails.paymentId}</code></p>` : ''}
                 <p style="margin: 5px 0; color: #155724;"><strong>Order Status:</strong> ${orderDetails.status}</p>
               </div>
               
@@ -134,7 +135,9 @@ class EmailService {
             </div>
             
             <div style="text-align: center; color: #666; font-size: 14px; margin-top: 30px;">
-              <p>This is an automated confirmation email. Please save this for your records.</p>
+              <p>Need help with your order? Contact our support team:</p>
+              <p>📧 <a href="mailto:support@kurtibazaar.com" style="color: #28a745;">support@kurtibazaar.com</a></p>
+              <p>📞 +91-XXXXXXXXXX (Mon-Sat, 10AM - 6PM IST)</p>
               <p style="margin: 10px 0 0 0;">© 2024 KurtiBazaar. All rights reserved.</p>
             </div>
           </div>

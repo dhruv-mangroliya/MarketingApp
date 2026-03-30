@@ -20,6 +20,17 @@ const userSchema = new mongoose.Schema({
   picture: {
     type: String
   },
+  phoneNumber: {
+    type: String,
+    sparse: true // Allow null but unique when present
+  },
+  phoneVerified: {
+    type: Boolean,
+    default: false
+  },
+  phoneVerifiedAt: {
+    type: Date
+  },
   preferences: {
     favoriteCategories: [{
       type: String
@@ -40,5 +51,6 @@ const userSchema = new mongoose.Schema({
 // Indexes
 userSchema.index({ googleId: 1 });
 userSchema.index({ email: 1 });
+userSchema.index({ phoneNumber: 1 });
 
 module.exports = mongoose.model('User', userSchema);
