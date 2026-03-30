@@ -35,7 +35,7 @@ const Home = () => {
 
   return (
     <div>
-      <img className="main-banner" src="https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/MainBanner.webp" alt="Home" loading="lazy" />
+      <img className="main-banner" src="https://kurtibazaar-images.s3.ap-south-1.amazonaws.com/products/ChatGPT+Image+Mar+31%2C+2026%2C+12_24_22+AM.png" alt="Home" loading="lazy" />
       
       <div className="best-seller-title" id="best-sellers">
         <span>Best Sellers</span>
