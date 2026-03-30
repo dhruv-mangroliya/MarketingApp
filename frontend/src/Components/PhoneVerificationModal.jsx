@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import './PhoneVerificationModal.css';
 import { toast } from 'react-toastify';
+import { useAuth } from '../context/AuthContext';
+import { sendPhoneOTP, verifyPhoneOTP } from '../utils/api';
 
 const PhoneVerificationModal = ({ isOpen, onClose, onVerified }) => {
+  const { user, updateUserPhone } = useAuth();
   const [step, setStep] = useState(1);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [otp, setOtp] = useState('');
@@ -14,26 +17,14 @@ const PhoneVerificationModal = ({ isOpen, onClose, onVerified }) => {
       return;
     }
 
+    if (!user?.email) {
+      toast.error('User email not found. Please login again.');
+      return;
+    }
+
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5001/api/sms/send', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ phone: phoneNumber })
-      });
-
-      const data = await response.json();
-      
-      // Handle rate limiting
-      if (response.status === 429) {
-        toast.error(`🚫 ${data.error || 'Too many SMS requests'}\n⏰ Please try again after ${data.retryAfter || '15 minutes'}`, {
-          autoClose: 8000,
-          style: { whiteSpace: 'pre-line' }
-        });
-        return;
-      }
+      const data = await sendPhoneOTP(user.email, phoneNumber);
       
       if (data.success) {
         toast.success('OTP sent successfully!');
@@ -51,7 +42,17 @@ const PhoneVerificationModal = ({ isOpen, onClose, onVerified }) => {
       }
     } catch (error) {
       console.error('Error sending OTP:', error);
-      toast.error('Failed to send OTP');
+      
+      // Handle rate limiting
+      if (error.response?.status === 429) {
+        const errorData = error.response.data;
+        toast.error(`🚫 ${errorData.error || 'Too many SMS requests'}\n⏰ Please try again after ${errorData.retryAfter || '15 minutes'}`, {
+          autoClose: 8000,
+          style: { whiteSpace: 'pre-line' }
+        });
+      } else {
+        toast.error('Failed to send OTP');
+      }
     } finally {
       setLoading(false);
     }
@@ -65,18 +66,14 @@ const PhoneVerificationModal = ({ isOpen, onClose, onVerified }) => {
 
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5001/api/sms/verify', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ phone: phoneNumber, otp })
-      });
-
-      const data = await response.json();
+      const data = await verifyPhoneOTP(phoneNumber, otp);
       
       if (data.success) {
-        toast.success('Phone verified successfully!');
+        toast.success('Phone verified and linked successfully!');
+        
+        // Update user context with phone number
+        updateUserPhone(phoneNumber);
+        
         onVerified(phoneNumber);
         handleClose();
       } else {
@@ -108,7 +105,7 @@ const PhoneVerificationModal = ({ isOpen, onClose, onVerified }) => {
         
         {step === 1 ? (
           <>
-            <p>Please enter your phone number to receive OTP</p>
+            <p>Please enter your phone number to link with your account</p>
             <input
               type="tel"
               placeholder="+911234567890"
@@ -146,7 +143,7 @@ const PhoneVerificationModal = ({ isOpen, onClose, onVerified }) => {
               disabled={loading}
               className="verify-btn"
             >
-              {loading ? 'Verifying...' : 'Verify OTP'}
+              {loading ? 'Verifying...' : 'Verify & Link Phone'}
             </button>
           </>
         )}

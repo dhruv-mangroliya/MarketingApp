@@ -5,7 +5,6 @@ import { useAuth } from "../../context/AuthContext";
 import { toast } from "react-toastify";
 import "./Checkout.css";
 import GoogleLoginButton from "../../components/GoogleLoginButton";
-import PhoneVerificationModal from "../../components/PhoneVerificationModal";
 import OrderSummary from "../../components/OrderSummary";
 import { createPaymentOrder, verifyPayment } from "../../utils/api";
 
@@ -15,16 +14,15 @@ const Checkout = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
+    phone: "",
     address: "",
     city: "",
     state: "",
     pincode: ""
   });
-  const [showPhoneModal, setShowPhoneModal] = useState(false);
   const [showOrderSummary, setShowOrderSummary] = useState(false);
-  const [verifiedPhone, setVerifiedPhone] = useState("");
   const [completedOrder, setCompletedOrder] = useState(null);
-  const [currentStep, setCurrentStep] = useState(1); // 1: Login, 2: Phone, 3: Payment
+  const [currentStep, setCurrentStep] = useState(1);
 
   useEffect(() => {
     if (cart.length === 0) {
@@ -42,7 +40,7 @@ const Checkout = () => {
     }
   }, [isAuthenticated, user]);
 
-  const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const total = cart.reduce((sum, item) => sum + item.discountPrice * item.quantity, 0);
   const discount = subtotal - total;
 
@@ -52,14 +50,7 @@ const Checkout = () => {
 
   const handleGoogleLoginSuccess = () => {
     setCurrentStep(2);
-    toast.success("Login successful! Please verify your phone number.");
-  };
-
-  const handlePhoneVerified = (phoneNumber) => {
-    setVerifiedPhone(phoneNumber);
-    setShowPhoneModal(false);
-    setCurrentStep(3);
-    toast.success("Phone verified! You can now place your order.");
+    toast.success("Login successful!");
   };
 
   const handleSubmit = (e) => {
@@ -70,9 +61,8 @@ const Checkout = () => {
       return;
     }
 
-    if (!verifiedPhone) {
-      toast.error("Please verify your phone number first!");
-      setShowPhoneModal(true);
+    if (!formData.phone.trim()) {
+      toast.error("Please enter your phone number!");
       return;
     }
     
@@ -179,7 +169,7 @@ const Checkout = () => {
         prefill: {
           name: formData.name,
           email: user?.email,
-          contact: verifiedPhone
+          contact: formData.phone
         },
         theme: {
           color: '#242f66'
@@ -228,13 +218,13 @@ const Checkout = () => {
           totalAmount: total,
           shippingAddress: {
             name: formData.name,
-            phone: verifiedPhone, // Add phone to shipping address
+            phone: formData.phone,
             address: formData.address,
             city: formData.city,
-            state: formData.state || 'N/A', // Add state field
+            state: formData.state || 'N/A',
             pincode: formData.pincode
           },
-          phoneNumber: verifiedPhone,
+          phoneNumber: formData.phone,
           paymentDetails: {
             razorpayOrderId: paymentDetails.razorpay_order_id,
             razorpayPaymentId: paymentDetails.razorpay_payment_id,
@@ -372,9 +362,9 @@ const Checkout = () => {
           <span className="step-number">1</span>
           <span className="step-label">Login</span>
         </div>
-        <div className={`step ${currentStep >= 2 ? 'active' : ''} ${verifiedPhone ? 'completed' : ''}`}>
+        <div className={`step ${currentStep >= 2 ? 'active' : ''} ${formData.phone.trim() ? 'completed' : ''}`}>
           <span className="step-number">2</span>
-          <span className="step-label">Phone Verification</span>
+          <span className="step-label">Phone</span>
         </div>
         <div className={`step ${currentStep >= 3 ? 'active' : ''}`}>
           <span className="step-number">3</span>
@@ -395,65 +385,22 @@ const Checkout = () => {
               <div className="user-info">
                 <h2>Welcome, {user?.name}!</h2>
                 <p>Email: {user?.email}</p>
-                {verifiedPhone && <p>Phone: {verifiedPhone}</p>}
-                {!verifiedPhone && (
-                  <button 
-                    type="button" 
-                    onClick={() => setShowPhoneModal(true)}
-                    className="verify-phone-btn"
-                  >
-                    Verify Phone Number
-                  </button>
-                )}
               </div>
               
               <h2>Shipping Details</h2>
-              <input 
-                type="text" 
-                name="name" 
-                placeholder="Full Name" 
-                value={formData.name} 
-                onChange={handleChange} 
-                required 
-              />
-              <textarea 
-                name="address" 
-                placeholder="Address" 
-                value={formData.address} 
-                onChange={handleChange} 
-                required 
-              />
-              <input 
-                type="text" 
-                name="city" 
-                placeholder="City" 
-                value={formData.city} 
-                onChange={handleChange} 
-                required 
-              />
-              <input 
-                type="text" 
-                name="state" 
-                placeholder="State (e.g., Maharashtra, Delhi)" 
-                value={formData.state} 
-                onChange={handleChange} 
-                required 
-              />
-              <input 
-                type="text" 
-                name="pincode" 
-                placeholder="Pincode" 
-                value={formData.pincode} 
-                onChange={handleChange} 
-                required 
-              />
+              <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} required />
+              <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} required />
+              <textarea name="address" placeholder="Address" value={formData.address} onChange={handleChange} required />
+              <input type="text" name="city" placeholder="City" value={formData.city} onChange={handleChange} required />
+              <input type="text" name="state" placeholder="State (e.g., Maharashtra, Delhi)" value={formData.state} onChange={handleChange} required />
+              <input type="text" name="pincode" placeholder="Pincode" value={formData.pincode} onChange={handleChange} required />
               
               <button 
                 type="submit" 
                 className="place-order-btn"
-                disabled={!verifiedPhone}
+                disabled={!formData.phone.trim()}
               >
-                {!verifiedPhone ? 'Verify Phone to Continue' : 'Place Order & Pay'}
+                {!formData.phone.trim() ? 'Enter Phone to Continue' : 'Place Order & Pay'}
               </button>
             </form>
           )}
@@ -486,12 +433,6 @@ const Checkout = () => {
           </div>
         </div>
       </div>
-
-      <PhoneVerificationModal
-        isOpen={showPhoneModal}
-        onClose={() => setShowPhoneModal(false)}
-        onVerified={handlePhoneVerified}
-      />
 
       <OrderSummary
         order={completedOrder}

@@ -45,6 +45,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const updateUserPhone = (phoneNumber) => {
+    setUser(prev => ({
+      ...prev,
+      phoneNumber,
+      phoneVerified: true
+    }));
+  };
+
   const loginWithGoogle = async (googleToken) => {
     try {
       const response = await fetch('http://localhost:5001/api/auth/google', {
@@ -99,6 +107,7 @@ export const AuthProvider = ({ children }) => {
     loading,
     loginWithGoogle,
     logout,
+    updateUserPhone,
     isAuthenticated: !!user
   };
 
