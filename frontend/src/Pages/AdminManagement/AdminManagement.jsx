@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../Context/AuthContext';
 import { toast } from 'react-toastify';
+import { API_BASE } from '../../utils/config';
 import './AdminManagement.css';
 
 const AdminManagement = () => {
@@ -29,7 +30,7 @@ const AdminManagement = () => {
   const fetchProducts = async () => {
     setLoadingProducts(true);
     try {
-      const response = await fetch('http://localhost:5001/api/admin/products', {
+      const response = await fetch(`${API_BASE}/api/admin/products`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('authToken')}`
         }
@@ -110,7 +111,7 @@ const AdminManagement = () => {
         const formData = new FormData();
         formData.append('image', file);
         
-        const response = await fetch('http://localhost:5001/api/upload/image', {
+        const response = await fetch(`${API_BASE}/api/upload/image`, {
           method: 'POST',
           body: formData
         });
@@ -163,7 +164,7 @@ const AdminManagement = () => {
         discountPercentage: Math.round(((productData.price - productData.discountPrice) / productData.price) * 100)
       };
 
-      const response = await fetch('http://localhost:5001/api/admin/products', {
+      const response = await fetch(`${API_BASE}/api/admin/products`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -205,7 +206,7 @@ const AdminManagement = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:5001/api/admin/products/${productId}`, {
+      const response = await fetch(`${API_BASE}/api/admin/products/${productId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('authToken')}`
@@ -231,7 +232,7 @@ const AdminManagement = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:5001/api/admin/products/${productId}/restore`, {
+      const response = await fetch(`${API_BASE}/api/admin/products/${productId}/restore`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('authToken')}`

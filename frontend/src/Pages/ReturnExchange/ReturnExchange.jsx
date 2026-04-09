@@ -62,7 +62,7 @@ const ReturnExchange = () => {
       </p>
 
       <p><strong>Email:</strong> support@kurtibazaar.com</p>
-      <p><strong>Phone:</strong> +91 9876543210</p>
+      <p><strong>Phone:</strong> +91 8980861789</p>
 
       <p>
         Our support team will guide you through the return process.

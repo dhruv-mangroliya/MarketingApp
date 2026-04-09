@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./ReviewSlider.css";
+import { API_BASE } from '../../../utils/config';
 
 const ReviewSlider = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -8,7 +9,7 @@ const ReviewSlider = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await fetch('http://localhost:5001/api/reviews');
+        const response = await fetch(`${API_BASE}/api/reviews`);
         const data = await response.json();
         setReviews(data);
       } catch (error) {

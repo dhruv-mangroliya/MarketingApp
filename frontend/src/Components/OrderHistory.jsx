@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-toastify';
+import { API_BASE } from '../utils/config';
 import './OrderHistory.css';
 
 const OrderHistory = ({ isOpen, onClose }) => {
@@ -19,7 +20,7 @@ const OrderHistory = ({ isOpen, onClose }) => {
 
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:5001/api/orders/user/${encodeURIComponent(user.email)}`, {
+      const response = await fetch(`${API_BASE}/api/orders/user/${encodeURIComponent(user.email)}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

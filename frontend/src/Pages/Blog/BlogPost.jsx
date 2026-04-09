@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { API_BASE } from '../../utils/config';
 import './BlogPost.css';
 
 const BlogPost = () => {
@@ -9,7 +10,7 @@ const BlogPost = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:5001/api/blogs/${id}`)
+    fetch(`${API_BASE}/api/blogs/${id}`)
       .then(res => res.json())
       .then(data => { setBlog(data); setLoading(false); })
       .catch(err => { console.error('Error fetching blog:', err); setLoading(false); });

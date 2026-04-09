@@ -17,7 +17,7 @@ class MSG91Service {
 
   /**
    * Send OTP via SMS using MSG91
-   * @param {string} phoneNumber - Phone number with country code (e.g., +919876543210)
+   * @param {string} phoneNumber - Phone number with country code (e.g., +918980861789)
    * @param {string} otp - OTP to send
    * @returns {Promise<{success: boolean, message: string, data?: any}>}
    */
