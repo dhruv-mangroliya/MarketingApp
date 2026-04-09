@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE } from '../../utils/config';
 import './BlogSection.css';
 
 const BlogSection = () => {
@@ -9,7 +10,7 @@ const BlogSection = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch('http://localhost:5001/api/blogs');
+        const response = await fetch(`${API_BASE}/api/blogs`);
         const data = await response.json();
         setBlogData(data);
       } catch (error) {

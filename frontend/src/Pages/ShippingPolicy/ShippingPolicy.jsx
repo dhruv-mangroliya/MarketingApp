@@ -71,7 +71,7 @@ const ShippingPolicy = () => {
       </p>
 
       <p><strong>Email:</strong> support@kurtibazaar.com</p>
-      <p><strong>Phone:</strong> +91 9876543210</p>
+      <p><strong>Phone:</strong> +91 8980861789</p>
       <p><strong>Location:</strong> Surat, Gujarat, India</p>
 
       <p>

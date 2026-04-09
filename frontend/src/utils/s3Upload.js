@@ -1,10 +1,12 @@
+import { API_BASE } from './config';
+
 export const uploadToS3 = async (file, folder = 'products') => {
   const formData = new FormData();
   formData.append('file', file);
   formData.append('folder', folder);
   
   try {
-    const response = await fetch('http://localhost:5001/api/upload/s3', {
+    const response = await fetch(`${API_BASE}/api/upload/s3`, {
       method: 'POST',
       body: formData
     });

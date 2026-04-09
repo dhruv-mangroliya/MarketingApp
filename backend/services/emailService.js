@@ -137,7 +137,7 @@ class EmailService {
             <div style="text-align: center; color: #666; font-size: 14px; margin-top: 30px;">
               <p>Need help with your order? Contact our support team:</p>
               <p>📧 <a href="mailto:support@kurtibazaar.com" style="color: #28a745;">support@kurtibazaar.com</a></p>
-              <p>📞 +91-XXXXXXXXXX (Mon-Sat, 10AM - 6PM IST)</p>
+              <p>📞 +91 8980861789 (Mon-Sat, 10AM - 6PM IST)</p>
               <p style="margin: 10px 0 0 0;">© 2024 KurtiBazaar. All rights reserved.</p>
             </div>
           </div>

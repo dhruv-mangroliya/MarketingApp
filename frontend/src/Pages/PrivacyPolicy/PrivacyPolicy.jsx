@@ -73,7 +73,7 @@ const PrivacyPolicy = () => {
       <p><strong>KurtiBazaar</strong></p>
       <p>Surat, Gujarat, India</p>
       <p>Email: support@kurtibazaar.com</p>
-      <p>Phone: +91 9876543210</p>
+      <p>Phone: +91 8980861789</p>
     </div>
   );
 };

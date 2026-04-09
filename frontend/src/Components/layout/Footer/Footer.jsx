@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./Footer.css";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { API_BASE } from '../../../utils/config';
 
 const Footer = () => {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const Footer = () => {
 
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5001/api/otp/send', {
+      const response = await fetch(`${API_BASE}/api/otp/send`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
@@ -51,7 +52,7 @@ const Footer = () => {
     setLoading(true);
     try {
       // First verify OTP
-      const verifyResponse = await fetch('http://localhost:5001/api/otp/verify', {
+      const verifyResponse = await fetch(`${API_BASE}/api/otp/verify`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, otp })
@@ -65,7 +66,7 @@ const Footer = () => {
       }
 
       // Then subscribe to newsletter
-      const subscribeResponse = await fetch('http://localhost:5001/api/newsletter/subscribe', {
+      const subscribeResponse = await fetch(`${API_BASE}/api/newsletter/subscribe`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
@@ -108,7 +109,7 @@ const Footer = () => {
             confident, and stylish — whether it’s a casual day out or a festive occasion.
           </p>
 
-          <p><strong>Phone:</strong> +91 9876543210</p>
+          <p><strong>Phone:</strong> +91 8980861789</p>
           <p><strong>Email:</strong> support@kurtibazaar.com</p>
 
           <div className="social-icons">

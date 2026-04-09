@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
 import { toast } from "react-toastify";
+import { API_BASE } from "../../utils/config";
 import "./Checkout.css";
 import GoogleLoginButton from "../../components/GoogleLoginButton";
 import OrderSummary from "../../components/OrderSummary";
@@ -93,7 +94,7 @@ const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
       }));
       
       // Check inventory availability BEFORE payment
-      const response = await fetch('http://localhost:5001/api/inventory-validation/check-availability', {
+      const response = await fetch(`${API_BASE}/api/inventory-validation/check-availability`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -206,7 +207,7 @@ const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
         image: item.image // Add image URL to order items
       }));
       
-      const response = await fetch('http://localhost:5001/api/orders/create', {
+      const response = await fetch(`${API_BASE}/api/orders/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -269,7 +270,7 @@ const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
             
             // Send refund notification email
             try {
-              await fetch('http://localhost:5001/api/refunds/send-notification', {
+              await fetch(`${API_BASE}/api/refunds/send-notification`, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -318,7 +319,7 @@ const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
           
           // Send refund notification email
           try {
-            await fetch('http://localhost:5001/api/refunds/send-notification', {
+            await fetch(`${API_BASE}/api/refunds/send-notification`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',

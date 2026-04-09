@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../Context/AuthContext';
 import { toast } from 'react-toastify';
+import { API_BASE } from '../utils/config';
 import './RefundTracker.css';
 
 const RefundTracker = ({ isOpen, onClose }) => {
@@ -22,7 +23,7 @@ const RefundTracker = ({ isOpen, onClose }) => {
     
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:5001/api/refunds/user/${encodeURIComponent(user.email)}`);
+      const response = await fetch(`${API_BASE}/api/refunds/user/${encodeURIComponent(user.email)}`);
       const data = await response.json();
       
       if (data.success) {
@@ -46,7 +47,7 @@ const RefundTracker = ({ isOpen, onClose }) => {
 
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:5001/api/refunds/status/${trackingRefundId}`);
+      const response = await fetch(`${API_BASE}/api/refunds/status/${trackingRefundId}`);
       const data = await response.json();
       
       if (data.success) {
