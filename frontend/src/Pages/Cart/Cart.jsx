@@ -18,8 +18,8 @@ const Cart = () => {
   const total = cart.reduce((sum, item) => sum + item.discountPrice * item.quantity, 0);
   const discount = subtotal - total;
 
-  const handleRemove = (id, name) => {
-    removeFromCart(id);
+  const handleRemove = (id, size, name) => {
+    removeFromCart(id, size);
     toast.success(`${name} removed from cart!`);
   };
 
@@ -97,7 +97,7 @@ const Cart = () => {
                 <div className="item-total">
                   <p>₹{item.discountPrice * item.quantity}</p>
                 </div>
-                <button className="remove-btn" onClick={() => handleRemove(item.id, item.name)}>×</button>
+                <button className="remove-btn" onClick={() => handleRemove(item.id, item.size, item.name)}>×</button>
               </div>
             </div>
           ))}
