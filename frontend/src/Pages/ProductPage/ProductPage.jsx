@@ -43,7 +43,7 @@ const ProductPage = () => {
       toast.error("Please select a size!");
       return;
     }
-    addToCart({ ...product, size: selectedSize }, quantity);
+    addToCart({ ...product}, selectedSize, quantity);
     toast.success(`${quantity} item(s) added to cart!`);
   };
 
