@@ -1,6 +1,8 @@
 const prisma = require('../lib/prisma');
 const inventoryService = require('../services/inventoryService');
 const refundService = require('../services/refundService');
+const publishEvent = require('../events/publisher');
+const EVENT_TYPES = require('../events/eventTypes');
 
 const createOrder = async (req, res) => {
   try {
@@ -53,98 +55,27 @@ const createOrder = async (req, res) => {
 
     const orderId = `ORDER_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
-    // Step 1: Reserve inventory for all items
-    const reservationResults = [];
-    for (const item of items) {
-      const result = await inventoryService.purchaseProduct(
-        item.productId, 
-        item.size, 
-        item.quantity
-      );
-      
-      if (!result.success) {
-        // Release any previously reserved stock
-        for (const prevItem of reservationResults) {
-          await inventoryService.releaseReservedStock(
-            prevItem.productId, 
-            prevItem.size, 
-            prevItem.quantity
-          );
-        }
-        
-        // Send stock shortage notification email
-        try {
-          const emailService = require('../services/emailService');
-          await emailService.sendStockShortageNotification(userEmail, {
-            productName: item.productName,
-            size: item.size,
-            requested: item.quantity,
-            available: result.message.match(/Available: (\d+)/)?.[1] || 0,
-            items: items
-          });
-          console.log(`📧 Stock shortage email sent to ${userEmail}`);
-        } catch (emailError) {
-          console.error('Failed to send stock shortage email:', emailError);
-        }
-        
-        // If payment was already processed, initiate refund
-        if (paymentDetails && paymentDetails.razorpayPaymentId) {
-          const refundResult = await refundService.handleOrderFailureRefund(
-            paymentDetails.razorpayPaymentId,
-            orderId,
-            userEmail
-          );
-          
-          if (refundResult.success) {
-            // Send email notification with refund details
-            try {
-              const emailService = require('../services/emailService');
-              await emailService.sendRefundNotification(userEmail, refundResult.refund, orderId);
-              console.log(`✅ Refund email sent to ${userEmail}`);
-            } catch (emailError) {
-              console.error('Failed to send refund email:', emailError);
-            }
-            
-            return res.status(400).json({ 
-              message: `Stock shortage detected. Payment has been automatically refunded.`,
-              refund: {
-                id: refundResult.refund.id,
-                amount: refundResult.refund.amount,
-                status: refundResult.refund.status,
-                estimatedProcessingTime: '5-7 business days'
-              },
-              stockShortage: true,
-              productName: item.productName,
-              size: item.size,
-              requested: item.quantity,
-              available: result.message.match(/Available: (\d+)/)?.[1] || 0
-            });
-          } else {
-            return res.status(500).json({ 
-              message: 'Stock shortage detected and automatic refund failed. Please contact support immediately.',
-              paymentId: paymentDetails.razorpayPaymentId,
-              stockShortage: true,
-              productName: item.productName,
-              size: item.size,
-              requested: item.quantity,
-              available: result.message.match(/Available: (\d+)/)?.[1] || 0,
-              refundError: refundResult.error
-            });
-          }
-        }
-        
-        return res.status(400).json({ 
-          message: `Failed to reserve stock for ${item.productName} (${item.size}): ${result.message}`,
-          stockShortage: true,
-          productName: item.productName,
-          size: item.size,
-          requested: item.quantity,
-          available: result.message.match(/Available: (\d+)/)?.[1] || 0
-        });
+    //create order here and create a event object.
+    await publishEvent(
+      EVENT_TYPES.ORDER_CREATED,
+      {
+        userEmail, 
+        items, 
+        totalAmount, 
+        shippingAddress, 
+        phoneNumber,
+        paymentDetails,
+        orderId
       }
-      
-      reservationResults.push(item);
-    }
+    );
+
+    //order created -> inventory reserved -> payment captured -> order confirmed 
+    //  -> refund if needed -> mail of refund success/failed.
+
+    return res.status(201).json({ 
+      message: 'Order created successfully', 
+      orderId 
+    });
 
     try {
       // Step 2: Create order and payment in transaction

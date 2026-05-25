@@ -203,6 +203,60 @@ class EmailService {
    * @param {string} userEmail - User email
    * @param {object} stockInfo - Stock shortage information
    */
+  async sendRefundFailedNotification(userEmail, refundDetails, orderId) {
+    try {
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: userEmail,
+        subject: '⚠️ Refund Failed - Action Required | KurtiBazaar',
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+              <h2 style="color: #dc3545; margin-top: 0;">⚠️ Refund Failed</h2>
+              
+              <p>Dear Customer,</p>
+              
+              <p>We attempted to process a refund for your order <strong>${orderId}</strong>, but unfortunately the refund could not be completed.</p>
+              
+              <div style="background: #f8d7da; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #dc3545;">
+                <h3 style="color: #721c24; margin-top: 0;">Refund Details</h3>
+                <p style="color: #721c24;"><strong>Order ID:</strong> ${orderId}</p>
+                <p style="color: #721c24;"><strong>Amount:</strong> ₹${refundDetails?.amount || 'N/A'}</p>
+                <p style="color: #721c24;"><strong>Status:</strong> Failed</p>
+              </div>
+              
+              <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                <h4 style="color: #856404; margin-top: 0;">What should you do?</h4>
+                <ul style="color: #856404;">
+                  <li>Please contact our support team immediately</li>
+                  <li>Keep your Order ID handy: <strong>${orderId}</strong></li>
+                  <li>Our team will manually process your refund within 24 hours</li>
+                </ul>
+              </div>
+              
+              <p>We sincerely apologize for the inconvenience. Our team is already looking into this.</p>
+              
+              <p>Thank you for your patience!</p>
+              
+              <hr style="border: none; border-top: 1px solid #e1e5e9; margin: 30px 0;">
+              <p style="color: #666; font-size: 12px;">
+                For urgent support, contact us at support@kurtibazaar.com<br>
+                📞 +91 8980861789 (Mon-Sat, 10AM - 6PM IST)
+              </p>
+            </div>
+          </div>
+        `
+      };
+
+      await transporter.sendMail(mailOptions);
+      console.log(`✅ Refund failed notification sent to ${userEmail}`);
+      return { success: true };
+    } catch (error) {
+      console.error(`❌ Failed to send refund failed email to ${userEmail}:`, error.message);
+      return { success: false, error: error.message };
+    }
+  }
+
   async sendStockShortageNotification(userEmail, stockInfo) {
     try {
       const mailOptions = {
