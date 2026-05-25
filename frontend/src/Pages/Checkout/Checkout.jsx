@@ -41,7 +41,7 @@ const Checkout = () => {
     }
   }, [isAuthenticated, user]);
 
-const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const total = cart.reduce((sum, item) => sum + item.discountPrice * item.quantity, 0);
   const discount = subtotal - total;
 
@@ -114,7 +114,7 @@ const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
         // Stock shortage - show error WITHOUT processing payment
         const shortage = data.shortages[0]; // First shortage item
         toast.error(
-          `😔 Stock Shortage Alert\n` +
+          `Stock Shortage Alert\n` +
           `Product: ${shortage.productName}\n` +
           `Size: ${shortage.size}\n` +
           `You requested: ${shortage.requested} items\n` +

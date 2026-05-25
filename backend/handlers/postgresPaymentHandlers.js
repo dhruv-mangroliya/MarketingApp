@@ -49,7 +49,7 @@ const createPaymentOrder = async (req, res) => {
         });
       }
     }
-
+    
     res.json({ success: true, order: razorpayOrder });
   } catch (error) {
     console.error('Error creating payment order:', error);
