@@ -7,6 +7,7 @@ const multer = require('multer');
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const rateLimit = require('express-rate-limit');
 const mongoose = require('mongoose');
+const { connectRabbitMQ } = require("./config/rabbitmq");
 require('dotenv').config();
 
 // Import route handlers
@@ -207,10 +208,17 @@ app.post('/api/upload/image', upload.single('image'), async (req, res) => {
     });
   }
 });
+async function startServer() {
+  await connectRabbitMQ();
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
+
+startServer();
+
+
 
 
 // we are implementing newsletter email verification feature...
