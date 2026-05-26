@@ -217,14 +217,14 @@ const Checkout = () => {
           userEmail: user.email, // Use email instead of user.id
           items: mappedItems, // Use mapped items instead of cart directly
           totalAmount: total,
-          shippingAddress: {
+          shippingAddress: JSON.stringify({
             name: formData.name,
             phone: formData.phone,
             address: formData.address,
             city: formData.city,
             state: formData.state || 'N/A',
             pincode: formData.pincode
-          },
+          }),
           phoneNumber: formData.phone,
           paymentDetails: {
             razorpayOrderId: paymentDetails.razorpay_order_id,

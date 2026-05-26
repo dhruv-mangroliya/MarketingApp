@@ -13,7 +13,7 @@ async function startRefundFailedEmailConsumer() {
   const channel = getChannel();
 
   const queue =
-    "refund.email.queue";
+    "refund.failed.email.queue";
 
   // Create queue
   await channel.assertQueue(queue, {
@@ -48,11 +48,11 @@ async function startRefundFailedEmailConsumer() {
             await emailService.sendRefundFailedNotification(userEmail, refundResult.refund, orderId);
             console.log(`✅ Refund failed email sent to ${userEmail}`);
 
-            await publishEvent(EVENT_TYPES.REFUND_MAIL_SENT, {
+            await publishEvent(EVENT_TYPES.REFUND_FAILED_MAIL_SENT, {
                 userEmail, refundResult, orderId
             });
         } catch (emailError) {
-            await publishEvent(EVENT_TYPES.REFUND_MAIL_FAILED, {
+            await publishEvent(EVENT_TYPES.REFUND_FAILED_MAIL_FAILED, {
                 userEmail, refundResult, orderId
             });
             console.error('Failed to send refund email:', emailError);
