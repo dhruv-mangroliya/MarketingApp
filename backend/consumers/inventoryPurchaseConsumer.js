@@ -56,8 +56,9 @@ async function startInventoryPurchaseConsumer() {
                     item.size, 
                     item.quantity
                 );
+                console.log(`✅ [INVENTORY_PURCHASE] Confirmed purchase for product ${item.productId}, size ${item.size}, qty ${item.quantity}`);
             } catch (confirmError) {
-                console.error(`Failed to purchase item for ${item.productName}:`, confirmError.message);
+                console.error(`❌ [INVENTORY_PURCHASE] Failed to confirm purchase for ${item.productName}:`, confirmError.message);
                 
                 // Release all reserved stock for this order
                 for (const releaseItem of items) {
@@ -78,6 +79,10 @@ async function startInventoryPurchaseConsumer() {
 
                     console.log(`📤 [INVENTORY_PURCHASE] Published REFUND_CREATED event for order: ${orderId}`);
                 }
+                
+                // ACK and stop processing
+                channel.ack(msg);
+                return;
             }
         }
         

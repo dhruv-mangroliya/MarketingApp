@@ -53,8 +53,8 @@ async function startPaymentCreationConsumer() {
         });
 
         if (!order) {
-          console.error(`Order not found: ${orderId}`);
-          channel.nack(msg);
+          console.error(`❌ [PAYMENT_CREATION] Order not found: ${orderId}, acknowledging message`);
+          channel.ack(msg);
           return;
         }
 

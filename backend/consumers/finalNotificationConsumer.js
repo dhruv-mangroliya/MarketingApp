@@ -48,6 +48,7 @@ async function startFinalNotificationConsumer() {
         } = data;
         
         console.log(`📥 [FINAL_NOTIFICATION] Received INVENTORY_PURCHASED event for order: ${orderId}`);
+        console.log(`📋 [FINAL_NOTIFICATION] Data received:`, JSON.stringify({ shippingAddress, totalAmount, items: items?.length }, null, 2));
         
         // Parse shippingAddress if it's a JSON string
         const parsedShippingAddress = typeof shippingAddress === 'string' 
