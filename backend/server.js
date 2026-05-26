@@ -117,7 +117,7 @@ const authLimiter = rateLimit({
 
 const paymentLimiter = rateLimit({
   windowMs: 5 * 60 * 1000, // 5 minutes
-  max: 3, // limit each IP to 3 payment requests per 5 minutes
+  max: 30, // limit each IP to 3 payment requests per 5 minutes
   message: {
     error: 'Too many payment attempts, please try again later.',
     retryAfter: '5 minutes'

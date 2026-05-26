@@ -4,6 +4,7 @@ const {
 const inventoryService = require('../services/inventoryService');
 const publishEvent = require('../events/publisher');
 const refundService = require('../services/refundService');
+const prisma = require('../lib/prisma');
 
 const EVENT_TYPES = require(
   "../events/eventTypes"
@@ -49,6 +50,17 @@ async function startInventoryReserverConsumer() {
         console.log(`📥 [INVENTORY_RESERVER] Received ORDER_RECEIVED event for order: ${orderId}`);
         console.log(`📋 [INVENTORY_RESERVER] Extracted shippingAddress:`, shippingAddress);
 
+        // Check if order already exists (idempotency check)
+        const existingOrder = await prisma.order.findUnique({
+          where: { orderId }
+        });
+
+        if (existingOrder) {
+          console.log(`⚠️ [INVENTORY_RESERVER] Order ${orderId} already exists, skipping duplicate message`);
+          channel.ack(msg);
+          return;
+        }
+
         // Step 1: Reserve inventory for all items
         const reservationResults = [];
         for (const item of items) {
@@ -73,7 +85,8 @@ async function startInventoryReserverConsumer() {
                 size: item.size,
                 requested: item.quantity,
                 available: result.message.match(/Available: (\d+)/)?.[1] || 0,
-                items: items
+                items: items,
+                userEmail
             });
 
             console.log(`📤 [INVENTORY_RESERVER] Published INVENTORY_FAILED event for order: ${orderId}`);
@@ -91,7 +104,11 @@ async function startInventoryReserverConsumer() {
              console.log(`📤 [INVENTORY_RESERVER] Published REFUND_CREATED event for order: ${orderId}`);
             }
 
-            console.log(`Failed to reserve stock for ${item.productName} (${item.size}). Requested: ${item.quantity}, Available: ${result.message.match(/Available: (\d+)/)?.[1] || 0}`);
+            console.log(`❌ [INVENTORY_RESERVER] Failed to reserve stock for ${item.productName} (${item.size}). Requested: ${item.quantity}, Available: ${result.message.match(/Available: (\d+)/)?.[1] || 0}`);
+            
+            // ACK message and stop processing
+            channel.ack(msg);
+            return;
           }
 
           reservationResults.push(item);

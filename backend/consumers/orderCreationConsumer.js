@@ -90,7 +90,8 @@ async function startOrderCreationConsumer() {
           paymentDetails: data.paymentDetails,
           orderId,
           items,
-          userEmail
+          userEmail,
+          shippingAddress
         });
         
         console.log(`📤 [ORDER_CREATION] Published ORDER_CREATED event for order: ${orderId}`);
