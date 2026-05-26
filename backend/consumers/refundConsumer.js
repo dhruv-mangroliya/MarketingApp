@@ -41,6 +41,9 @@ async function startRefundConsumer() {
         if (!msg) return;
         
         const data = JSON.parse(msg.content.toString());
+        const { paymentDetails, orderId, userEmail } = data;
+
+        console.log(`📥 [REFUND] Received REFUND_CREATED event for order: ${orderId}`);
 
         const refundResult = await refundService.handleOrderFailureRefund(
             paymentDetails.razorpayPaymentId,
@@ -49,17 +52,16 @@ async function startRefundConsumer() {
         );
 
         if (refundResult.success) {
-            // Send email notification with refund details
             await publishEvent(EVENT_TYPES.REFUND_PAID,{
                 userEmail, refundResult, orderId
-            })
+            });
             
-            console.log('Refund successful for payment:', paymentDetails.razorpayPaymentId);
+            console.log(`📤 [REFUND] Published REFUND_PAID event for order: ${orderId}`);
         } else {
             await publishEvent(EVENT_TYPES.REFUND_FAILED, {
                 userEmail, refundResult, orderId
             });
-            console.error('Refund failed for payment:', paymentDetails.razorpayPaymentId);
+            console.log(`📤 [REFUND] Published REFUND_FAILED event for order: ${orderId}`);
         }
         
 

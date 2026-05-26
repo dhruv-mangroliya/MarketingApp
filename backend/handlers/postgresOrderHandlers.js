@@ -55,9 +55,11 @@ const createOrder = async (req, res) => {
 
     const orderId = `ORDER_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
+    console.log('📋 [ORDER_HANDLER] Received order data:', JSON.stringify({ shippingAddress, phoneNumber }, null, 2));
+
     //create order here and create a event object.
     await publishEvent(
-      EVENT_TYPES.ORDER_CREATED,
+      EVENT_TYPES.ORDER_RECEIVED,
       {
         userEmail, 
         items, 
@@ -69,214 +71,10 @@ const createOrder = async (req, res) => {
       }
     );
 
-    //order created -> inventory reserved -> payment captured -> order confirmed 
-    //  -> refund if needed -> mail of refund success/failed.
-
     return res.status(201).json({ 
       message: 'Order created successfully', 
-      orderId 
+      orderId
     });
-
-    try {
-      // Step 2: Create order and payment in transaction
-      const result = await prisma.$transaction(async (tx) => {
-        // Create order
-        const order = await tx.order.create({
-          data: {
-            orderId,
-            userEmail,
-            totalAmount,
-            status: 'CONFIRMED',
-            shippingAddress,
-            phoneNumber: phoneNumber || '',
-            estimatedDelivery: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-            orderItems: {
-              create: items.map(item => ({
-                productId: parseInt(item.productId),
-                productName: item.productName,
-                quantity: item.quantity,
-                size: item.size,
-                price: item.price,
-                image: item.image
-              }))
-            }
-          },
-          include: {
-            orderItems: true
-          }
-        });
-
-        // Create payment record
-        if (paymentDetails) {
-          await tx.payment.create({
-            data: {
-              orderId: order.id,
-              razorpayOrderId: paymentDetails.razorpayOrderId,
-              razorpayPaymentId: paymentDetails.razorpayPaymentId,
-              razorpaySignature: paymentDetails.razorpaySignature,
-              amount: totalAmount,
-              status: paymentDetails.paymentStatus === 'captured' ? 'CAPTURED' : 'PENDING',
-              paymentMethod: paymentDetails.paymentMethod
-            }
-          });
-        }
-
-        return order;
-      });
-
-      // Step 3: Confirm inventory purchases (with safety checks)
-      for (const item of items) {
-        try {
-          await inventoryService.confirmPurchase(
-            item.productId, 
-            item.size, 
-            item.quantity
-          );
-        } catch (confirmError) {
-          console.error(`Failed to confirm purchase for ${item.productName}:`, confirmError.message);
-          
-          // Release all reserved stock for this order
-          for (const releaseItem of items) {
-            await inventoryService.releaseReservedStock(
-              releaseItem.productId, 
-              releaseItem.size, 
-              releaseItem.quantity
-            );
-          }
-          
-          // Initiate automatic refund since payment was already processed
-          if (paymentDetails && paymentDetails.razorpayPaymentId) {
-            const refundResult = await refundService.handleOrderFailureRefund(
-              paymentDetails.razorpayPaymentId,
-              orderId,
-              userEmail
-            );
-            
-            if (refundResult.success) {
-              // Send email notification with refund details
-              try {
-                const emailService = require('../services/emailService');
-                await emailService.sendRefundNotification(userEmail, refundResult.refund, orderId);
-                console.log(`✅ Refund email sent to ${userEmail}`);
-              } catch (emailError) {
-                console.error('Failed to send refund email:', emailError);
-              }
-              
-              return res.status(400).json({ 
-                message: `Order failed due to inventory issue. Payment has been automatically refunded.`,
-                refund: {
-                  id: refundResult.refund.id,
-                  amount: refundResult.refund.amount,
-                  status: refundResult.refund.status,
-                  estimatedProcessingTime: '5-7 business days'
-                },
-                orderId: orderId,
-                error: confirmError.message
-              });
-            } else {
-              return res.status(500).json({ 
-                message: 'Order failed and automatic refund failed. Please contact support immediately.',
-                paymentId: paymentDetails.razorpayPaymentId,
-                orderId: orderId,
-                error: confirmError.message,
-                refundError: refundResult.error
-              });
-            }
-          }
-          
-          throw confirmError;
-        }
-      }
-
-      // Step 4: Send order confirmation email
-      try {
-        const emailService = require('../services/emailService');
-        await emailService.sendOrderConfirmation(userEmail, {
-          id: result.orderId,
-          totalAmount: result.totalAmount,
-          paymentStatus: paymentDetails?.paymentStatus || 'PENDING',
-          paymentId: paymentDetails?.razorpayPaymentId || null,
-          status: result.status,
-          items: result.orderItems,
-          shippingAddress: shippingAddress
-        });
-        console.log(`✅ Order confirmation email sent to ${userEmail}`);
-      } catch (emailError) {
-        console.error('Failed to send order confirmation email:', emailError);
-        // Don't fail the order if email fails
-      }
-
-      res.json({
-        success: true,
-        message: 'Order created successfully',
-        order: {
-          orderId: result.orderId,
-          status: result.status,
-          totalAmount: result.totalAmount,
-          orderDate: result.orderDate,
-          estimatedDelivery: result.estimatedDelivery,
-          items: result.orderItems
-        }
-      });
-
-    } catch (transactionError) {
-      console.error('Order creation failed:', transactionError);
-      
-      // Release reserved stock if transaction fails
-      for (const item of items) {
-        try {
-          await inventoryService.releaseReservedStock(
-            item.productId, 
-            item.size, 
-            item.quantity
-          );
-        } catch (releaseError) {
-          console.error(`Failed to release stock for ${item.productName}:`, releaseError);
-        }
-      }
-      
-      // If payment was already processed, initiate refund
-      if (paymentDetails && paymentDetails.razorpayPaymentId) {
-        const refundResult = await refundService.handleOrderFailureRefund(
-          paymentDetails.razorpayPaymentId,
-          orderId,
-          userEmail
-        );
-        
-        if (refundResult.success) {
-          // Send email notification with refund details
-          try {
-            const emailService = require('../services/emailService');
-            await emailService.sendRefundNotification(userEmail, refundResult.refund, orderId);
-            console.log(`✅ Refund email sent to ${userEmail}`);
-          } catch (emailError) {
-            console.error('Failed to send refund email:', emailError);
-          }
-          
-          return res.status(500).json({ 
-            message: 'Order creation failed. Payment has been automatically refunded.',
-            refund: {
-              id: refundResult.refund.id,
-              amount: refundResult.refund.amount,
-              status: refundResult.refund.status,
-              estimatedProcessingTime: '5-7 business days'
-            },
-            orderId: orderId,
-            error: transactionError.message 
-          });
-        } else {
-          return res.status(500).json({ 
-            message: 'Order creation failed and automatic refund failed. Please contact support immediately.',
-            paymentId: paymentDetails.razorpayPaymentId,
-            orderId: orderId,
-            error: transactionError.message,
-            refundError: refundResult.error
-          });
-        }
-      }
-      
-      throw transactionError;
-    }
 
   } catch (error) {
     console.error('Error creating order:', error);

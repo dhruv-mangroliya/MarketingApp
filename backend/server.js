@@ -13,6 +13,11 @@ const startInventoryReserverConsumer = require("./consumers/inventoryReserverCon
 const startInventoryShortageConsumer = require("./consumers/inventoryShortageConsumer");
 const startRefundConsumer = require("./consumers/refundConsumer");
 const startRefundPaidEmailConsumer = require("./consumers/refundPaidEmailConsumer");
+const startRefundFailedEmailConsumer = require("./consumers/refundFailedEmailConsumer");
+const startFinalNotificationConsumer = require("./consumers/finalNotificationConsumer");
+const startInventoryPurchaseConsumer = require("./consumers/inventoryPurchaseConsumer");
+const startPaymentConsumer = require("./consumers/paymentCreationConsumer");
+const startOrderCreationConsumer = require("./consumers/orderCreationConsumer");
 
 require('dotenv').config();
 
@@ -222,6 +227,10 @@ async function startServer() {
   await startRefundConsumer();
   await startRefundPaidEmailConsumer();
   await startRefundFailedEmailConsumer();
+  await startFinalNotificationConsumer();
+  await startInventoryPurchaseConsumer();
+  await startPaymentConsumer();
+  await startOrderCreationConsumer();
 
   app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);

@@ -39,36 +39,34 @@ async function startInventoryShortageConsumer() {
         if (!msg) return;
         
         const data = JSON.parse(msg.content.toString());
+        const { productName, size, requested, available, items, userEmail } = data;
 
         // Send stock shortage notification email
         try {
-            const emailService = require('../services/emailService');
             await emailService.sendStockShortageNotification(userEmail, {
-                productName: item.productName,
-                size: item.size,
-                requested: item.quantity,
-                available: result.message.match(/Available: (\d+)/)?.[1] || 0,
-                items: items
+                productName,
+                size,
+                requested,
+                available,
+                items
             });
-            console.log(`Stock shortage email sent to ${userEmail}`);
+            console.log(`✅ Stock shortage email sent to ${userEmail}`);
 
             await publishEvent(EVENT_TYPES.SHORTAGE_MAIL_SENT, {
                 userEmail,
-                productName: item.productName,
-                size: item.size,
-                requested: item.quantity,
-                available: result.message.match(/Available: (\d+)/)?.[1] || 0,
-                items: items
+                productName,
+                size,
+                requested,
+                available
             });
         } catch (emailError) {
-            console.error('Failed to send stock shortage email:', emailError);
+            console.error(`❌ Failed to send stock shortage email:`, emailError.message);
             await publishEvent(EVENT_TYPES.SHORTAGE_MAIL_FAILED, {
                 userEmail,
-                productName: item.productName,
-                size: item.size,
-                requested: item.quantity,
-                available: result.message.match(/Available: (\d+)/)?.[1] || 0,
-                items: items
+                productName,
+                size,
+                requested,
+                available
             });
         }
 

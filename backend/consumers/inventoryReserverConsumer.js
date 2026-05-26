@@ -46,6 +46,9 @@ async function startInventoryReserverConsumer() {
           orderId
         } = data;
 
+        console.log(`📥 [INVENTORY_RESERVER] Received ORDER_RECEIVED event for order: ${orderId}`);
+        console.log(`📋 [INVENTORY_RESERVER] Extracted shippingAddress:`, shippingAddress);
+
         // Step 1: Reserve inventory for all items
         const reservationResults = [];
         for (const item of items) {
@@ -73,7 +76,7 @@ async function startInventoryReserverConsumer() {
                 items: items
             });
 
-            console.log('INVENTORY FAILED event published for order:', orderId);
+            console.log(`📤 [INVENTORY_RESERVER] Published INVENTORY_FAILED event for order: ${orderId}`);
 
             
             // If payment was already processed, initiate refund
@@ -85,7 +88,7 @@ async function startInventoryReserverConsumer() {
                 userEmail
              });
 
-             console.log("REFUND_CREATED event published for order:", orderId);
+             console.log(`📤 [INVENTORY_RESERVER] Published REFUND_CREATED event for order: ${orderId}`);
             }
 
             console.log(`Failed to reserve stock for ${item.productName} (${item.size}). Requested: ${item.quantity}, Available: ${result.message.match(/Available: (\d+)/)?.[1] || 0}`);
@@ -103,6 +106,9 @@ async function startInventoryReserverConsumer() {
           phoneNumber,
           paymentDetails 
         });
+        console.log(`📋 [INVENTORY_RESERVER] Publishing data:`, JSON.stringify({ shippingAddress, userEmail, totalAmount }, null, 2));
+        console.log(`📤 [INVENTORY_RESERVER] Published INVENTORY_RESERVED event for order: ${orderId}`);
+        
         // ACK message
         channel.ack(msg);
 
