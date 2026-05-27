@@ -8,16 +8,41 @@ const EVENT_TYPES = require(
 
 const refundService = require('../services/refundService');
 const publishEvent = require('../events/publisher');
+
 async function startRefundConsumer() {
 
   const channel = getChannel();
 
-  const queue =
-    "refund.create.queue";
+  // Setup Dead Letter Queue
+  const deadLetterQueue = "refund.create.dead.queue";
+  await channel.assertExchange(
+    "dead.events",
+    "direct",
+    {
+      durable: true
+    }
+  );
 
-  // Create queue
+  await channel.assertQueue(
+    deadLetterQueue,
+    {
+      durable: true
+    }
+  );
+
+  await channel.bindQueue(
+    deadLetterQueue,
+    "dead.events",
+    "refund.create.failed"
+  );
+
+  const queue = "refund.create.queue";
+
+  // Create queue with DLQ configuration
   await channel.assertQueue(queue, {
-    durable: true
+    durable: true,
+    deadLetterExchange: "dead.events",
+    deadLetterRoutingKey: "refund.create.failed"
   });
 
   // Bind queue to exchange
@@ -27,9 +52,7 @@ async function startRefundConsumer() {
     EVENT_TYPES.REFUND_CREATED
   );
 
-  console.log(
-    "Inventory consumer started"
-  );
+  console.log("Refund consumer started");
 
   // Start consuming
   channel.consume(
@@ -43,7 +66,7 @@ async function startRefundConsumer() {
         const data = JSON.parse(msg.content.toString());
         const { paymentDetails, orderId, userEmail } = data;
 
-        console.log(`📥 [REFUND] Received REFUND_CREATED event for order: ${orderId}`);
+        console.log(`[RECEIVED] [REFUND] Received REFUND_CREATED event for order: ${orderId}`);
 
         const refundResult = await refundService.handleOrderFailureRefund(
             paymentDetails.razorpayPaymentId,
@@ -51,29 +74,35 @@ async function startRefundConsumer() {
             userEmail
         );
 
-        if (refundResult.success) {
-            await publishEvent(EVENT_TYPES.REFUND_PAID,{
-                userEmail, refundResult, orderId
-            });
-            
-            console.log(`📤 [REFUND] Published REFUND_PAID event for order: ${orderId}`);
-        } else {
-            await publishEvent(EVENT_TYPES.REFUND_FAILED, {
-                userEmail, refundResult, orderId
-            });
-            console.log(`📤 [REFUND] Published REFUND_FAILED event for order: ${orderId}`);
+        try {
+          if (refundResult.success) {
+              await publishEvent(EVENT_TYPES.REFUND_PAID,{
+                  userEmail, refundResult, orderId
+              });
+              
+              console.log(`[PUBLISHED] [REFUND] Published REFUND_PAID event for order: ${orderId}`);
+          } else {
+              await publishEvent(EVENT_TYPES.REFUND_FAILED, {
+                  userEmail, refundResult, orderId
+              });
+              console.log(`[PUBLISHED] [REFUND] Published REFUND_FAILED event for order: ${orderId}`);
+          }
+        } catch (publishError) {
+          console.error(`[ERROR] [REFUND] Failed to publish refund event:`, publishError.message);
+          // Send to DLQ if publishing fails
+          channel.nack(msg, false, false);
+          return;
         }
-        
 
         // ACK message
         channel.ack(msg);
 
       } catch (err) {
 
-        console.error(err);
+        console.error(`[ERROR] [REFUND] Error:`, err.message);
 
-        // Reject message
-        channel.nack(msg);
+        // Reject message and send to DLQ
+        channel.nack(msg, false, false);
       }
     }
   );

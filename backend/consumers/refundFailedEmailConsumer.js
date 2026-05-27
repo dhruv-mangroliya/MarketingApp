@@ -8,16 +8,41 @@ const EVENT_TYPES = require(
 
 const emailService = require('../services/emailService');
 const publishEvent = require('../events/publisher');
+
 async function startRefundFailedEmailConsumer() {
 
   const channel = getChannel();
 
-  const queue =
-    "refund.failed.email.queue";
+  // Setup Dead Letter Queue
+  const deadLetterQueue = "refund.failed.email.dead.queue";
+  await channel.assertExchange(
+    "dead.events",
+    "direct",
+    {
+      durable: true
+    }
+  );
 
-  // Create queue
+  await channel.assertQueue(
+    deadLetterQueue,
+    {
+      durable: true
+    }
+  );
+
+  await channel.bindQueue(
+    deadLetterQueue,
+    "dead.events",
+    "refund.failed.email.failed"
+  );
+
+  const queue = "refund.failed.email.queue";
+
+  // Create queue with DLQ configuration
   await channel.assertQueue(queue, {
-    durable: true
+    durable: true,
+    deadLetterExchange: "dead.events",
+    deadLetterRoutingKey: "refund.failed.email.failed"
   });
 
   // Bind queue to exchange
@@ -46,16 +71,21 @@ async function startRefundFailedEmailConsumer() {
 
         try {
             await emailService.sendRefundFailedNotification(userEmail, refundResult.refund, orderId);
-            console.log(`✅ Refund failed email sent to ${userEmail}`);
+            console.log(`[SUCCESS] Refund failed email sent to ${userEmail}`);
 
             await publishEvent(EVENT_TYPES.REFUND_FAILED_MAIL_SENT, {
                 userEmail, refundResult, orderId
             });
         } catch (emailError) {
-            await publishEvent(EVENT_TYPES.REFUND_FAILED_MAIL_FAILED, {
-                userEmail, refundResult, orderId
-            });
-            console.error('Failed to send refund email:', emailError);
+            console.error(`[ERROR] Failed to send refund failed email:`, emailError.message);
+            
+            try {
+              await publishEvent(EVENT_TYPES.REFUND_FAILED_MAIL_FAILED, {
+                  userEmail, refundResult, orderId
+              });
+            } catch (publishError) {
+              console.error(`[ERROR] Failed to publish REFUND_FAILED_MAIL_FAILED:`, publishError.message);
+            }
         }
 
         // ACK message
@@ -63,10 +93,10 @@ async function startRefundFailedEmailConsumer() {
 
       } catch (err) {
 
-        console.error(err);
+        console.error(`[ERROR] [REFUND_FAILED_EMAIL] Error:`, err.message);
 
-        // Reject message
-        channel.nack(msg);
+        // Reject message and send to DLQ
+        channel.nack(msg, false, false);
       }
     }
   );

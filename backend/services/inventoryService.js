@@ -53,12 +53,12 @@ class InventoryService {
 
         // If update succeeded, we got the stock
         if (updated.count === 1) {
-          console.log(`✅ Stock reserved: Product ${productId}, Size ${size}, Qty ${quantity}`);
+          console.log(`[SUCCESS] Stock reserved: Product ${productId}, Size ${size}, Qty ${quantity}`);
           return { success: true };
         }
 
         // Version conflict - retry
-        console.log(`🔄 Retry ${attempt}/${MAX_RETRIES}: Version conflict for product ${productId}`);
+        console.log(`[RETRY] Retry ${attempt}/${MAX_RETRIES}: Version conflict for product ${productId}`);
 
       } catch (error) {
         if (error.message.includes('Insufficient stock') || error.message.includes('not found')) {
@@ -67,7 +67,7 @@ class InventoryService {
         }
 
         if (attempt === MAX_RETRIES) {
-          console.error(`❌ Failed after ${MAX_RETRIES} retries:`, error.message);
+          console.error(`[ERROR] Failed after ${MAX_RETRIES} retries:`, error.message);
           return { success: false, message: 'Failed to reserve stock after multiple attempts' };
         }
       }
@@ -135,7 +135,7 @@ class InventoryService {
         throw new Error(`Failed to confirm purchase: stock validation failed for product ${productId}, size ${size}`);
       }
 
-      console.log(`✅ Purchase confirmed: Product ${productId}, Size ${size}, Qty ${quantity}`);
+      console.log(`[SUCCESS] Purchase confirmed: Product ${productId}, Size ${size}, Qty ${quantity}`);
     } catch (error) {
       console.error('Error confirming purchase:', error);
       throw error;
@@ -161,7 +161,7 @@ class InventoryService {
       });
 
       if (!inventory) {
-        console.warn(`⚠️ Inventory not found for product ${productId}, size ${size} - cannot release stock`);
+        console.warn(`[WARNING] Inventory not found for product ${productId}, size ${size} - cannot release stock`);
         return;
       }
 
@@ -169,7 +169,7 @@ class InventoryService {
       const releaseQuantity = Math.min(quantity, inventory.reservedQuantity);
       
       if (releaseQuantity <= 0) {
-        console.warn(`⚠️ No reserved stock to release for product ${productId}, size ${size}`);
+        console.warn(`[WARNING] No reserved stock to release for product ${productId}, size ${size}`);
         return;
       }
 
@@ -189,7 +189,7 @@ class InventoryService {
         }
       });
 
-      console.log(`🔄 Stock released: Product ${productId}, Size ${size}, Qty ${releaseQuantity}`);
+      console.log(`[RETRY] Stock released: Product ${productId}, Size ${size}, Qty ${releaseQuantity}`);
     } catch (error) {
       console.error('Error releasing stock:', error);
       throw error;
@@ -246,7 +246,7 @@ class InventoryService {
         skipDuplicates: true
       });
 
-      console.log(`✅ Inventory initialized for product ${productId}`);
+      console.log(`[SUCCESS] Inventory initialized for product ${productId}`);
     } catch (error) {
       console.error('Error initializing inventory:', error);
       throw error;
@@ -273,7 +273,7 @@ class InventoryService {
       });
 
       if (invalidItems.length > 0) {
-        console.error('❌ Invalid inventory items found:', invalidItems);
+        console.error('[ERROR] Invalid inventory items found:', invalidItems);
         
         // Fix negative values
         for (const item of invalidItems) {
@@ -292,7 +292,7 @@ class InventoryService {
           });
         }
         
-        console.log('✅ Fixed negative inventory values');
+        console.log('[SUCCESS] Fixed negative inventory values');
       }
 
       return { valid: invalidItems.length === 0, fixedItems: invalidItems.length };
@@ -311,7 +311,7 @@ setTimeout(async () => {
     const inventoryService = module.exports;
     const result = await inventoryService.validateInventoryIntegrity();
     if (result.fixedItems > 0) {
-      console.log(`🔧 Fixed ${result.fixedItems} inventory items with negative values`);
+      console.log(`[FIX] Fixed ${result.fixedItems} inventory items with negative values`);
     }
   } catch (error) {
     console.error('Failed to validate inventory on startup:', error);
