@@ -11,12 +11,36 @@ async function startOrderCreationConsumer() {
 
   const channel = getChannel();
 
-  const queue =
-    "order.create.queue";
+  // Setup Dead Letter Queue
+  const deadLetterQueue = "order.create.dead.queue";
+  await channel.assertExchange(
+    "dead.events",
+    "direct",
+    {
+      durable: true
+    }
+  );
 
-  // Create queue
+  await channel.assertQueue(
+    deadLetterQueue,
+    {
+      durable: true
+    }
+  );
+
+  await channel.bindQueue(
+    deadLetterQueue,
+    "dead.events",
+    "order.create.failed"
+  );
+
+  const queue = "order.create.queue";
+
+  // Create queue with DLQ configuration
   await channel.assertQueue(queue, {
-    durable: true
+    durable: true,
+    deadLetterExchange: "dead.events",
+    deadLetterRoutingKey: "order.create.failed"
   });
 
   // Bind queue to exchange
@@ -46,8 +70,8 @@ async function startOrderCreationConsumer() {
           orderId
         } = data;
 
-        console.log(`📥 [ORDER_CREATION] Received INVENTORY_RESERVED event for order: ${orderId}`);
-        console.log(`📋 [ORDER_CREATION] Data received:`, JSON.stringify(data, null, 2));
+        console.log(`[RECEIVED] [ORDER_CREATION] Received INVENTORY_RESERVED event for order: ${orderId}`);
+        console.log(`[INFO] [ORDER_CREATION] Data received:`, JSON.stringify(data, null, 2));
 
         // Handle missing shippingAddress (for old messages)
         const finalShippingAddress = shippingAddress || JSON.stringify({ address: 'N/A' });
@@ -82,34 +106,41 @@ async function startOrderCreationConsumer() {
           return order;
         });
         
-        console.log(`✅ [ORDER_CREATION] Order created in database: ${orderId}`);
+        console.log(`[SUCCESS] [ORDER_CREATION] Order created in database: ${orderId}`);
         
-        await publishEvent(EVENT_TYPES.ORDER_CREATED, {
-          order: result,
-          totalAmount,
-          paymentDetails: data.paymentDetails,
-          orderId,
-          items,
-          userEmail,
-          shippingAddress
-        });
-        
-        console.log(`📤 [ORDER_CREATION] Published ORDER_CREATED event for order: ${orderId}`);
+        try {
+          await publishEvent(EVENT_TYPES.ORDER_CREATED, {
+            order: result,
+            totalAmount,
+            paymentDetails: data.paymentDetails,
+            orderId,
+            items,
+            userEmail,
+            shippingAddress
+          });
+          
+          console.log(`[PUBLISHED] [ORDER_CREATION] Published ORDER_CREATED event for order: ${orderId}`);
+        } catch (publishError) {
+          console.error(`[ERROR] [ORDER_CREATION] Failed to publish ORDER_CREATED:`, publishError.message);
+          // Send to DLQ if publishing fails
+          channel.nack(msg, false, false);
+          return;
+        }
 
         // ACK message
         channel.ack(msg);
 
       } catch (err) {
         const data = JSON.parse(msg.content.toString());
-        console.error(`❌ [ORDER_CREATION] Error for order ${data?.orderId}:`, err.message);
+        console.error(`[ERROR] [ORDER_CREATION] Error for order ${data?.orderId}:`, err.message);
 
         // If order already exists (duplicate), just ACK to avoid infinite retry
         if (err.code === 'P2002' && err.meta?.target?.includes('orderId')) {
-          console.log(`⚠️ [ORDER_CREATION] Order ${data?.orderId} already exists, acknowledging message`);
+          console.log(`[WARNING] [ORDER_CREATION] Order ${data?.orderId} already exists, acknowledging message`);
           channel.ack(msg);
         } else {
-          // For other errors, reject and requeue
-          channel.nack(msg, false, true);
+          // For other errors, send to DLQ
+          channel.nack(msg, false, false);
         }
       }
     }

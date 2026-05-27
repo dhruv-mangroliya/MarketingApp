@@ -68,11 +68,11 @@ class EmailService {
       };
 
       await transporter.sendMail(mailOptions);
-      console.log(`✅ Refund notification email sent to ${userEmail}`);
+      console.log(`[SUCCESS] Refund notification email sent to ${userEmail}`);
       
       return { success: true };
     } catch (error) {
-      console.error(`❌ Failed to send refund email to ${userEmail}:`, error.message);
+      console.error(`[ERROR] Failed to send refund email to ${userEmail}:`, error.message);
       return { success: false, error: error.message };
     }
   }
@@ -87,11 +87,11 @@ class EmailService {
       const mailOptions = {
         from: process.env.EMAIL_USER,
         to: userEmail,
-        subject: `✅ Order Confirmed - ${orderDetails.id} | KurtiBazaar`,
+        subject: `[SUCCESS] Order Confirmed - ${orderDetails.id} | KurtiBazaar`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;">
             <div style="background: linear-gradient(135deg, #28a745, #20c997); padding: 30px; border-radius: 10px; text-align: center; margin-bottom: 30px;">
-              <h1 style="color: white; margin: 0; font-size: 28px;">✅ Order Confirmed!</h1>
+              <h1 style="color: white; margin: 0; font-size: 28px;">[SUCCESS] Order Confirmed!</h1>
               <p style="color: white; margin: 10px 0 0 0; font-size: 16px;">Thank you for your purchase</p>
             </div>
             
@@ -145,12 +145,12 @@ class EmailService {
       };
 
       await transporter.sendMail(mailOptions);
-      console.log(`✅ Order confirmation email sent to ${userEmail}`);
+      console.log(`[SUCCESS] Order confirmation email sent to ${userEmail}`);
       
       return { success: true };
     } catch (error) {
-      console.error(`❌ Failed to send order confirmation email to ${userEmail}:`, error.message);
-      return { success: false, error: error.message };
+      console.error(`[ERROR] Failed to send order confirmation email to ${userEmail}:`, error.message);
+      throw error;
     }
   }
 
@@ -190,11 +190,11 @@ class EmailService {
       };
 
       await transporter.sendMail(mailOptions);
-      console.log(`✅ Order failure notification sent to ${userEmail}`);
+      console.log(`[SUCCESS] Order failure notification sent to ${userEmail}`);
       
       return { success: true };
     } catch (error) {
-      console.error(`❌ Failed to send order failure email to ${userEmail}:`, error.message);
+      console.error(`[ERROR] Failed to send order failure email to ${userEmail}:`, error.message);
       return { success: false, error: error.message };
     }
   }
@@ -249,10 +249,10 @@ class EmailService {
       };
 
       await transporter.sendMail(mailOptions);
-      console.log(`✅ Refund failed notification sent to ${userEmail}`);
+      console.log(`[SUCCESS] Refund failed notification sent to ${userEmail}`);
       return { success: true };
     } catch (error) {
-      console.error(`❌ Failed to send refund failed email to ${userEmail}:`, error.message);
+      console.error(`[ERROR] Failed to send refund failed email to ${userEmail}:`, error.message);
       return { success: false, error: error.message };
     }
   }
@@ -315,7 +315,7 @@ class EmailService {
       };
 
       await transporter.sendMail(mailOptions);
-      console.log(`✅ Stock shortage notification sent to ${userEmail}`);
+      console.log(`[SUCCESS] Stock shortage notification sent to ${userEmail}`);
       
     } catch (error) {
       console.error('Error sending stock shortage notification:', error);

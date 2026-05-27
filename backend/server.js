@@ -8,7 +8,6 @@ const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const rateLimit = require('express-rate-limit');
 const mongoose = require('mongoose');
 const { connectRabbitMQ } = require("./config/rabbitmq");
-const startInventoryConsumer = require("./consumers/inventoryConsumer");
 const startInventoryReserverConsumer = require("./consumers/inventoryReserverConsumer");
 const startInventoryShortageConsumer = require("./consumers/inventoryShortageConsumer");
 const startRefundConsumer = require("./consumers/refundConsumer");
@@ -221,7 +220,6 @@ app.post('/api/upload/image', upload.single('image'), async (req, res) => {
 });
 async function startServer() {
   await connectRabbitMQ();
-  await startInventoryConsumer();
   await startInventoryReserverConsumer();
   await startInventoryShortageConsumer();
   await startRefundConsumer();

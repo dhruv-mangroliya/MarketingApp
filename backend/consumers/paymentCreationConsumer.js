@@ -12,12 +12,36 @@ async function startPaymentCreationConsumer() {
 
   const channel = getChannel();
 
-  const queue =
-    "payment.create.queue";
+  // Setup Dead Letter Queue
+  const deadLetterQueue = "payment.create.dead.queue";
+  await channel.assertExchange(
+    "dead.events",
+    "direct",
+    {
+      durable: true
+    }
+  );
 
-  // Create queue
+  await channel.assertQueue(
+    deadLetterQueue,
+    {
+      durable: true
+    }
+  );
+
+  await channel.bindQueue(
+    deadLetterQueue,
+    "dead.events",
+    "payment.create.failed"
+  );
+
+  const queue = "payment.create.queue";
+
+  // Create queue with DLQ configuration
   await channel.assertQueue(queue, {
-    durable: true
+    durable: true,
+    deadLetterExchange: "dead.events",
+    deadLetterRoutingKey: "payment.create.failed"
   });
 
   // Bind queue to exchange
@@ -45,7 +69,7 @@ async function startPaymentCreationConsumer() {
           paymentDetails
         } = data;
         
-        console.log(`📥 [PAYMENT_CREATION] Received ORDER_CREATED event for order: ${orderId}`);
+        console.log(`[RECEIVED] [PAYMENT_CREATION] Received ORDER_CREATED event for order: ${orderId}`);
         
         // Find the order by orderId string
         const order = await prisma.order.findUnique({
@@ -53,7 +77,7 @@ async function startPaymentCreationConsumer() {
         });
 
         if (!order) {
-          console.error(`❌ [PAYMENT_CREATION] Order not found: ${orderId}, acknowledging message`);
+          console.error(`[ERROR] [PAYMENT_CREATION] Order not found: ${orderId}, acknowledging message`);
           channel.ack(msg);
           return;
         }
@@ -72,29 +96,36 @@ async function startPaymentCreationConsumer() {
             }
           });
 
-          console.log(`✅ Payment record created for order ${orderId}`);
+          console.log(`[SUCCESS] Payment record created for order ${orderId}`);
         }
 
-        await publishEvent(EVENT_TYPES.PAYMENT_CREATED, {
-          orderId,
-          totalAmount,
-          paymentDetails,
-          items: data.items,
-          userEmail: data.userEmail,
-          shippingAddress: data.shippingAddress
-        });
-        
-        console.log(`📤 [PAYMENT_CREATION] Published PAYMENT_CREATED event for order: ${orderId}`);
+        try {
+          await publishEvent(EVENT_TYPES.PAYMENT_CREATED, {
+            orderId,
+            totalAmount,
+            paymentDetails,
+            items: data.items,
+            userEmail: data.userEmail,
+            shippingAddress: data.shippingAddress
+          });
+          
+          console.log(`[PUBLISHED] [PAYMENT_CREATION] Published PAYMENT_CREATED event for order: ${orderId}`);
+        } catch (publishError) {
+          console.error(`[ERROR] [PAYMENT_CREATION] Failed to publish PAYMENT_CREATED:`, publishError.message);
+          // Send to DLQ if publishing fails
+          channel.nack(msg, false, false);
+          return;
+        }
 
         // ACK message
         channel.ack(msg);
 
       } catch (err) {
 
-        console.error('Payment creation consumer error:', err);
+        console.error(`[ERROR] [PAYMENT_CREATION] Error:`, err.message);
 
-        // Reject message
-        channel.nack(msg);
+        // Reject message and send to DLQ
+        channel.nack(msg, false, false);
       }
     }
   );

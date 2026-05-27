@@ -13,6 +13,12 @@ async function connectRabbitMQ() {
     { durable: true } //this line makes sure exchange survives rabbitmq restarts
   );
 
+  await channel.assertExchange(
+    "dead.events",
+    "direct",
+    { durable: true } //this line makes sure exchange survives rabbitmq restarts
+  );
+
   console.log("RabbitMQ Connected");
 }
 

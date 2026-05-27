@@ -14,11 +14,36 @@ async function startInventoryReserverConsumer() {
 
   const channel = getChannel();
 
+  // Setup Dead Letter Queue
+  const deadLetterQueue = "inventory.reserve.dead.queue";
+  await channel.assertExchange(
+    "dead.events",
+    "direct",
+    {
+      durable: true
+    }
+  );
+
+  await channel.assertQueue(
+    deadLetterQueue,
+    {
+      durable: true
+    }
+  );
+
+  await channel.bindQueue(
+    deadLetterQueue,
+    "dead.events",
+    "inventory.reserve.failed"
+  );
+
   const queue = "inventory.reserve.queue";
 
-  // Create queue
+  // Create queue with DLQ configuration
   await channel.assertQueue(queue, {
-    durable: true
+    durable: true,
+    deadLetterExchange: "dead.events",
+    deadLetterRoutingKey: "inventory.reserve.failed"
   });
 
   // Bind queue to exchange
@@ -47,8 +72,8 @@ async function startInventoryReserverConsumer() {
           orderId
         } = data;
 
-        console.log(`📥 [INVENTORY_RESERVER] Received ORDER_RECEIVED event for order: ${orderId}`);
-        console.log(`📋 [INVENTORY_RESERVER] Extracted shippingAddress:`, shippingAddress);
+        console.log(`[RECEIVED] [INVENTORY_RESERVER] Received ORDER_RECEIVED event for order: ${orderId}`);
+        console.log(`[INFO] [INVENTORY_RESERVER] Extracted shippingAddress:`, shippingAddress);
 
         // Check if order already exists (idempotency check)
         const existingOrder = await prisma.order.findUnique({
@@ -56,7 +81,7 @@ async function startInventoryReserverConsumer() {
         });
 
         if (existingOrder) {
-          console.log(`⚠️ [INVENTORY_RESERVER] Order ${orderId} already exists, skipping duplicate message`);
+          console.log(`[WARNING] [INVENTORY_RESERVER] Order ${orderId} already exists, skipping duplicate message`);
           channel.ack(msg);
           return;
         }
@@ -80,31 +105,35 @@ async function startInventoryReserverConsumer() {
               );
             }
 
-            await publishEvent(EVENT_TYPES.INVENTORY_FAILED, {
-                productName: item.productName,
-                size: item.size,
-                requested: item.quantity,
-                available: result.message.match(/Available: (\d+)/)?.[1] || 0,
-                items: items,
-                userEmail
-            });
+            try {
+              await publishEvent(EVENT_TYPES.INVENTORY_FAILED, {
+                  productName: item.productName,
+                  size: item.size,
+                  requested: item.quantity,
+                  available: result.message.match(/Available: (\d+)/)?.[1] || 0,
+                  items: items,
+                  userEmail
+              });
 
-            console.log(`📤 [INVENTORY_RESERVER] Published INVENTORY_FAILED event for order: ${orderId}`);
+              console.log(`[PUBLISHED] [INVENTORY_RESERVER] Published INVENTORY_FAILED event for order: ${orderId}`);
 
-            
-            // If payment was already processed, initiate refund
-            if (paymentDetails && paymentDetails.razorpayPaymentId) {
+              
+              // If payment was already processed, initiate refund
+              if (paymentDetails && paymentDetails.razorpayPaymentId) {
 
-              await publishEvent(EVENT_TYPES.REFUND_CREATED, {
-                paymentDetails,
-                orderId,
-                userEmail
-             });
+                await publishEvent(EVENT_TYPES.REFUND_CREATED, {
+                  paymentDetails,
+                  orderId,
+                  userEmail
+               });
 
-             console.log(`📤 [INVENTORY_RESERVER] Published REFUND_CREATED event for order: ${orderId}`);
+               console.log(`[PUBLISHED] [INVENTORY_RESERVER] Published REFUND_CREATED event for order: ${orderId}`);
+              }
+            } catch (publishError) {
+              console.error(`[ERROR] [INVENTORY_RESERVER] Failed to publish events:`, publishError.message);
             }
 
-            console.log(`❌ [INVENTORY_RESERVER] Failed to reserve stock for ${item.productName} (${item.size}). Requested: ${item.quantity}, Available: ${result.message.match(/Available: (\d+)/)?.[1] || 0}`);
+            console.log(`[ERROR] [INVENTORY_RESERVER] Failed to reserve stock for ${item.productName} (${item.size}). Requested: ${item.quantity}, Available: ${result.message.match(/Available: (\d+)/)?.[1] || 0}`);
             
             // ACK message and stop processing
             channel.ack(msg);
@@ -114,26 +143,32 @@ async function startInventoryReserverConsumer() {
           reservationResults.push(item);
         }
 
-        await publishEvent(EVENT_TYPES.INVENTORY_RESERVED, {
-          items: reservationResults,
-          orderId,
-          userEmail, 
-          totalAmount, 
-          shippingAddress, 
-          phoneNumber,
-          paymentDetails 
-        });
-        console.log(`📋 [INVENTORY_RESERVER] Publishing data:`, JSON.stringify({ shippingAddress, userEmail, totalAmount }, null, 2));
-        console.log(`📤 [INVENTORY_RESERVER] Published INVENTORY_RESERVED event for order: ${orderId}`);
+        try {
+          await publishEvent(EVENT_TYPES.INVENTORY_RESERVED, {
+            items: reservationResults,
+            orderId,
+            userEmail, 
+            totalAmount, 
+            shippingAddress, 
+            phoneNumber,
+            paymentDetails 
+          });
+          console.log(`[INFO] [INVENTORY_RESERVER] Publishing data:`, JSON.stringify({ shippingAddress, userEmail, totalAmount }, null, 2));
+          console.log(`[PUBLISHED] [INVENTORY_RESERVER] Published INVENTORY_RESERVED event for order: ${orderId}`);
+        } catch (publishError) {
+          console.error(`[ERROR] [INVENTORY_RESERVER] Failed to publish INVENTORY_RESERVED:`, publishError.message);
+          // Send to DLQ if publishing fails
+          channel.nack(msg, false, false);
+          return;
+        }
         
         // ACK message
         channel.ack(msg);
 
       } catch (err) {
-        console.error(err);
-
-        // Reject message
-        channel.nack(msg);
+        console.error(`[ERROR] [INVENTORY_RESERVER] Error processing order:`, err.message);
+        // Reject message and send to DLQ
+        channel.nack(msg, false, false);
       }
     }
   );

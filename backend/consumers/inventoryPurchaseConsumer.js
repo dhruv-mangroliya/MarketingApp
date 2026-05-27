@@ -12,12 +12,36 @@ async function startInventoryPurchaseConsumer() {
 
   const channel = getChannel();
 
-  const queue =
-    "inventory.purchase.queue";
+  // Setup Dead Letter Queue
+  const deadLetterQueue = "inventory.purchase.dead.queue";
+  await channel.assertExchange(
+    "dead.events",
+    "direct",
+    {
+      durable: true
+    }
+  );
 
-  // Create queue
+  await channel.assertQueue(
+    deadLetterQueue,
+    {
+      durable: true
+    }
+  );
+
+  await channel.bindQueue(
+    deadLetterQueue,
+    "dead.events",
+    "inventory.purchase.failed"
+  );
+
+  const queue = "inventory.purchase.queue";
+
+  // Create queue with DLQ configuration
   await channel.assertQueue(queue, {
-    durable: true
+    durable: true,
+    deadLetterExchange: "dead.events",
+    deadLetterRoutingKey: "inventory.purchase.failed"
   });
 
   // Bind queue to exchange
@@ -47,7 +71,7 @@ async function startInventoryPurchaseConsumer() {
           shippingAddress
         } = data;
 
-        console.log(`📥 [INVENTORY_PURCHASE] Received PAYMENT_CREATED event for order: ${orderId}`);
+        console.log(`[RECEIVED] [INVENTORY_PURCHASE] Received PAYMENT_CREATED event for order: ${orderId}`);
 
         for (const item of items) {
             try {
@@ -56,9 +80,9 @@ async function startInventoryPurchaseConsumer() {
                     item.size, 
                     item.quantity
                 );
-                console.log(`✅ [INVENTORY_PURCHASE] Confirmed purchase for product ${item.productId}, size ${item.size}, qty ${item.quantity}`);
+                console.log(`[SUCCESS] [INVENTORY_PURCHASE] Confirmed purchase for product ${item.productId}, size ${item.size}, qty ${item.quantity}`);
             } catch (confirmError) {
-                console.error(`❌ [INVENTORY_PURCHASE] Failed to confirm purchase for ${item.productName}:`, confirmError.message);
+                console.error(`[ERROR] [INVENTORY_PURCHASE] Failed to confirm purchase for ${item.productName}:`, confirmError.message);
                 
                 // Release all reserved stock for this order
                 for (const releaseItem of items) {
@@ -69,43 +93,52 @@ async function startInventoryPurchaseConsumer() {
                     );
                 }
 
-                // If payment was already processed, initiate refund
-                if (paymentDetails && paymentDetails.razorpayPaymentId) {
-                    await publishEvent(EVENT_TYPES.REFUND_CREATED, {
-                        paymentDetails,
-                        orderId,
-                        userEmail
-                    });
+                try {
+                  // If payment was already processed, initiate refund
+                  if (paymentDetails && paymentDetails.razorpayPaymentId) {
+                      await publishEvent(EVENT_TYPES.REFUND_CREATED, {
+                          paymentDetails,
+                          orderId,
+                          userEmail
+                      });
 
-                    console.log(`📤 [INVENTORY_PURCHASE] Published REFUND_CREATED event for order: ${orderId}`);
+                      console.log(`[PUBLISHED] [INVENTORY_PURCHASE] Published REFUND_CREATED event for order: ${orderId}`);
+                  }
+                } catch (publishError) {
+                  console.error(`[ERROR] [INVENTORY_PURCHASE] Failed to publish REFUND_CREATED:`, publishError.message);
                 }
                 
-                // ACK and stop processing
+                // ACK and stop processing, If purchase failed that is business logic failure.
                 channel.ack(msg);
                 return;
             }
         }
         
-        await publishEvent(EVENT_TYPES.INVENTORY_PURCHASED, {
-            items,
-            orderId,
-            userEmail,
-            paymentDetails,
-            totalAmount,
-            shippingAddress
-        });
-        
-        console.log(`📤 [INVENTORY_PURCHASE] Published INVENTORY_PURCHASED event for order: ${orderId}`);
+        try {
+          await publishEvent(EVENT_TYPES.INVENTORY_PURCHASED, {
+              items,
+              orderId,
+              userEmail,
+              paymentDetails,
+              totalAmount,
+              shippingAddress
+          });
+          
+          console.log(`[PUBLISHED] [INVENTORY_PURCHASE] Published INVENTORY_PURCHASED event for order: ${orderId}`);
+        } catch (publishError) {
+          console.error(`[ERROR] [INVENTORY_PURCHASE] Failed to publish INVENTORY_PURCHASED:`, publishError.message);
+          // Send to DLQ if publishing fails
+          channel.nack(msg, false, false);
+          return;
+        }
 
         // ACK message
         channel.ack(msg);
 
       } catch (err) {
-
-        console.error(err);
-
-        // Reject message
-        channel.nack(msg);
+        console.error(`[ERROR] [INVENTORY_PURCHASE] Error processing order:`, err.message);
+        // Reject message and send to DLQ
+        channel.nack(msg, false, false);
       }
     }
   );

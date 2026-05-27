@@ -22,12 +22,11 @@ const EVENT_TYPES = {
   //refund is same as above, triggered by payment failure, not able to purchase inventory
 
 
-
+  //step-3: dead events
+  NOTIFICATION_FAILED: "notification.failed",
 
 
   ORDER_CANCELLED: "order.cancelled",
-
-
   PAYMENT_FAILED: "payment.failed",
 
 };
